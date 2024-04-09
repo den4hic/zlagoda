@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34714.143
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupermarketDAL", "SupermarketDAL\SupermarketDAL.csproj", "{7F5113A9-0D11-4A2C-AF79-29456B3B39C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SupermarketDAL", "SupermarketDAL\SupermarketDAL.csproj", "{7F5113A9-0D11-4A2C-AF79-29456B3B39C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupermarketBLL", "SupermarketBLL\SupermarketBLL.csproj", "{F271E8BE-93AD-4B7E-883D-D374176F9088}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SupermarketBLL", "SupermarketBLL\SupermarketBLL.csproj", "{F271E8BE-93AD-4B7E-883D-D374176F9088}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
