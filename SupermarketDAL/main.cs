@@ -7,7 +7,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        DatabaseHelper dbHelper = new DatabaseHelper("..\\..\\..\\zlagoda.db");
+        DatabaseHelper dbHelper = new DatabaseHelper("zlagoda.db");
         Employee employee = dbHelper.GetEmployeeById("EMP001");
 
         Type type = employee.GetType();
