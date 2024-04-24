@@ -1,5 +1,6 @@
 using System.Windows;
 using SupermarketDAL.Entities;
+using SupermarketPL.Model;
 
 namespace SupermarketPL.Views
 {
@@ -11,7 +12,9 @@ namespace SupermarketPL.Views
         {
             InitializeComponent();
             this.controller = new CashierController();
+			List<Goods> goodsList = controller.GetGoods();
 
-        }
+			goodsDataGrid.ItemsSource = goodsList;
+		}
     }
 }
