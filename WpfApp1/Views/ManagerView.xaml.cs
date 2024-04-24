@@ -2,16 +2,16 @@ using System.Windows;
 using System.Windows.Controls;
 using SupermarketDAL.Entities;
 
-namespace SupermarketPL.Views
+namespace SupermarketPL
 {
     public partial class ManagerView : Window
     {
         private ManagerController controller;
 
-        public ManagerView()
+        public ManagerView(ManagerController controller)
         {
             InitializeComponent();
-            this.controller = new ManagerController();
+            this.controller = controller;
 
         }
         

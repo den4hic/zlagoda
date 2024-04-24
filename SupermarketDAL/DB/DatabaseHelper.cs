@@ -248,8 +248,9 @@ namespace SupermarketDAL.DB
             ExecuteNonQuery(sql, new SQLiteParameter("@UPC", upc), new SQLiteParameter("@CheckNumber", checkNumber));
         }
 
-
-
-
-    }
+		public Employee GetEmployeeByUsernameAndPassword(string username, string hashedPassword)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

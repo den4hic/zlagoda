@@ -1,16 +1,16 @@
 using System.Windows;
 using SupermarketDAL.Entities;
 
-namespace SupermarketPL.Views
+namespace SupermarketPL
 {
     public partial class CashierView : Window
     {
         private CashierController controller;
 
-        public CashierView()
+        public CashierView(CashierController controller)
         {
             InitializeComponent();
-            this.controller = new CashierController();
+            this.controller = controller;
 
         }
     }

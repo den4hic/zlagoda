@@ -1,4 +1,4 @@
-<Window x:Class="SupermarketPL.Views.CashierView"
+<Window x:Class="SupermarketPL.CashierView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Cashier View" Height="450" Width="800">

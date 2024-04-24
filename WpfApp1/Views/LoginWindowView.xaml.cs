@@ -2,7 +2,7 @@ using System.Windows;
 using SupermarketDAL.DB;
 using SupermarketDAL.Entities;
 
-namespace SupermarketPL.Views
+namespace SupermarketPL
 {
     public partial class LoginWindow : Window
     {
@@ -29,12 +29,12 @@ namespace SupermarketPL.Views
                 // Open the ManagerView or CashierView based on the role of the user
                 if (employee.EmplRole == "Manager")
                 {
-                    ManagerView managerView = new ManagerView();
+                    ManagerView managerView = new ManagerView(new ManagerController());
                     managerView.Show();
                 }
                 else if (employee.EmplRole == "Cashier")
                 {
-                    CashierView cashierView = new CashierView();
+                    CashierView cashierView = new CashierView(new CashierController());
                     cashierView.Show();
                 }
 
