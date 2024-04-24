@@ -7,8 +7,9 @@ class Program
 {
     static void Main(string[] args)
     {
-        DatabaseHelper dbHelper = new DatabaseHelper("zlagoda.db");
-        Employee employee = dbHelper.GetEmployeeById("EMP001");
+        DatabaseHelper dbHelper = new DatabaseHelper("../../../zlagoda.db");
+        List<Employee> list = dbHelper.GetEmployeesList();
+        Employee employee = list[1];
 
         Type type = employee.GetType();
         PropertyInfo[] properties = type.GetProperties();
@@ -20,7 +21,5 @@ class Program
             Console.WriteLine("{0}: {1}", name, value);
         }
 
-        employee.EmplSurname = "TestName";
-        dbHelper.UpdateEmployee(employee);
     }
 }

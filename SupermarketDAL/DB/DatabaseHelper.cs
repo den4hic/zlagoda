@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
 using SupermarketDAL.Entities;
+using System.Reflection.PortableExecutable;
 
 namespace SupermarketDAL.DB
 {
@@ -252,5 +253,231 @@ namespace SupermarketDAL.DB
 		{
 			throw new NotImplementedException();
 		}
-	}
+
+        public List<Employee> GetEmployeesList()
+        {
+            string sql = "SELECT * FROM Employee";
+            List<Employee> employees = new List<Employee>();
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                using (SQLiteCommand command = new SQLiteCommand(sql, connection))
+                {
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Employee employee = new Employee
+                            {
+                                IdEmployee = reader["id_employee"].ToString(),
+                                EmplSurname = reader["empl_surname"].ToString(),
+                                EmplName = reader["empl_name"].ToString(),
+                                EmplPatronymic = reader["empl_patronymic"].ToString(),
+                                EmplRole = reader["empl_role"].ToString(),
+                                Salary = Convert.ToDecimal(reader["salary"]),
+                                DateOfBirth = Convert.ToDateTime(reader["date_of_birth"]),
+                                DateOfStart = Convert.ToDateTime(reader["date_of_start"]),
+                                PhoneNumber = reader["phone_number"].ToString(),
+                                City = reader["city"].ToString(),
+                                Street = reader["street"].ToString(),
+                                ZipCode = reader["zip_code"].ToString()
+                            };
+                            employees.Add(employee);
+                        }
+                    }
+                }
+            }
+
+            return employees;
+        }
+
+        public List<Product> GetProductsList()
+        {
+            string sql = "SELECT * FROM Product";
+            List<Product> products = new List<Product>();
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                using (SQLiteCommand command = new SQLiteCommand(sql, connection))
+                {
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Product product = new Product
+                            {
+                                IdProduct = reader.GetInt32(0),
+                                CategoryNumber = reader.GetInt32(1),
+                                ProductName = reader.GetString(2),
+                                Producer = reader.GetString(3),
+                                Characteristics = reader.GetString(4)
+                            };
+                            products.Add(product);
+                        }
+                    }
+                }
+            }
+
+            return products;
+        }
+
+        public List<Category> GetCategoriesList()
+        {
+            string sql = "SELECT * FROM Category";
+            List<Category> categories = new List<Category>();
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                using (SQLiteCommand command = new SQLiteCommand(sql, connection))
+                {
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Category category = new Category
+                            {
+                                CategoryNumber = reader.GetInt32(0),
+                                CategoryName = reader.GetString(1)
+                            };
+                            categories.Add(category);
+                        }
+                    }
+                }
+            }
+
+            return categories;
+        }
+
+        public List<Check> GetChecksList()
+        {
+            string sql = "SELECT * FROM [Check]";
+            List<Check> checks = new List<Check>();
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                using (SQLiteCommand command = new SQLiteCommand(sql, connection))
+                {
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Check check = new Check
+                            {
+                                CheckNumber = reader.GetString(0),
+                                IdEmployee = reader.GetString(1),
+                                CardNumber = reader.GetString(2),
+                                PrintDate = reader.GetString(3),
+                                SumTotal = reader.GetDecimal(4),
+                                Vat = reader.GetDecimal(5)
+                            };
+                            checks.Add(check);
+                        }
+                    }
+                }
+            }
+
+            return checks;
+        }
+
+        public List<CostumerCard> GetCostumerCardsList()
+        {
+            string sql = "SELECT * FROM Costumer_Card";
+            List<CostumerCard> costumerCards = new List<CostumerCard>();
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                using (SQLiteCommand command = new SQLiteCommand(sql, connection))
+                {
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            CostumerCard card = new CostumerCard
+                            {
+                                CardNumber = reader.GetString(0),
+                                CustSurname = reader.GetString(1),
+                                CustName = reader.GetString(2),
+                                CustPatronymic = reader.GetString(3),
+                                PhoneNumber = reader.GetString(4),
+                                City = reader.GetString(5),
+                                Street = reader.GetString(6),
+                                Index = reader.GetString(7),
+                                Percentage = reader.GetInt32(8)
+                            };
+                            costumerCards.Add(card);
+                        }
+                    }
+                }
+            }
+
+            return costumerCards;
+        }
+
+        public List<StoreProduct> GetStoreProductsList()
+        {
+            string sql = "SELECT * FROM Store_Product";
+            List<StoreProduct> storeProducts = new List<StoreProduct>();
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                using (SQLiteCommand command = new SQLiteCommand(sql, connection))
+                {
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            StoreProduct storeProduct = new StoreProduct
+                            {
+                                UPC = reader.GetString(0),
+                                UPC_prom = reader.GetString(1),
+                                IdProduct = reader.GetInt32(2),
+                                SellingPrice = reader.GetDecimal(3),
+                                ProductsNumber = reader.GetInt32(4),
+                                PromotionalProduct = reader.GetBoolean(5)
+                            };
+                            storeProducts.Add(storeProduct);
+                        }
+                    }
+                }
+            }
+
+            return storeProducts;
+        }
+
+        public List<Sale> GetSalesList()
+        {
+            string sql = "SELECT * FROM Sale";
+            List<Sale> sales = new List<Sale>();
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                using (SQLiteCommand command = new SQLiteCommand(sql, connection))
+                {
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Sale sale = new Sale
+                            {
+                                UPC = reader.GetString(0),
+                                CheckNumber = reader.GetString(1),
+                                ProductNumber = reader.GetInt32(2),
+                                SellingPrice = reader.GetDecimal(3)
+                            };
+                            sales.Add(sale);
+                        }
+                    }
+                }
+            }
+
+            return sales;
+        }
+    }
 }
