@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Data.SQLite;
 using SupermarketDAL.Entities;
 using System.Reflection.PortableExecutable;
+using System.IO;
+using System.Reflection.Emit;
 
 namespace SupermarketDAL.DB
 {
@@ -397,17 +399,17 @@ namespace SupermarketDAL.DB
                     {
                         while (reader.Read())
                         {
-                            CostumerCard card = new CostumerCard
+							CostumerCard card = new CostumerCard
                             {
-                                CardNumber = reader.GetString(0),
-                                CustSurname = reader.GetString(1),
-                                CustName = reader.GetString(2),
-                                CustPatronymic = reader.GetString(3),
-                                PhoneNumber = reader.GetString(4),
-                                City = reader.GetString(5),
-                                Street = reader.GetString(6),
-                                Index = reader.GetString(7),
-                                Percentage = reader.GetInt32(8)
+                                CardNumber = reader["card_number"].ToString(),
+                                CustSurname = reader["cust_surname"].ToString(),
+                                CustName = reader["cust_name"].ToString(),
+                                CustPatronymic = reader["cust_patronymic"].ToString(),
+                                PhoneNumber = reader["phone_number"].ToString(),
+                                City = reader["city"].ToString(),
+                                Street = reader["street"].ToString(),
+                                Index = reader["index"].ToString(),
+                                Percentage = Convert.ToInt32(reader["percentage"])
                             };
                             costumerCards.Add(card);
                         }
@@ -479,5 +481,10 @@ namespace SupermarketDAL.DB
 
             return sales;
         }
-    }
+
+		public List<Product> GetProductsListByCategory(string selectedCategory)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

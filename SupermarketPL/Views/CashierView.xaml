@@ -47,7 +47,7 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <DataGrid x:Name="customerDataGrid" Margin="10,10,10,20" Grid.Column="0">
+                    <DataGrid x:Name="customerDataGrid" Margin="10,10,10,20" Grid.Column="0" AutoGenerateColumns="False" ItemsSource="{Binding CustomersList}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Card Number" Binding="{Binding CardNumber}" Width="*"/>
                             <DataGridTextColumn Header="Full Name" Binding="{Binding FullName}" Width="*"/>
