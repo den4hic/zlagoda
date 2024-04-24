@@ -50,9 +50,14 @@
                     <DataGrid x:Name="customerDataGrid" Margin="10,10,10,20" Grid.Column="0" AutoGenerateColumns="False" ItemsSource="{Binding CustomersList}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Card Number" Binding="{Binding CardNumber}" Width="*"/>
-                            <DataGridTextColumn Header="Full Name" Binding="{Binding FullName}" Width="*"/>
+                            <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" Width="*"/>
+                            <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" Width="*"/>
+                            <DataGridTextColumn Header="Patronymic Name" Binding="{Binding PatronymicName}" Width="*"/>
                             <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNumber}" Width="*"/>
-                            <DataGridTextColumn Header="Address" Binding="{Binding Address}" Width="*"/>
+                            <DataGridTextColumn Header="City" Binding="{Binding City}" Width="*"/>
+                            <DataGridTextColumn Header="Street" Binding="{Binding Street}" Width="*"/>
+                            <DataGridTextColumn Header="Index" Binding="{Binding Index}" Width="*"/>
+                            <DataGridTextColumn Header="Discount" Binding="{Binding Discount}" Width="*"/>
                         </DataGrid.Columns>
                     </DataGrid>
 

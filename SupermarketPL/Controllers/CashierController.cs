@@ -42,9 +42,15 @@ public class CashierController
 			result.Add(new CustomerModel()
 			{
 				CardNumber = item.CardNumber,
-				FullName = item.CustName + item.CustSurname,
-				Address = item.Street,
-				PhoneNumber = item.PhoneNumber
+				FirstName = item.CustName,
+				LastName = item.CustSurname,
+				PatronymicName = item.CustPatronymic,
+				City = item.City,
+				Street = item.Street,
+				Index = item.Index,
+				PhoneNumber = item.PhoneNumber,
+				Discount = item.Percentage
+				
 			});
 		}
 
@@ -86,5 +92,10 @@ public class CashierController
 		}
 
 		return result;
+	}
+
+	public void UpdateCustomer(CustomerModel customer)
+	{
+		dbHelper.UpdateCostumerCard(customer.CardNumber, customer.LastName, customer.FirstName, customer.PatronymicName, customer.PhoneNumber, customer.City, customer.Street, customer.Index, customer.Discount);
 	}
 }
