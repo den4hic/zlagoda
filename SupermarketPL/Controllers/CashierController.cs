@@ -1,7 +1,6 @@
 using SupermarketDAL.DB;
 using SupermarketDAL.Entities;
 using SupermarketPL.Model;
-using SupermarketPL.Model;
 
 public class CashierController
 {
