@@ -13,6 +13,7 @@ namespace SupermarketPL.Views
 		private List<Goods> _goodsList;
 		private List<CategoryModel> _categories;
 		private List<CustomerModel> _customersList;
+		List<GoodsInStockModel> goodsInBasketList;
 		private List<Goods> _updatedGoodsList;
 		private ObservableCollection<GoodsInStockModel> _stocks = new ObservableCollection<GoodsInStockModel>();
 		private ObservableCollection<BasketGoods> _basketGoods = new ObservableCollection<BasketGoods>();
@@ -33,6 +34,8 @@ namespace SupermarketPL.Views
 			customerDataGrid.CellEditEnding += CustomerDataGrid_CellEditEnding;
 
 			List<GoodsInStockModel> goodsInBasketList = controller.GetStocks();
+
+			this.goodsInBasketList = goodsInBasketList;
 
 			foreach (var item in goodsInBasketList)
 			{
@@ -75,11 +78,22 @@ namespace SupermarketPL.Views
 			{
 				if (selectedCategory == "All")
 				{
-					goodsDataGrid.ItemsSource = _stocks;
+					_stocks.Clear();
+
+					foreach (var item in goodsInBasketList)
+					{
+						_stocks.Add(item);
+					}
 					return;
 				}
 				List<GoodsInStockModel> stocks = controller.GetGoodsInStockByCategory(comboBox.SelectedIndex - 1);
-				goodsDataGrid.ItemsSource = stocks;
+				_stocks.Clear();
+
+				foreach (var item in stocks)
+				{
+
+					_stocks.Add(goodsInBasketList.FirstOrDefault(x => x.ProductId == item.ProductId));
+				}
 			}
 		}
 
@@ -94,11 +108,21 @@ namespace SupermarketPL.Views
 					.Where(g => g.Name.StartsWith(searchText, System.StringComparison.OrdinalIgnoreCase))
 					.ToList();
 
-				goodsInBasketDataGrid.ItemsSource = filteredGoods;
+				_stocks.Clear();
+
+				foreach (var item in filteredGoods)
+				{
+					_stocks.Add(item);
+				}
 			}
 			else
 			{
-				goodsInBasketDataGrid.ItemsSource = _stocks;
+				_stocks.Clear();
+
+				foreach (var item in goodsInBasketList)
+				{
+					_stocks.Add(item);
+				}
 			}
 		}
 
@@ -227,6 +251,7 @@ namespace SupermarketPL.Views
 			if (dataGrid != null && dataGrid.SelectedItem != null)
 			{
 				var selectedRow = dataGrid.SelectedItem as BasketGoods;
+				bool flag = false;
 
 				foreach (var item in _stocks)
 				{
@@ -236,9 +261,26 @@ namespace SupermarketPL.Views
 						int indexStock = _stocks.IndexOf(item);
 						_stocks.RemoveAt(indexStock);
 						_stocks.Insert(indexStock, item);
+						flag = true;
 						break;
 					}
 				}
+
+				if(!flag)
+				{
+					foreach (var item in goodsInBasketList)
+					{
+						if (item.ProductId == selectedRow.BasketGoodsId)
+						{
+							item.Quantity++;
+							int indexStock = _stocks.IndexOf(item);
+							goodsInBasketList.RemoveAt(indexStock);
+							goodsInBasketList.Insert(indexStock, item);
+							break;
+						}
+					}
+				}
+
 
 				if (selectedRow.Quantity == 1)
 				{
@@ -272,6 +314,8 @@ namespace SupermarketPL.Views
 				int indexStock = _stocks.IndexOf(selectedRow);
 				_stocks.RemoveAt(indexStock);
 				_stocks.Insert(indexStock, selectedRow);
+
+				
 
 				foreach (var item in _basketGoods)
 				{

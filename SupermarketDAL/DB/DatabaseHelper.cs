@@ -529,10 +529,5 @@ namespace SupermarketDAL.DB
                 PromotionalProduct = reader.GetBoolean(7)
             }).ToList();
         }
-
-		public List<GoodsInStock> GetGoodsInStockByCategory(int categoryId)
-		{
-			throw new NotImplementedException();
-		}
 	}
 }
