@@ -511,6 +511,9 @@ namespace SupermarketDAL.DB
             }).ToList();
         }
 
-
-    }
+		public List<GoodsInStock> GetGoodsInStockByCategory(int categoryId)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

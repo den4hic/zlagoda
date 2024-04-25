@@ -11,8 +11,8 @@ namespace SupermarketPL.Views
         public LoginWindow()
         {
             InitializeComponent();
-            dbHelper = new DatabaseHelper("zlagoda.db");
-        }
+			dbHelper = new DatabaseHelper("../../../../SupermarketDAL/zlagoda.db");
+		}
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {

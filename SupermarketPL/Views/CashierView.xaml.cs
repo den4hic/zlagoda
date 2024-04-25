@@ -14,6 +14,8 @@ namespace SupermarketPL.Views
 		private List<CategoryModel> _categories;
 		private List<CustomerModel> _customersList;
 		private List<Goods> _updatedGoodsList;
+		private ObservableCollection<GoodsInStockModel> _stocks = new ObservableCollection<GoodsInStockModel>();
+		private ObservableCollection<BasketGoods> _basketGoods = new ObservableCollection<BasketGoods>();
 
         public CashierView()
         {
@@ -30,7 +32,14 @@ namespace SupermarketPL.Views
 			customerDataGrid.ItemsSource = customersList;
 			customerDataGrid.CellEditEnding += CustomerDataGrid_CellEditEnding;
 
+			List<GoodsInStockModel> goodsInBasketList = controller.GetStocks();
+
+			foreach (var item in goodsInBasketList)
+			{
+				_stocks.Add(item);
+			}
 			
+			goodsInBasketDataGrid.ItemsSource = _stocks;
 
 			List<Category> categoriesList = controller.GetCategories();
 
@@ -49,9 +58,48 @@ namespace SupermarketPL.Views
 			}
 
 			categoryComboBox.SelectionChanged += CategoryComboBox_SelectionChanged;
+			categoryBasketComboBox.SelectionChanged += BasketComboBox_SelectionChanged;
 
 			productNameSearchTextBox.TextChanged += ProductNameSearchTextBox_TextChanged;
+			nameSearchTextBox.TextChanged += GoodsInStockNameSearchTextBox_TextChanged;
 			customerNameSearchTextBox.TextChanged += CustomerNameSearchTextBox_TextChanged;
+			basketDataGrid.ItemsSource = _basketGoods;
+		}
+
+		private void BasketComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			ComboBox comboBox = sender as ComboBox;
+			string selectedCategory = comboBox.SelectedItem as string;
+
+			if (selectedCategory != null)
+			{
+				if (selectedCategory == "All")
+				{
+					goodsDataGrid.ItemsSource = _stocks;
+					return;
+				}
+				List<GoodsInStockModel> stocks = controller.GetGoodsInStockByCategory(comboBox.SelectedIndex - 1);
+				goodsDataGrid.ItemsSource = stocks;
+			}
+		}
+
+		private void GoodsInStockNameSearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			TextBox textBox = sender as TextBox;
+			string searchText = textBox.Text;
+
+			if (!string.IsNullOrEmpty(searchText))
+			{
+				List<GoodsInStockModel> filteredGoods = _stocks
+					.Where(g => g.Name.StartsWith(searchText, System.StringComparison.OrdinalIgnoreCase))
+					.ToList();
+
+				goodsInBasketDataGrid.ItemsSource = filteredGoods;
+			}
+			else
+			{
+				goodsInBasketDataGrid.ItemsSource = _stocks;
+			}
 		}
 
 		private void CustomerNameSearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -88,7 +136,6 @@ namespace SupermarketPL.Views
 				List<Goods> goods = controller.GetGoodsByCategory(comboBox.SelectedIndex - 1);
 				_updatedGoodsList = goods;
 				goodsDataGrid.ItemsSource = goods;
-				MessageBox.Show($"Вибрано категорію: {selectedCategory}");
 			}
 		}
 
@@ -174,18 +221,82 @@ namespace SupermarketPL.Views
 			}
 		}
 
+		private void BasketDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			var dataGrid = sender as DataGrid;
+			if (dataGrid != null && dataGrid.SelectedItem != null)
+			{
+				var selectedRow = dataGrid.SelectedItem as BasketGoods;
+
+				foreach (var item in _stocks)
+				{
+					if (item.ProductId == selectedRow.BasketGoodsId)
+					{
+						item.Quantity++;
+						int indexStock = _stocks.IndexOf(item);
+						_stocks.RemoveAt(indexStock);
+						_stocks.Insert(indexStock, item);
+						break;
+					}
+				}
+
+				if (selectedRow.Quantity == 1)
+				{
+					_basketGoods.Remove(selectedRow);
+					return;
+				}
+
+				selectedRow.Quantity--;
+
+				int index = _basketGoods.IndexOf(selectedRow);
+				_basketGoods.RemoveAt(index);
+				_basketGoods.Insert(index, selectedRow);
+			}
+		}
+
 		private void GoodsInBasketDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
 			var dataGrid = sender as DataGrid;
 			if (dataGrid != null && dataGrid.SelectedItem != null)
 			{
-				var selectedRow = dataGrid.SelectedItem;
+				var selectedRow = dataGrid.SelectedItem as GoodsInStockModel;
 
-				var basketDataGridItems = basketDataGrid.ItemsSource as ObservableCollection<BasketGoods>;
-				if (basketDataGridItems != null)
+				if(selectedRow.Quantity == 0)
 				{
-					basketDataGridItems.Add(selectedRow as BasketGoods);
+					MessageBox.Show("Товар відсутній на складі");
+					return;
 				}
+
+				selectedRow.Quantity--;
+
+				int indexStock = _stocks.IndexOf(selectedRow);
+				_stocks.RemoveAt(indexStock);
+				_stocks.Insert(indexStock, selectedRow);
+
+				foreach (var item in _basketGoods)
+				{
+					if (item.BasketGoodsId == selectedRow.ProductId)
+					{
+						item.Quantity++;
+						item.Price = item.Price * item.Quantity;
+						int index = _basketGoods.IndexOf(item);
+						_basketGoods.RemoveAt(index);
+						_basketGoods.Insert(index, item);
+						return;
+					}
+				}
+
+				BasketGoods basketGoods = new BasketGoods()
+				{
+					BasketGoodsId = selectedRow.ProductId,
+					Name = selectedRow.Name,
+					Quantity = 1,
+					Price = selectedRow.Price,
+				};
+
+				_basketGoods.Add(basketGoods);
+
+				
 			}
 		}
 

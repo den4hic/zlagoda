@@ -101,4 +101,53 @@ public class CashierController
 	{
 		dbHelper.UpdateCustomerCard(customer.CardNumber, customer.LastName, customer.FirstName, customer.PatronymicName, customer.PhoneNumber, customer.City, customer.Street, customer.Index, customer.Discount);
 	}
+
+	public List<GoodsInStockModel> GetStocks()
+	{
+		var goods = dbHelper.GetGoods();
+
+		List<GoodsInStockModel> result = new List<GoodsInStockModel>();
+
+		foreach (var item in goods)
+		{
+			result.Add(new GoodsInStockModel()
+			{
+				ProductId = item.IdProduct,
+				Name = item.ProductName,
+				Manufacturer = item.Producer,
+				Characteristics = item.Characteristics,
+				UPC = item.UPC,
+				Price = item.SellingPrice,
+				Quantity = item.ProductsNumber,
+				Discount = item.PromotionalProduct
+			});
+		}
+
+		return result;
+
+	}
+
+	public List<GoodsInStockModel> GetGoodsInStockByCategory(int categoryId)
+	{
+		var goodsInStock = dbHelper.GetGoodsInStockByCategory(categoryId);
+
+		List<GoodsInStockModel> result = new List<GoodsInStockModel>();
+
+		foreach (var item in goodsInStock)
+		{
+			result.Add(new GoodsInStockModel()
+			{
+				ProductId = item.IdProduct,
+				Name = item.ProductName,
+				Manufacturer = item.Producer,
+				Characteristics = item.Characteristics,
+				UPC = item.UPC,
+				Price = item.SellingPrice,
+				Quantity = item.ProductsNumber,
+				Discount = item.PromotionalProduct
+			});
+		}
+
+		return result;
+	}
 }
