@@ -30,20 +30,22 @@ namespace SupermarketPL.Views
 			customerDataGrid.ItemsSource = customersList;
 			customerDataGrid.CellEditEnding += CustomerDataGrid_CellEditEnding;
 
-			List<CategoryModel> categoriesList = controller.GetCategories();
+			
+
+			List<Category> categoriesList = controller.GetCategories();
 
 			categoryBasketComboBox.Items.Add("All");
 
 			foreach (var category in categoriesList)
 			{
-				categoryBasketComboBox.Items.Add(category.Name);
+				categoryBasketComboBox.Items.Add(category.CategoryName);
 			}
 
 			categoryComboBox.Items.Add("All");
 
             foreach (var category in categoriesList)
             {
-				categoryComboBox.Items.Add(category.Name);
+				categoryComboBox.Items.Add(category.CategoryName);
 			}
 
 			categoryComboBox.SelectionChanged += CategoryComboBox_SelectionChanged;
@@ -75,7 +77,7 @@ namespace SupermarketPL.Views
 		{
 			ComboBox comboBox = sender as ComboBox;
 			string selectedCategory = comboBox.SelectedItem as string;
-
+			
 			if (selectedCategory != null)
 			{
 				if (selectedCategory == "All")
@@ -83,7 +85,7 @@ namespace SupermarketPL.Views
 					goodsDataGrid.ItemsSource = _goodsList;
 					return;
 				}
-				List<Goods> goods = controller.GetGoodsByCategory(selectedCategory);
+				List<Goods> goods = controller.GetGoodsByCategory(comboBox.SelectedIndex - 1);
 				_updatedGoodsList = goods;
 				goodsDataGrid.ItemsSource = goods;
 				MessageBox.Show($"Вибрано категорію: {selectedCategory}");

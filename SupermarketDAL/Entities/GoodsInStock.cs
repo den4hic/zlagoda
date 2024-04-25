@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SupermarketDAL.Entities
 {
-    public class Goods
+    public class GoodsInStock
     {
         public int IdProduct { get; set; }
         public string ProductName { get; set; }

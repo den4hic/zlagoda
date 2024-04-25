@@ -58,24 +58,25 @@ public class CashierController
 		return result;
 	}
 
-	public List<CategoryModel> GetCategories()
+	public List<Category> GetCategories()
 	{
 		var categories = dbHelper.GetCategoriesList();
 
-		List<CategoryModel> result = new List<CategoryModel>();
+		List<Category> result = new List<Category>();
 
 		foreach (var item in categories)
 		{
-			result.Add(new CategoryModel()
+			result.Add(new Category()
 			{
-				Name = item.CategoryName
+				CategoryNumber = item.CategoryNumber,
+				CategoryName = item.CategoryName
 			});
 		}
 
 		return result;
 	}
 
-	public List<Goods> GetGoodsByCategory(string selectedCategory)
+	public List<Goods> GetGoodsByCategory(int selectedCategory)
 	{
 		var goods = dbHelper.GetProductsListByCategoryID(selectedCategory);
 
@@ -86,6 +87,7 @@ public class CashierController
 			result.Add(new Goods()
 			{
 				ProductId = item.IdProduct,
+				CategoryId = item.CategoryNumber,
 				Name = item.ProductName,
 				Manufacturer = item.Producer,
 				Characteristics = item.Characteristics

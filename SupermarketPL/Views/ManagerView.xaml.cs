@@ -16,8 +16,6 @@ namespace SupermarketPL.Views
 		private ObservableCollection<string> _categoriesNameList = new ObservableCollection<string>();
 		private ObservableCollection<CustomerModel> _customersList = new ObservableCollection<CustomerModel>();
 
-
-
 		public ManagerView()
         {
             InitializeComponent();

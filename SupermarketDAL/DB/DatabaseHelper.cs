@@ -474,13 +474,13 @@ namespace SupermarketDAL.DB
             
         }
 
-        public Goods GetGoodsByUPC(string upc)
+        public GoodsInStock GetGoodsByUPC(string upc)
         {
             string sql = @"SELECT p.IdProduct, p.ProductName, p.Producer, p.Characteristics, sp.UPC, sp.SellingPrice, sp.ProductsNumber, sp.PromotionalProduct
                    FROM Products p
                    JOIN StoreProducts sp ON p.IdProduct = sp.IdProduct
                    WHERE sp.UPC = @upc";
-            return ExecuteQuery(sql, reader => new Goods
+            return ExecuteQuery(sql, reader => new GoodsInStock
             {
                 IdProduct = reader.GetInt32(0),
                 ProductName = reader.GetString(1),
@@ -493,12 +493,12 @@ namespace SupermarketDAL.DB
             }, new SQLiteParameter("@upc", upc)).FirstOrDefault();
         }
 
-        public List<Goods> GetGoods()
+        public List<GoodsInStock> GetGoods()
         {
             string sql = @"SELECT p.id_product, p.product_name, p.producer, p.characteristics, sp.UPC, sp.selling_price, sp.products_number, sp.promotional_product
                    FROM Product p
                    INNER JOIN Store_Product sp ON p.id_product = sp.id_product";
-            return ExecuteQuery(sql, reader => new Goods
+            return ExecuteQuery(sql, reader => new GoodsInStock
             {
                 IdProduct = reader.GetInt32(0),
                 ProductName = reader.GetString(1),
