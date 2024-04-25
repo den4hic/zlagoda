@@ -29,7 +29,7 @@ namespace SupermarketDAL
             TestGetStoreProductsList(dbHelper);
             TestGetSalesList(dbHelper);
             TestGetProductsListByCategory(dbHelper, 1);
-
+            TestGetGoods(dbHelper);
         }
 
         static void TestGets(DatabaseHelper dbHelper)
@@ -123,6 +123,16 @@ namespace SupermarketDAL
             foreach (var product in productsByCategory)
             {
                 Console.WriteLine($"Product: {product.ProductName}");
+            }
+        }
+
+        static void TestGetGoods(DatabaseHelper dbHelper)
+        {
+            Console.WriteLine($"Testing GetGoods...");
+            var goods = dbHelper.GetGoods();
+            foreach (var good in goods)
+            {
+                Console.WriteLine($"Product: {good.ProductName}");
             }
         }
 
@@ -223,5 +233,20 @@ namespace SupermarketDAL
                 Console.WriteLine("Employee not found.");
             }
         }
+
+        static void TestGetGoodsByUPC(DatabaseHelper dbHelper, string upc)
+        {
+            Console.WriteLine($"Testing GetGoodsByUPC with UPC: {upc}...");
+            var goods = dbHelper.GetGoodsByUPC(upc);
+            if (goods != null)
+            {
+                Console.WriteLine($"Goods found: {goods.ProductName}, UPC: {goods.UPC}");
+            }
+            else
+            {
+                Console.WriteLine("Goods not found.");
+            }
+        }
+
     }
 }
