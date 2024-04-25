@@ -131,11 +131,11 @@ public class ManagerController
 
 	public void UpdateCustomer(CustomerModel customer)
 	{
-		dbHelper.UpdateCostumerCard(customer.CardNumber, customer.LastName, customer.FirstName, customer.PatronymicName, customer.PhoneNumber, customer.City, customer.Street, customer.Index, customer.Discount);
+		dbHelper.UpdateCustomerCard(customer.CardNumber, customer.LastName, customer.FirstName, customer.PatronymicName, customer.PhoneNumber, customer.City, customer.Street, customer.Index, customer.Discount);
 	}
 
 	public void DeleteCustomer(CustomerModel selectedCustomer)
 	{
-		dbHelper.DeleteCostumerCard(selectedCustomer.CardNumber);
+		dbHelper.DeleteCustomerCard(selectedCustomer.CardNumber);
 	}
 }
