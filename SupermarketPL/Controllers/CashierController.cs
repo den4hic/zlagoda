@@ -34,7 +34,7 @@ public class CashierController
 
 	public List<CustomerModel> GetCustomers()
 	{
-		var customers = dbHelper.GetCostumerCardsList();
+		var customers = dbHelper.GetCustomerCardsList();
 
 		List<CustomerModel> result = new List<CustomerModel>();
 
@@ -77,7 +77,7 @@ public class CashierController
 
 	public List<Goods> GetGoodsByCategory(string selectedCategory)
 	{
-		var goods = dbHelper.GetProductsListByCategory(selectedCategory);
+		var goods = dbHelper.GetProductsListByCategoryID(selectedCategory);
 
 		List<Goods> result = new List<Goods>();
 
@@ -97,6 +97,6 @@ public class CashierController
 
 	public void UpdateCustomer(CustomerModel customer)
 	{
-		dbHelper.UpdateCostumerCard(customer.CardNumber, customer.LastName, customer.FirstName, customer.PatronymicName, customer.PhoneNumber, customer.City, customer.Street, customer.Index, customer.Discount);
+		dbHelper.UpdateCustomerCard(customer.CardNumber, customer.LastName, customer.FirstName, customer.PatronymicName, customer.PhoneNumber, customer.City, customer.Street, customer.Index, customer.Discount);
 	}
 }

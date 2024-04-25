@@ -116,7 +116,7 @@ namespace SupermarketDAL
         static void TestGetProductsListByCategory(DatabaseHelper dbHelper, int category)
         {
             Console.WriteLine($"Testing GetProductsListByCategory for category: {category}...");
-            var productsByCategory = dbHelper.GetProductsListByCategory(category);
+            var productsByCategory = dbHelper.GetProductsListByCategoryID(category);
             foreach (var product in productsByCategory)
             {
                 Console.WriteLine($"Product: {product.ProductName}");

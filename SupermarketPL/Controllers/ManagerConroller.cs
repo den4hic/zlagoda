@@ -80,7 +80,7 @@ public class ManagerController
 
 	public List<CustomerModel> GetCustomers()
 	{
-		var customers = dbHelper.GetCostumerCardsList();
+		var customers = dbHelper.GetCustomerCardsList();
 
 		List<CustomerModel> result = new List<CustomerModel>();
 

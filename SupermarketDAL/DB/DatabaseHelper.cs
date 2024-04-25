@@ -367,7 +367,7 @@ namespace SupermarketDAL.DB
         }
 
             
-        public List<Product> GetProductsListByCategory(int selectedCategory)
+        public List<Product> GetProductsListByCategoryID(int selectedCategory)
         {
             string sql = "SELECT * FROM Product WHERE category_number = @SelectedCategory";
             return ExecuteQuery(sql, reader => new Product
@@ -379,6 +379,7 @@ namespace SupermarketDAL.DB
                 Characteristics = reader.GetString(4)
             }, new SQLiteParameter("@SelectedCategory", selectedCategory)).ToList();
         }
+
 
         public void PutTestsData()
         {
