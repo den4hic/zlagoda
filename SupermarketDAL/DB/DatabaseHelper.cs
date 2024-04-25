@@ -395,6 +395,25 @@ namespace SupermarketDAL.DB
             }, new SQLiteParameter("@SelectedCategory", selectedCategory)).ToList();
         }
 
+        public List<GoodsInStock> GetGoodsListByCategoryID(int selectedCategory)
+        {
+
+            string sql = @"SELECT p.id_product, p.product_name, p.producer, p.characteristics, sp.UPC, sp.selling_price, sp.products_number, sp.promotional_product
+                   FROM Product p
+                   INNER JOIN Store_Product sp ON p.id_product = sp.id_product
+                   WHERE p.category_number = @SelectedCategory";
+            return ExecuteQuery(sql, reader => new GoodsInStock
+            {
+                IdProduct = reader.GetInt32(0),
+                ProductName = reader.GetString(1),
+                Producer = reader.GetString(2),
+                Characteristics = reader.GetString(3),
+                UPC = reader.GetString(4),
+                SellingPrice = reader.GetDecimal(5),
+                ProductsNumber = reader.GetInt32(6),
+                PromotionalProduct = reader.GetBoolean(7)
+            }, new SQLiteParameter("@SelectedCategory", selectedCategory)).ToList();
+        }
 
         public void PutTestsData()
         {

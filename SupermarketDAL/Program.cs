@@ -30,7 +30,9 @@ namespace SupermarketDAL
             TestGetSalesList(dbHelper);
             TestGetProductsListByCategory(dbHelper, 1);
             TestGetGoods(dbHelper);
+            TestGetCategoriesList(dbHelper);
         }
+
 
         static void TestGets(DatabaseHelper dbHelper)
         {
@@ -56,6 +58,16 @@ namespace SupermarketDAL
             TestGetEmployeeByUsernameAndPassword(dbHelper, "employee456213xxxxxxx", "hashed_password456xxxxxxxxx");
         }
 
+
+        static void TestGetCategoriesList(DatabaseHelper dbHelper)
+        {
+            Console.WriteLine("Testing GetCategoriesList...");
+            var categories = dbHelper.GetCategoriesList();
+            foreach (var category in categories)
+            {
+                Console.WriteLine($"Employee: {category.CategoryName}");
+            }
+        }
         static void TestGetEmployeesList(DatabaseHelper dbHelper)
         {
             Console.WriteLine("Testing GetEmployeesList...");
