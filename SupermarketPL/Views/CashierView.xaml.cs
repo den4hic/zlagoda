@@ -1,5 +1,7 @@
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using SupermarketDAL.Entities;
 using SupermarketPL.Model;
 
@@ -9,6 +11,7 @@ namespace SupermarketPL.Views
     {
         private CashierController controller;
 		private List<Goods> _goodsList;
+		private List<CategoryModel> _categories;
 		private List<CustomerModel> _customersList;
 		private List<Goods> _updatedGoodsList;
 
@@ -29,7 +32,14 @@ namespace SupermarketPL.Views
 
 			List<CategoryModel> categoriesList = controller.GetCategories();
 
-            categoryComboBox.Items.Add("All");
+			categoryBasketComboBox.Items.Add("All");
+
+			foreach (var category in categoriesList)
+			{
+				categoryBasketComboBox.Items.Add(category.Name);
+			}
+
+			categoryComboBox.Items.Add("All");
 
             foreach (var category in categoriesList)
             {
@@ -158,6 +168,21 @@ namespace SupermarketPL.Views
 							controller.UpdateCustomer(customer);
 						}
 					}
+				}
+			}
+		}
+
+		private void GoodsInBasketDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			var dataGrid = sender as DataGrid;
+			if (dataGrid != null && dataGrid.SelectedItem != null)
+			{
+				var selectedRow = dataGrid.SelectedItem;
+
+				var basketDataGridItems = basketDataGrid.ItemsSource as ObservableCollection<BasketGoods>;
+				if (basketDataGridItems != null)
+				{
+					basketDataGridItems.Add(selectedRow as BasketGoods);
 				}
 			}
 		}

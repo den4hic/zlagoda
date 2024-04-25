@@ -14,9 +14,10 @@
                 </Grid.ColumnDefinitions>
 
                 <Label Content="Goods" HorizontalAlignment="Left" Margin="10,10,0,0"/>
-                <DataGrid x:Name="goodsDataGrid" Margin="10,30,10,40">
+                <DataGrid x:Name="goodsDataGrid" Margin="10,30,10,40" AutoGenerateColumns="False" ItemsSource="{Binding GoodsList}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Product ID" Binding="{Binding ProductId}" Width="*"/>
+                        <DataGridTextColumn Header="Product ID" Binding="{Binding ProductId}" Width="*" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Category ID" Binding="{Binding CategoryId}" Width="*"/>
                         <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
                         <DataGridTextColumn Header="Manufacturer" Binding="{Binding Manufacturer}" Width="*"/>
                         <DataGridTextColumn Header="Characteristics" Binding="{Binding Characteristics}" Width="*"/>
@@ -26,14 +27,14 @@
                 <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10,60,10,10">
                     <Button Content="Add" Width="50" Margin="10,0,5,0"/>
                     <Button Content="Edit" Width="50" Margin="5,0,5,0"/>
-                    <Button Content="Delete" Width="50" Margin="5,0,5,0"/>
+                    <Button Content="Delete" Width="50" Margin="5,0,5,0" Click="DeleteButton_Click"/>
                     <Button Content="Print" Width="50" Margin="5,0,10,0"/>
                 </StackPanel>
 
                 <Label Content="Categories" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,0"/>
-                <DataGrid x:Name="categoriesDataGrid" Grid.Column="1" Margin="10,30,10,40">
+                <DataGrid x:Name="categoriesDataGrid" Grid.Column="1" Margin="10,30,10,40" AutoGenerateColumns="False" ItemsSource="{Binding CategoriesList}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Category ID" Binding="{Binding CategoryId}" Width="*"/>
+                        <DataGridTextColumn Header="Category ID" Binding="{Binding CategoryNumber}" Width="*" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Category Name" Binding="{Binding CategoryName}" Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
@@ -41,7 +42,7 @@
                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10,60,10,10">
                     <Button Content="Add" Width="50" Margin="10,0,5,0"/>
                     <Button Content="Edit" Width="50" Margin="5,0,5,0"/>
-                    <Button Content="Delete" Width="50" Margin="5,0,5,0"/>
+                    <Button Content="Delete" Width="50" Margin="5,0,5,0" Click="DeleteCategoryButton_Click"/>
                     <Button Content="Print" Width="50" Margin="5,0,10,0"/>
                 </StackPanel>
             </Grid>
@@ -115,17 +116,20 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <DataGrid x:Name="employeeDataGrid" Margin="10,10,10,20" Grid.Column="0">
+                            <DataGrid x:Name="employeeDataGrid" Margin="10,10,10,20" Grid.Column="0" AutoGenerateColumns="False" ItemsSource="{Binding EmployeesList}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Employee ID" Binding="{Binding EmployeeId}" Width="*"/>
-                            <DataGridTextColumn Header="Full Name" Binding="{Binding FullName}" Width="*"/>
+                            <DataGridTextColumn Header="Employee ID" Binding="{Binding EmployeeId}" Width="*" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" Width="*"/>
+                            <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" Width="*"/>
+                            <DataGridTextColumn Header="Patronymic Name" Binding="{Binding PatronymicName}" Width="*"/>
                             <DataGridTextColumn Header="Position" Binding="{Binding Position}" Width="*"/>
                             <DataGridTextColumn Header="Salary" Binding="{Binding Salary}" Width="*"/>
                             <DataGridTextColumn Header="Date of Work Start" Binding="{Binding WorkStartDate}" Width="*"/>
                             <DataGridTextColumn Header="Date of Birth" Binding="{Binding BirthDate}" Width="*"/>
-                            <DataGridTextColumn Header="Contact Phone Number" Binding="{Binding PhoneNumber}" Width="*"/>
-                            <DataGridTextColumn Header="Address" Binding="{Binding Address}" Width="*"/>
-                            <DataGridTextColumn Header="Position" Binding="{Binding Position}" Width="*"/>
+                            <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNumber}" Width="*"/>
+                            <DataGridTextColumn Header="City" Binding="{Binding City}" Width="*"/>
+                            <DataGridTextColumn Header="Street" Binding="{Binding Street}" Width="*"/>
+                            <DataGridTextColumn Header="Index" Binding="{Binding Index}" Width="*"/>
                         </DataGrid.Columns>
                     </DataGrid>
 
@@ -197,13 +201,17 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <DataGrid x:Name="customerDataGrid" Margin="10,10,10,20" Grid.Column="0">
+                    <DataGrid x:Name="customerDataGrid" Margin="10,10,10,20" Grid.Column="0" AutoGenerateColumns="False" ItemsSource="{Binding CustomersList}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Card Number" Binding="{Binding CardNumber}" Width="*"/>
-                            <DataGridTextColumn Header="Full Name" Binding="{Binding FullName}" Width="*"/>
+                            <DataGridTextColumn Header="Card Number" Binding="{Binding CardNumber}" Width="*" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" Width="*"/>
+                            <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" Width="*"/>
+                            <DataGridTextColumn Header="Patronymic Name" Binding="{Binding PatronymicName}" Width="*"/>
                             <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNumber}" Width="*"/>
-                            <DataGridTextColumn Header="Address" Binding="{Binding Address}" Width="*"/>
-                            <DataGridTextColumn Header="Discount %" Binding="{Binding Discount}" Width="*"/>
+                            <DataGridTextColumn Header="City" Binding="{Binding City}" Width="*"/>
+                            <DataGridTextColumn Header="Street" Binding="{Binding Street}" Width="*"/>
+                            <DataGridTextColumn Header="Index" Binding="{Binding Index}" Width="*"/>
+                            <DataGridTextColumn Header="Discount" Binding="{Binding Discount}" Width="*"/>
                         </DataGrid.Columns>
                     </DataGrid>
 
@@ -217,7 +225,7 @@
                         </Grid.ColumnDefinitions>
                         <Button Content="Add" Grid.Column="0" Width="75" Height="25" Margin="0,0,5,80"/>
                         <Button Content="Edit" Grid.Column="1" Width="75" Height="25" Margin="5,0,0,80"/>
-                        <Button Content="Delete" Grid.Column="0" Width="75" Height="25" Margin="0,0,5,10"/>
+                        <Button Content="Delete" Grid.Column="0" Width="75" Height="25" Margin="0,0,5,10" Click="DeleteCustomerButton_Click"/>
                         <Button Content="Print" Grid.Column="1" Width="75" Height="25" Margin="5,0,0,10"/>
                     </Grid>
                 </Grid>

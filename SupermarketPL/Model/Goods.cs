@@ -9,6 +9,7 @@ namespace SupermarketPL.Model
 	public class Goods
 	{
         public int ProductId { get; set; }
+        public int CategoryId { get; set; }
         public string Name { get; set; }
         public string Manufacturer { get; set; }
         public string Characteristics { get; set; }

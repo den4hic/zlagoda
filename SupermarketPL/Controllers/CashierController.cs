@@ -22,6 +22,7 @@ public class CashierController
 			result.Add(new Goods()
 			{
 				ProductId = item.IdProduct,
+				CategoryId = item.CategoryNumber,
 				Name = item.ProductName,
 				Manufacturer = item.Producer,
 				Characteristics = item.Characteristics

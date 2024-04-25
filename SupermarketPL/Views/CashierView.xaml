@@ -27,6 +27,7 @@
         <DataGrid x:Name="goodsDataGrid" Margin="10,0,10,10" Grid.Column="0" Grid.Row="1" Grid.RowSpan="9" AutoGenerateColumns="False" ItemsSource="{Binding GoodsList}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Product ID" Binding="{Binding ProductId}" Width="*"/>
+                <DataGridTextColumn Header="Category ID" Binding="{Binding CategoryId}" Width="*"/>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
                 <DataGridTextColumn Header="Manufacturer" Binding="{Binding Manufacturer}" Width="*"/>
                 <DataGridTextColumn Header="Characteristics" Binding="{Binding Characteristics}" Width="*"/>
@@ -49,7 +50,7 @@
 
                     <DataGrid x:Name="customerDataGrid" Margin="10,10,10,20" Grid.Column="0" AutoGenerateColumns="False" ItemsSource="{Binding CustomersList}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Card Number" Binding="{Binding CardNumber}" Width="*"/>
+                            <DataGridTextColumn Header="Card Number" Binding="{Binding CardNumber}" Width="*" IsReadOnly="True"/>
                             <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" Width="*"/>
                             <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" Width="*"/>
                             <DataGridTextColumn Header="Patronymic Name" Binding="{Binding PatronymicName}" Width="*"/>
@@ -94,7 +95,7 @@
         </Grid.RowDefinitions>
 
         <Label Content="Goods in Stock" Grid.Column="0" Grid.Row="0"/>
-        <DataGrid x:Name="goodsInBasketDataGrid" Margin="10,0,10,200" Grid.Column="0" Grid.Row="1" Grid.RowSpan="9">
+        <DataGrid x:Name="goodsInBasketDataGrid" Margin="10,0,10,200" Grid.Column="0" Grid.Row="1" Grid.RowSpan="9" MouseDoubleClick="GoodsInBasketDataGrid_MouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Product ID" Binding="{Binding ProductId}" Width="*"/>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
@@ -102,7 +103,7 @@
                 <DataGridTextColumn Header="Characteristics" Binding="{Binding Characteristics}" Width="*"/>
                 <DataGridTextColumn Header="UPC" Binding="{Binding UPC}" Width="*"/>
                 <DataGridTextColumn Header="Price" Binding="{Binding Price}" Width="*"/>
-                <DataGridTextColumn Header="Available" Binding="{Binding Available}" Width="*"/>
+                <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="*"/>
                 <DataGridTextColumn Header="Sold" Binding="{Binding Sold}" Width="*"/>
                 <DataGridTextColumn Header="Discount" Binding="{Binding Discount}" Width="*"/>
             </DataGrid.Columns>
