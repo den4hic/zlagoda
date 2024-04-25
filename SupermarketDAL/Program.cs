@@ -14,7 +14,8 @@ namespace SupermarketDAL
         {
             // Ініціалізація DatabaseHelper з шляхом до бази даних
             DatabaseHelper dbHelper = new DatabaseHelper("../../../zlagoda.db");
-
+            dbHelper.ResetDatabase();
+            dbHelper.PutTestsData();
             TestGetsList(dbHelper);
             TestGets(dbHelper);
         }

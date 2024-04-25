@@ -14,9 +14,11 @@ namespace SupermarketDAL.DB
     public class DatabaseHelper
     {
         private string connectionString;
+        private string databasePath;
 
         public DatabaseHelper(string databasePath)
         {
+            this.databasePath = databasePath;
             connectionString = $"Data Source={databasePath};Version=3;";
         }
 
@@ -126,14 +128,14 @@ namespace SupermarketDAL.DB
             string sql = "SELECT * FROM Costumer_Card WHERE card_number = @CardNumber";
             return ExecuteQuery(sql, reader => new CustomerCard
             {
-                CardNumber = reader.GetString(0),
-                CustSurname = reader.GetString(1),
-                CustName = reader.GetString(2),
-                CustPatronymic = reader.GetString(3),
-                PhoneNumber = reader.GetString(4),
-                City = reader.GetString(5),
-                Street = reader.GetString(6),
-                Index = reader.GetString(7),
+                CardNumber = reader.GetValue(0).ToString(),
+                CustSurname = reader.GetValue(1).ToString(),
+                CustName = reader.GetValue(2).ToString(),
+                CustPatronymic = reader.GetValue(3).ToString(),
+                PhoneNumber = reader.GetValue(4).ToString(),
+                City = reader.GetValue(5).ToString(),
+                Street = reader.GetValue(6).ToString(),
+                Index = reader.GetValue(7).ToString(),
                 Percentage = reader.GetInt32(8)
             }, new SQLiteParameter("@CardNumber", cardNumber)).FirstOrDefault();
         }
@@ -376,6 +378,81 @@ namespace SupermarketDAL.DB
                 Producer = reader.GetString(3),
                 Characteristics = reader.GetString(4)
             }, new SQLiteParameter("@SelectedCategory", selectedCategory)).ToList();
+        }
+
+        public void PutTestsData()
+        {
+            ExecuteNonQuery("INSERT INTO Category (category_name) VALUES ('Clothing');");
+            ExecuteNonQuery("INSERT INTO Category (category_name) VALUES ('Electronics');");
+
+            ExecuteNonQuery("INSERT INTO Costumer_Card (card_number, cust_surname, cust_name, phone_number, percentage) VALUES ('1234567890123', 'Smith', 'John', '123456789', 5);");
+            ExecuteNonQuery("INSERT INTO Costumer_Card (card_number, cust_surname, cust_name, phone_number, city, street, \"index\", percentage) VALUES ('9876543210987', 'Doe', 'Jane', '987654321', 'New York', 'Broadway', '12345', 10);");
+
+            ExecuteNonQuery("INSERT INTO Employee (id_employee, empl_surname, empl_name, empl_role, salary, date_of_birth, date_of_start, phone_number, city, street, zip_code) VALUES ('EMP001', 'Johnson', 'Michael', 'Manager', 5000.00, '1980-05-15', '2010-01-01', '111222333', 'Los Angeles', 'Main St', '54321');");
+            ExecuteNonQuery("INSERT INTO Employee (id_employee, empl_surname, empl_name, empl_role, salary, date_of_birth, date_of_start, phone_number, city, street, zip_code) VALUES ('EMP002', 'Brown', 'Emily', 'Cashier', 3000.00, '1990-10-20', '2015-03-15', '444555666', 'Chicago', 'Oak St', '67890');");
+
+            ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (0, 'Pizza', 'Pizza Hut', 'Large, Pepperoni');");
+            ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (1, 'Smartphone', 'Samsung', '6.4\" Display, 128GB Storage');");
+
+            ExecuteNonQuery("INSERT INTO Store_Product (UPC, id_product, selling_price, products_number, promotional_product) VALUES ('123456789012', 1, 10.99, 50, 0);");
+            ExecuteNonQuery("INSERT INTO Store_Product (UPC, id_product, selling_price, products_number, promotional_product) VALUES ('987654321098', 2, 699.99, 100, 1);");
+
+            ExecuteNonQuery("INSERT INTO Sale (UPC, check_number, product_number, selling_price) VALUES ('123456789012', 'CHECK001', 1, 10.99);");
+            ExecuteNonQuery("INSERT INTO Sale (UPC, check_number, product_number, selling_price) VALUES ('987654321098', 'CHECK002', 2, 699.99);");
+
+            ExecuteNonQuery("INSERT INTO \"Check\" (check_number, id_employee, card_number, print_date, sum_total, vat) VALUES ('CHECK001', 'EMP001', NULL, '2024-04-04', 50.00, 5.00);");
+            ExecuteNonQuery("INSERT INTO \"Check\" (check_number, id_employee, card_number, print_date, sum_total, vat) VALUES ('CHECK002', 'EMP002', '9876543210987', '2024-04-04', 699.99, 69.99);");
+
+            ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (0, 'Burger', 'McDonalds', 'Big Mac with fries');");
+            ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (0, 'Salad', 'Subway', 'Vegetable salad with dressing');");
+            ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (1, 'Laptop', 'Apple', 'MacBook Pro 13 with Touch Bar');");
+            ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (1, 'Headphones', 'Sony', 'Noise-cancelling wireless headphones');");
+            ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (0, 'Sushi', 'Sushi Bar', 'Assorted sushi rolls');");
+            ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (0, 'Sandwich', 'Starbucks', 'Chicken and avocado sandwich');");
+            ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (1, 'Smartwatch', 'Fitbit', 'Fitbit Versa 3 smartwatch');");
+            ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (0, 'Pasta', 'Italiano', 'Spaghetti carbonara');");
+            ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (1, 'TV', 'Samsung', '55\" QLED 4K Smart TV');");
+            ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (0, 'Cake', 'Bakery', 'Chocolate fudge cake');");
+
+            ExecuteNonQuery("INSERT INTO Store_Product (UPC, id_product, selling_price, products_number, promotional_product) VALUES ('111111111111', 3, 1299.99, 20, 0);");
+            ExecuteNonQuery("INSERT INTO Store_Product (UPC, id_product, selling_price, products_number, promotional_product) VALUES ('222222222222', 4, 199.99, 30, 1);");
+            ExecuteNonQuery("INSERT INTO Store_Product (UPC, id_product, selling_price, products_number, promotional_product) VALUES ('333333333333', 5, 19.99, 50, 0);");
+            ExecuteNonQuery("INSERT INTO Store_Product (UPC, id_product, selling_price, products_number, promotional_product) VALUES ('444444444444', 6, 7.99, 40, 0);");
+            ExecuteNonQuery("INSERT INTO Store_Product (UPC, id_product, selling_price, products_number, promotional_product) VALUES ('555555555555', 7, 249.99, 15, 0);");
+            ExecuteNonQuery("INSERT INTO Store_Product (UPC, id_product, selling_price, products_number, promotional_product) VALUES ('666666666666', 8, 49.99, 25, 0);");
+            ExecuteNonQuery("INSERT INTO Store_Product (UPC, id_product, selling_price, products_number, promotional_product) VALUES ('777777777777', 9, 899.99, 10, 1);");
+            ExecuteNonQuery("INSERT INTO Store_Product (UPC, id_product, selling_price, products_number, promotional_product) VALUES ('888888888888', 10, 29.99, 60, 0);");
+            ExecuteNonQuery("INSERT INTO Store_Product (UPC, id_product, selling_price, products_number, promotional_product) VALUES ('999999999999', 11, 39.99, 20, 0);");
+            ExecuteNonQuery("INSERT INTO Store_Product (UPC, id_product, selling_price, products_number, promotional_product) VALUES ('000000000000', 12, 29.99, 25, 0);");
+        }
+        public void ResetDatabase()
+        {
+            if (File.Exists(databasePath))
+            {
+                File.Delete(databasePath);
+            }
+
+            SQLiteConnection.CreateFile(databasePath);
+
+            ExecuteNonQuery("PRAGMA foreign_keys = off;");
+            ExecuteNonQuery("BEGIN TRANSACTION;");
+
+            ExecuteNonQuery("CREATE TABLE Category (category_number INTEGER PRIMARY KEY AUTOINCREMENT, category_name TEXT (50));");
+            ExecuteNonQuery("CREATE TABLE \"Check\" (check_number TEXT (10) PRIMARY KEY NOT NULL, id_employee TEXT (10) NOT NULL REFERENCES Employee (id_employee) ON DELETE NO ACTION ON UPDATE CASCADE, card_number TEXT (13) REFERENCES Costumer_Card (card_number) ON DELETE NO ACTION ON UPDATE CASCADE, print_date TEXT NOT NULL, sum_total NUMERIC (13, 4) NOT NULL, vat NUMERIC (13, 4) NOT NULL);");
+            ExecuteNonQuery("CREATE TABLE Costumer_Card (card_number TEXT (13) NOT NULL PRIMARY KEY, cust_surname TEXT (50) NOT NULL, cust_name TEXT (50) NOT NULL, cust_patronymic TEXT (50), phone_number TEXT (13) NOT NULL, city TEXT (50), street TEXT (50), \"index\" TEXT (9), percentage INTEGER NOT NULL);");
+            ExecuteNonQuery("CREATE TABLE Employee (id_employee TEXT (10) NOT NULL PRIMARY KEY, empl_surname TEXT (50) NOT NULL, empl_name TEXT (50) NOT NULL, empl_patronymic TEXT (50), empl_role TEXT (10) NOT NULL, salary NUMERIC (13, 4) NOT NULL, date_of_birth TEXT NOT NULL, date_of_start TEXT NOT NULL, phone_number TEXT (13) NOT NULL, city TEXT (50) NOT NULL, street TEXT (50) NOT NULL, zip_code TEXT (9) NOT NULL);");
+            ExecuteNonQuery("CREATE TABLE Product (id_product INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, category_number INTEGER REFERENCES Category (category_number) ON DELETE NO ACTION ON UPDATE CASCADE NOT NULL, product_name TEXT (50) NOT NULL, producer TEXT (50) NOT NULL, characteristics TEXT (100) NOT NULL);");
+            ExecuteNonQuery("CREATE TABLE Sale (UPC TEXT (12) NOT NULL REFERENCES Store_Product (UPC) ON DELETE NO ACTION ON UPDATE CASCADE, check_number TEXT (10) NOT NULL, product_number INTEGER NOT NULL, selling_price NUMERIC (13, 4) NOT NULL, PRIMARY KEY (UPC, check_number));");
+            ExecuteNonQuery("CREATE TABLE Store_Product (UPC TEXT (12) NOT NULL PRIMARY KEY, UPC_prom TEXT (12) REFERENCES Store_Product (UPC) ON DELETE SET NULL ON UPDATE CASCADE, id_product INTEGER REFERENCES Product (id_product) ON DELETE NO ACTION ON UPDATE CASCADE NOT NULL, selling_price NUMERIC (13, 4) NOT NULL, products_number INTEGER NOT NULL, promotional_product BOOLEAN NOT NULL);");
+            ExecuteNonQuery("CREATE TABLE User_Account (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username TEXT UNIQUE NOT NULL, hashed_password TEXT NOT NULL, type TEXT NOT NULL);");
+
+            ExecuteNonQuery("CREATE INDEX adress ON Employee (city, street, zip_code);");
+            ExecuteNonQuery("CREATE INDEX cliend_adress ON Costumer_Card (city, street, \"index\");");
+            ExecuteNonQuery("CREATE INDEX client_PIB ON Costumer_Card (cust_surname, cust_name, cust_patronymic);");
+            ExecuteNonQuery("CREATE INDEX PIB ON Employee (empl_surname, empl_name, empl_patronymic);");
+
+            ExecuteNonQuery("PRAGMA foreign_keys = on;");
+            
         }
 
     }
