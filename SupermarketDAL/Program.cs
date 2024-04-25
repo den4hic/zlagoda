@@ -51,6 +51,9 @@ namespace SupermarketDAL
 
             TestGetSaleById(dbHelper, "123456789012", "CHECK001");
             TestGetSaleById(dbHelper, "SALE9999", "CHECK999");
+
+            TestGetEmployeeByUsernameAndPassword(dbHelper, "user123", "hashed_password123");
+            TestGetEmployeeByUsernameAndPassword(dbHelper, "employee456213xxxxxxx", "hashed_password456xxxxxxxxx");
         }
 
         static void TestGetEmployeesList(DatabaseHelper dbHelper)
@@ -204,6 +207,20 @@ namespace SupermarketDAL
             else
             {
                 Console.WriteLine("Sale not found.");
+            }
+        }
+
+        public static void TestGetEmployeeByUsernameAndPassword(DatabaseHelper dbHelper, string username, string hashedPassword)
+        {
+            Console.WriteLine($"Testing GetEmployeeByUsernameAndPassword with username: {username}...");
+            var employee = dbHelper.GetEmployeeByUsernameAndPassword(username, hashedPassword);
+            if (employee != null)
+            {
+                Console.WriteLine($"Employee found: {employee.IdEmployee}, {employee.EmplName} {employee.EmplSurname}");
+            }
+            else
+            {
+                Console.WriteLine("Employee not found.");
             }
         }
     }

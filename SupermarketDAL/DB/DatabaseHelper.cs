@@ -258,8 +258,23 @@ namespace SupermarketDAL.DB
 
 		public Employee GetEmployeeByUsernameAndPassword(string username, string hashedPassword)
 		{
-			throw new NotImplementedException();
-		}
+            string sql = "SELECT e.* FROM Employee e JOIN User_Account ua ON e.id_employee = ua.id_employee WHERE ua.username = @username AND ua.hashed_password = @hashedPassword";
+            return ExecuteQuery(sql, reader => new Employee
+            {
+                IdEmployee = reader["id_employee"].ToString(),
+                EmplSurname = reader["empl_surname"].ToString(),
+                EmplName = reader["empl_name"].ToString(),
+                EmplPatronymic = reader["empl_patronymic"].ToString(),
+                EmplRole = reader["empl_role"].ToString(),
+                Salary = Convert.ToDecimal(reader["salary"]),
+                DateOfBirth = Convert.ToDateTime(reader["date_of_birth"]),
+                DateOfStart = Convert.ToDateTime(reader["date_of_start"]),
+                PhoneNumber = reader["phone_number"].ToString(),
+                City = reader["city"].ToString(),
+                Street = reader["street"].ToString(),
+                ZipCode = reader["zip_code"].ToString()
+            }, new SQLiteParameter("@hashedPassword", hashedPassword), new SQLiteParameter("@username", username)).FirstOrDefault();
+        }
 
         public List<Employee> GetEmployeesList()
         {
@@ -425,6 +440,9 @@ namespace SupermarketDAL.DB
             ExecuteNonQuery("INSERT INTO Store_Product (UPC, id_product, selling_price, products_number, promotional_product) VALUES ('888888888888', 10, 29.99, 60, 0);");
             ExecuteNonQuery("INSERT INTO Store_Product (UPC, id_product, selling_price, products_number, promotional_product) VALUES ('999999999999', 11, 39.99, 20, 0);");
             ExecuteNonQuery("INSERT INTO Store_Product (UPC, id_product, selling_price, products_number, promotional_product) VALUES ('000000000000', 12, 29.99, 25, 0);");
+            ExecuteNonQuery("INSERT INTO User_Account (username, hashed_password, id_employee) VALUES ('user123', 'hashed_password123', 'EMP001');");
+            ExecuteNonQuery("INSERT INTO User_Account (username, hashed_password, id_employee) VALUES ('employee456', 'hashed_password456', 'EMP002');");
+        
         }
         public void ResetDatabase()
         {
@@ -445,7 +463,7 @@ namespace SupermarketDAL.DB
             ExecuteNonQuery("CREATE TABLE Product (id_product INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, category_number INTEGER REFERENCES Category (category_number) ON DELETE NO ACTION ON UPDATE CASCADE NOT NULL, product_name TEXT (50) NOT NULL, producer TEXT (50) NOT NULL, characteristics TEXT (100) NOT NULL);");
             ExecuteNonQuery("CREATE TABLE Sale (UPC TEXT (12) NOT NULL REFERENCES Store_Product (UPC) ON DELETE NO ACTION ON UPDATE CASCADE, check_number TEXT (10) NOT NULL, product_number INTEGER NOT NULL, selling_price NUMERIC (13, 4) NOT NULL, PRIMARY KEY (UPC, check_number));");
             ExecuteNonQuery("CREATE TABLE Store_Product (UPC TEXT (12) NOT NULL PRIMARY KEY, UPC_prom TEXT (12) REFERENCES Store_Product (UPC) ON DELETE SET NULL ON UPDATE CASCADE, id_product INTEGER REFERENCES Product (id_product) ON DELETE NO ACTION ON UPDATE CASCADE NOT NULL, selling_price NUMERIC (13, 4) NOT NULL, products_number INTEGER NOT NULL, promotional_product BOOLEAN NOT NULL);");
-            ExecuteNonQuery("CREATE TABLE User_Account (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username TEXT UNIQUE NOT NULL, hashed_password TEXT NOT NULL, type TEXT NOT NULL);");
+            ExecuteNonQuery("CREATE TABLE User_Account (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username TEXT UNIQUE NOT NULL, hashed_password TEXT NOT NULL, id_employee TEXT REFERENCES Employee (id_employee) NOT NULL UNIQUE);");
 
             ExecuteNonQuery("CREATE INDEX adress ON Employee (city, street, zip_code);");
             ExecuteNonQuery("CREATE INDEX cliend_adress ON Costumer_Card (city, street, \"index\");");
