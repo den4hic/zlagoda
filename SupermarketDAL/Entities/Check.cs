@@ -11,7 +11,7 @@ namespace SupermarketDAL.Entities
         public string CheckNumber { get; set; }
         public string IdEmployee { get; set; }
         public string CardNumber { get; set; }
-        public string PrintDate { get; set; }
+        public DateTime PrintDate { get; set; }
         public decimal SumTotal { get; set; }
         public decimal Vat { get; set; }
     }

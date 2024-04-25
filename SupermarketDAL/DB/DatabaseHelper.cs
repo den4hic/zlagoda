@@ -106,22 +106,22 @@ namespace SupermarketDAL.DB
 
         public Check GetCheckById(string checkNumber)
         {
-            string sql = "SELECT * FROM Check WHERE check_number = @CheckNumber";
+            string sql = "SELECT * FROM \"Check\" WHERE check_number = @CheckNumber";
             return ExecuteQuery(sql, reader => new Check
             {
-                CheckNumber = reader.GetString(0),
-                IdEmployee = reader.GetString(1),
-                CardNumber = reader.GetString(2),
-                PrintDate = reader.GetString(3),
-                SumTotal = reader.GetDecimal(4),
-                Vat = reader.GetDecimal(5)
+                CheckNumber = reader["check_number"].ToString(),
+                IdEmployee = reader["id_employee"].ToString(),
+                CardNumber = reader["card_number"].ToString(),
+                PrintDate = Convert.ToDateTime(reader["print_date"]),
+                SumTotal = Convert.ToDecimal(reader["sum_total"]),
+                Vat = Convert.ToDecimal(reader["vat"])
             }, new SQLiteParameter("@CheckNumber", checkNumber));
         }
 
-        public CostumerCard GetCostumerCardByNumber(string cardNumber)
+        public CustomerCard GetCustomerCardByNumber(string cardNumber)
         {
             string sql = "SELECT * FROM Costumer_Card WHERE card_number = @CardNumber";
-            return ExecuteQuery(sql, reader => new CostumerCard
+            return ExecuteQuery(sql, reader => new CustomerCard
             {
                 CardNumber = reader.GetString(0),
                 CustSurname = reader.GetString(1),
@@ -191,7 +191,7 @@ namespace SupermarketDAL.DB
             ExecuteNonQuery(sql, new SQLiteParameter("@IdEmployee", idEmployee), new SQLiteParameter("@CardNumber", cardNumber), new SQLiteParameter("@PrintDate", printDate), new SQLiteParameter("@SumTotal", sumTotal), new SQLiteParameter("@Vat", vat), new SQLiteParameter("@CheckNumber", checkNumber));
         }
 
-        public void UpdateCostumerCard(string cardNumber, string custSurname, string custName, string custPatronymic, string phoneNumber, string city, string street, string index, int percentage)
+        public void UpdateCustomerCard(string cardNumber, string custSurname, string custName, string custPatronymic, string phoneNumber, string city, string street, string index, int percentage)
         {
             string sql = "UPDATE Costumer_Card SET cust_surname = @CustSurname, cust_name = @CustName, cust_patronymic = @CustPatronymic, phone_number = @PhoneNumber, city = @City, street = @Street, \"index\" = @Index, percentage = @Percentage WHERE card_number = @CardNumber";
             ExecuteNonQuery(sql, new SQLiteParameter("@CustSurname", custSurname), new SQLiteParameter("@CustName", custName), new SQLiteParameter("@CustPatronymic", custPatronymic), new SQLiteParameter("@PhoneNumber", phoneNumber), new SQLiteParameter("@City", city), new SQLiteParameter("@Street", street), new SQLiteParameter("@Index", index), new SQLiteParameter("@Percentage", percentage), new SQLiteParameter("@CardNumber", cardNumber));
@@ -227,7 +227,7 @@ namespace SupermarketDAL.DB
             ExecuteNonQuery(sql, new SQLiteParameter("@CheckNumber", checkNumber));
         }
 
-        public void DeleteCostumerCard(string cardNumber)
+        public void DeleteCustomerCard(string cardNumber)
         {
             string sql = "DELETE FROM Costumer_Card WHERE card_number = @CardNumber";
             ExecuteNonQuery(sql, new SQLiteParameter("@CardNumber", cardNumber));
@@ -372,7 +372,7 @@ namespace SupermarketDAL.DB
                                 CheckNumber = reader.GetString(0),
                                 IdEmployee = reader.GetString(1),
                                 CardNumber = reader.GetString(2),
-                                PrintDate = reader.GetString(3),
+                                PrintDate = Convert.ToDateTime(reader.GetString(3)),
                                 SumTotal = reader.GetDecimal(4),
                                 Vat = reader.GetDecimal(5)
                             };
@@ -385,10 +385,10 @@ namespace SupermarketDAL.DB
             return checks;
         }
 
-        public List<CostumerCard> GetCostumerCardsList()
+        public List<CustomerCard> GetCustomerCardsList()
         {
             string sql = "SELECT * FROM Costumer_Card";
-            List<CostumerCard> costumerCards = new List<CostumerCard>();
+            List<CustomerCard> costumerCards = new List<CustomerCard>();
 
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
@@ -399,7 +399,7 @@ namespace SupermarketDAL.DB
                     {
                         while (reader.Read())
                         {
-							CostumerCard card = new CostumerCard
+                            CustomerCard card = new CustomerCard
                             {
                                 CardNumber = reader["card_number"].ToString(),
                                 CustSurname = reader["cust_surname"].ToString(),
