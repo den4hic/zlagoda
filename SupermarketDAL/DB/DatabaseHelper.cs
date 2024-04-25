@@ -140,12 +140,12 @@ namespace SupermarketDAL.DB
             string sql = "SELECT * FROM Store_Product WHERE UPC = @UPC";
             return ExecuteQuery(sql, reader => new StoreProduct
             {
-                UPC = reader.GetString(0),
-                UPC_prom = reader.GetString(1),
+                UPC = reader.GetValue(0) as string,
+                UPC_prom = reader.GetValue(1) as string,
                 IdProduct = reader.GetInt32(2),
                 SellingPrice = reader.GetDecimal(3),
                 ProductsNumber = reader.GetInt32(4),
-                PromotionalProduct = reader.GetBoolean(5)
+                PromotionalProduct = reader.GetInt32(5) != 0
             }, new SQLiteParameter("@UPC", upc));
         }
 
