@@ -305,7 +305,7 @@ namespace SupermarketPL.Views
 
 				if(selectedRow.Quantity == 0)
 				{
-					MessageBox.Show("Товар відсутній на складі");
+					MessageBox.Show("пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
 					return;
 				}
 
@@ -342,6 +342,16 @@ namespace SupermarketPL.Views
 
 				
 			}
+		}
+		private void AddButton_Click(object sender, RoutedEventArgs e)
+		{
+			CashierAddCustomerView addCustomerView = new CashierAddCustomerView();
+			addCustomerView.Show();
+		}
+		private void EditButton_Click(object sender, RoutedEventArgs e)
+		{
+			CashierEditCustomerView editCustomerView = new CashierEditCustomerView();
+			editCustomerView.Show();
 		}
 
 
