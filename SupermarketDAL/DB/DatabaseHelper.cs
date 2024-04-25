@@ -369,12 +369,12 @@ namespace SupermarketDAL.DB
                         {
                             Check check = new Check
                             {
-                                CheckNumber = reader.GetString(0),
-                                IdEmployee = reader.GetString(1),
-                                CardNumber = reader.GetString(2),
-                                PrintDate = Convert.ToDateTime(reader.GetString(3)),
-                                SumTotal = reader.GetDecimal(4),
-                                Vat = reader.GetDecimal(5)
+                                CheckNumber = reader["check_number"].ToString(),
+                                IdEmployee = reader["id_employee"].ToString(),
+                                CardNumber = reader["card_number"].ToString(),
+                                PrintDate = Convert.ToDateTime(reader["print_date"]),
+                                SumTotal = Convert.ToDecimal(reader["sum_total"]),
+                                Vat = Convert.ToDecimal(reader["vat"])
                             };
                             checks.Add(check);
                         }
@@ -436,12 +436,12 @@ namespace SupermarketDAL.DB
                         {
                             StoreProduct storeProduct = new StoreProduct
                             {
-                                UPC = reader.GetString(0),
-                                UPC_prom = reader.GetString(1),
+                                UPC = reader.GetValue(0) as string,
+                                UPC_prom = reader.GetValue(1) as string,
                                 IdProduct = reader.GetInt32(2),
                                 SellingPrice = reader.GetDecimal(3),
                                 ProductsNumber = reader.GetInt32(4),
-                                PromotionalProduct = reader.GetBoolean(5)
+                                PromotionalProduct = reader.GetInt32(5) != 0
                             };
                             storeProducts.Add(storeProduct);
                         }
