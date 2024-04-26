@@ -135,13 +135,12 @@
 
                     <Label Content="Employee Info" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,0"/>
                     <TextBox x:Name="searchTextBox" Grid.Column="1" HorizontalAlignment="Left" Margin="10,30,0,340" Width="120" TextChanged="SearchTextBox_TextChanged"/>
-                    <ComboBox x:Name="employeeInfoComboBox" Grid.Column="1" HorizontalAlignment="Left" Margin="10,50,10,320" Width="120"/>
-                    <Button Content="Search" Grid.Column="1" HorizontalAlignment="Left" Margin="10,90,0,280" Width="75" Click="ProfileButton_Click"/>
+                    <Button Content="Search" Grid.Column="1" HorizontalAlignment="Left" Margin="10,70,0,300" Width="75" Click="ProfileButton_Click"/>
 
-                    <Label Content="Position" Grid.Column="1" HorizontalAlignment="Left" Margin="10,120,0,0"/>
-                    <ComboBox x:Name="positionComboBox" Grid.Column="1" HorizontalAlignment="Left" Margin="10,140,10,230" Width="120"/>
+                    <Label Content="Position" Grid.Column="1" HorizontalAlignment="Left" Margin="10,100,0,20"/>
+                    <ComboBox x:Name="positionComboBox" Grid.Column="1" HorizontalAlignment="Left" Margin="10,120,10,250" Width="120"/>
 
-                    <Grid Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,10,10,110">
+                    <Grid Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,10,10,130">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
