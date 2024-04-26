@@ -5,11 +5,13 @@ using System.Windows;
 using System.Windows.Controls;
 using SupermarketDAL.Entities;
 using SupermarketPL.Model;
+using Xceed.Wpf.Toolkit.PropertyGrid;
 
 namespace SupermarketPL.Views
 {
     public partial class ManagerView : Window
     {
+		private Employee _employee;
         private ManagerController controller;
 		private ObservableCollection<Goods> _goodsList = new ObservableCollection<Goods>();
 		private ObservableCollection<Category> _categoriesList = new ObservableCollection<Category>();
@@ -18,9 +20,20 @@ namespace SupermarketPL.Views
 		private ObservableCollection<GoodsInStockModel> _goodsInStockList = new ObservableCollection<GoodsInStockModel>();
 
 		public ManagerView()
+		{
+			Initialize(null);
+		}
+
+		public ManagerView(Employee employee)
         {
-            InitializeComponent();
-            this.controller = new ManagerController();
+			Initialize(employee);
+		}
+
+		private void Initialize(Employee employee)
+		{
+			InitializeComponent();
+			this._employee = employee;
+			this.controller = new ManagerController();
 
 			_categoriesList.CollectionChanged += (sender, e) =>
 			{
@@ -42,9 +55,9 @@ namespace SupermarketPL.Views
 
 			List<EmployeeModel> employeesList = controller.GetEmployees();
 
-            employeeDataGrid.ItemsSource = employeesList;
+			employeeDataGrid.ItemsSource = employeesList;
 			employeeDataGrid.CellEditEnding += EmployeeDataGrid_CellEditEnding;
-			
+
 
 			List<Goods> goodsList = controller.GetGoods();
 
@@ -74,8 +87,8 @@ namespace SupermarketPL.Views
 			}
 
 			goodsInStockDataGrid.ItemsSource = _goodsInStockList;
-				
-			
+
+
 
 
 			List<CustomerModel> customersList = controller.GetCustomers();
@@ -91,14 +104,13 @@ namespace SupermarketPL.Views
 			customerDataGrid.ItemsSource = _customersList;
 			customerDataGrid.CellEditEnding += CustomerDataGrid_CellEditEnding;
 
-			
+
 			categoriesComboBox.ItemsSource = _categoriesNameList;
 
 			//foreach (var category in _categoriesList)
 			//{
 			//	categoriesComboBox.Items.Add(category.CategoryName);
 			//}
-
 		}
 
 		private void CustomerDataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
