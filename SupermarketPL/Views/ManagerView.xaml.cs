@@ -467,7 +467,7 @@ namespace SupermarketPL.Views
 		}
 		private void AddButton_Click(object sender, RoutedEventArgs e)
 		{
-			ManagerAddCustomerView addCustomerView = new ManagerAddCustomerView(_customersList);
+			ManagerAddCustomerView addCustomerView = new ManagerAddCustomerView(_customersList,controller);
 			addCustomerView.Show();
 		}
 		private void EditButton_Click(object sender, RoutedEventArgs e)

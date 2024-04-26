@@ -9,12 +9,15 @@ namespace SupermarketPL.Views;
 public partial class ManagerAddCustomerView : Window
 {
     private ObservableCollection<CustomerModel> customersList { get; set; }
+    private ManagerController controller;
 
-    public ManagerAddCustomerView(ObservableCollection<CustomerModel> customersList)
+    public ManagerAddCustomerView(ObservableCollection<CustomerModel> customersList, ManagerController controller)
     {
         InitializeComponent();
         this.customersList = customersList;
+        this.controller = controller;
     }
+   
 
     private void AddButton_Click(object sender, RoutedEventArgs e)
     {
@@ -38,8 +41,6 @@ public partial class ManagerAddCustomerView : Window
             MessageBox.Show("Please enter a valid integer value for discount.");
             return;
         }
-
-        ManagerController controller = new ManagerController();
         
         CustomerModel newCustomer = new CustomerModel
         {
