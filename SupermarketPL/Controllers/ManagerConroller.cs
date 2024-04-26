@@ -312,7 +312,8 @@ public void CreateGoodsInStockPdf(List<GoodsInStockModel> goodsInStockList, stri
 			{
 				ReceiptNumber = item.CheckNumber,
 				TotalCost = item.SumTotal,
-				Date = item.PrintDate
+				Date = item.PrintDate,
+				VAT = item.Vat
 			});
 		}
 
@@ -345,6 +346,30 @@ public void CreateGoodsInStockPdf(List<GoodsInStockModel> goodsInStockList, stri
 	public void DeleteCheck(string receiptNumber)
 	{
 		dbHelper.DeleteCheck(receiptNumber);
+	}
+
+	public List<GoodsInStockModel> GetGoodsInStockByCategory(int selectedIndex)
+	{
+		var goodsInStock = dbHelper.GetGoodsListByCategoryID(selectedIndex);
+
+		List<GoodsInStockModel> result = new List<GoodsInStockModel>();
+
+		foreach (var item in goodsInStock)
+		{
+			result.Add(new GoodsInStockModel()
+			{
+				ProductId = item.IdProduct,
+				Name = item.ProductName,
+				Manufacturer = item.Producer,
+				Characteristics = item.Characteristics,
+				UPC = item.UPC,
+				Price = item.SellingPrice,
+				Quantity = item.ProductsNumber,
+				Discount = item.PromotionalProduct
+			});
+		}
+
+		return result;
 	}
 	/*public void CreateReceiptsPdf(List<ReceiptModel> receiptsList, string outputPath)
 {

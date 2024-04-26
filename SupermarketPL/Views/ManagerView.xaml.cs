@@ -11,10 +11,12 @@ namespace SupermarketPL.Views
 {
     public partial class ManagerView : Window
     {
-		private List<string> employeeRoleList = new List<string> { "Manager", "Cashier" };
+		private List<string> employeeRoleList = new List<string> { "All", "Manager", "Cashier" };
 		private Employee _employee;
         private ManagerController controller;
 		private List<ReportGoodsModel> reportGoodsModels;
+		private List<EmployeeModel> employeeModels;
+		private List<GoodsInStockModel> goodsInStockList;
 		private ObservableCollection<Goods> _goodsList = new ObservableCollection<Goods>();
 		private ObservableCollection<Category> _categoriesList = new ObservableCollection<Category>();
 		private ObservableCollection<string> _categoriesNameList = new ObservableCollection<string>();
@@ -82,9 +84,9 @@ namespace SupermarketPL.Views
 				}
 			};
 
-			List<EmployeeModel> employeesList = controller.GetEmployees();
+			employeeModels = controller.GetEmployees();
 
-			foreach (var item in employeesList)
+			foreach (var item in employeeModels)
 			{
 				_employeeModelList.Add(item);
 			}
@@ -113,7 +115,7 @@ namespace SupermarketPL.Views
 
 			categoriesDataGrid.ItemsSource = _categoriesList;
 			categoriesDataGrid.CellEditEnding += CategoriesDataGrid_CellEditEnding;
-			List<GoodsInStockModel> goodsInStockList = controller.GetStocks();
+			goodsInStockList = controller.GetStocks();
 
 			foreach (var item in goodsInStockList)
 			{
@@ -139,6 +141,7 @@ namespace SupermarketPL.Views
 			customerDataGrid.CellEditEnding += CustomerDataGrid_CellEditEnding;
 
 			categoriesComboBox.ItemsSource = _categoriesNameList;
+			categoriesComboBox.SelectionChanged += CategoriesComboBox_SelectionChanged;
 
 			positionComboBox.ItemsSource = employeeRoleList;
 			positionComboBox.SelectionChanged += PositionComboBox_SelectionChanged;
@@ -156,6 +159,65 @@ namespace SupermarketPL.Views
 			cashierComboBox.SelectionChanged += EmployeeComboBox_SelectionChanged;
 
 			receiptDataGrid.ItemsSource = _reportGoodsList;
+
+			upcSearchTextBox.TextChanged += SearchUpcTextBox_TextChanged;
+		}
+
+		private void CategoriesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			ComboBox comboBox = sender as ComboBox;
+			string selectedCategory = comboBox.SelectedItem as string;
+
+			if (selectedCategory != null)
+			{
+				if (selectedCategory == "All")
+				{
+					_goodsInStockList.Clear();
+
+					foreach (var item in goodsInStockList)
+					{
+						_goodsInStockList.Add(item);
+					}
+					return;
+				}
+				List<GoodsInStockModel> stocks = controller.GetGoodsInStockByCategory(comboBox.SelectedIndex);
+				_goodsInStockList.Clear();
+
+				foreach (var item in stocks)
+				{
+
+					_goodsInStockList.Add(goodsInStockList.FirstOrDefault(x => x.ProductId == item.ProductId));
+				}
+			}
+		}
+
+		private void SearchUpcTextBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			TextBox textBox = sender as TextBox;
+			string searchText = textBox.Text;
+
+			if (!string.IsNullOrEmpty(searchText))
+			{
+				List<GoodsInStockModel> filteredGoods = goodsInStockList
+					.Where(g => g.UPC.StartsWith(searchText, System.StringComparison.OrdinalIgnoreCase))
+					.ToList();
+
+				_goodsInStockList.Clear();
+
+				foreach (var item in filteredGoods)
+				{
+					_goodsInStockList.Add(item);
+				}
+			}
+			else
+			{
+				_goodsInStockList.Clear();
+
+				foreach (var item in goodsInStockList)
+				{
+					_goodsInStockList.Add(item);
+				}
+			}
 		}
 
 		private void EmployeeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -186,9 +248,32 @@ namespace SupermarketPL.Views
 
 		private void PositionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			var position = (positionComboBox as ComboBox).SelectedItem;
+			ComboBox comboBox = sender as ComboBox;
+			string selectedCategory = comboBox.SelectedItem as string;
 
-			
+			if (selectedCategory != null)
+			{
+				if (selectedCategory == "All")
+				{
+					_employeeModelList.Clear();
+
+					foreach (var item in employeeModels)
+					{
+						_employeeModelList.Add(item);
+					}
+					return;
+				}
+				
+				_employeeModelList.Clear();
+
+				foreach (var item in employeeModels)
+				{
+					if(item.Position == selectedCategory)
+					{
+						_employeeModelList.Add(item);
+					}
+				}
+			}
 		}
 
 		private void PositionEmployeeGridComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -411,11 +496,32 @@ namespace SupermarketPL.Views
 
 		private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e) 
         {
-            var searchText = searchTextBox.Text.ToLower();
-            //employeeInfoComboBox.ItemsSource = employees
-            //    .Where(employee => employee.FullName.ToLower().Contains(searchText))
-            //    .ToList();
-        }
+			TextBox textBox = sender as TextBox;
+			string searchText = textBox.Text;
+
+			if (!string.IsNullOrEmpty(searchText))
+			{
+				List<EmployeeModel> filteredGoods = employeeModels
+					.Where(g => g.LastName.StartsWith(searchText, System.StringComparison.OrdinalIgnoreCase))
+					.ToList();
+
+				_employeeModelList.Clear();
+
+				foreach (var item in filteredGoods)
+				{
+					_employeeModelList.Add(item);
+				}
+			}
+			else
+			{
+				_employeeModelList.Clear();
+
+				foreach (var item in employeeModels)
+				{
+					_employeeModelList.Add(item);
+				}
+			}
+		}
 
 		private void DeleteButton_Click(object sender, RoutedEventArgs e)
 		{

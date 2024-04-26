@@ -153,7 +153,7 @@ namespace SupermarketPL.Views
 					}
 					return;
 				}
-				List<GoodsInStockModel> stocks = controller.GetGoodsInStockByCategory(comboBox.SelectedIndex - 1);
+				List<GoodsInStockModel> stocks = controller.GetGoodsInStockByCategory(comboBox.SelectedIndex);
 				_stocks.Clear();
 
 				foreach (var item in stocks)
