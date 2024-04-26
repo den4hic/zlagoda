@@ -6,6 +6,7 @@ using iTextSharp.text.pdf;
 using System.IO;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections;
 
 public class ManagerController
 {
@@ -461,6 +462,24 @@ public void CreateGoodsInStockPdf(List<GoodsInStockModel> goodsInStockList, stri
 				City = item.City,
 				Street = item.Street,
 				Index = item.ZipCode
+			});
+		}
+
+		return result;
+	}
+
+	public List<ManufacturerAndSalesModel> GetTotalSoldProductsForProducer()
+	{
+		var list = dbHelper.GetTotalSoldProductsForProducer();
+
+		List<ManufacturerAndSalesModel> result = new List<ManufacturerAndSalesModel>();
+
+		foreach (var item in list)
+		{
+			result.Add(new ManufacturerAndSalesModel()
+			{
+				Producer = item.Producer,
+				ProductsNumber = item.ProductsNumber
 			});
 		}
 

@@ -168,7 +168,16 @@ namespace SupermarketPL.Views
 			categoryNotSold.SelectionChanged += CategoryNotSold_SelectionChanged;
 
 			checkBoxNoAccoundNoSold.Click += CheckBoxNoAccoundNoSold_Checked;
+
+			
 		}
+
+		private void TabControl_Loaded(object sender, RoutedEventArgs e)
+		{
+			List<ManufacturerAndSalesModel> manufacturerAdvanced = controller.GetTotalSoldProductsForProducer();
+			manufacturerAdvancedDataGrid.ItemsSource = manufacturerAdvanced;
+		}
+
 
 		private void CheckBoxNoAccoundNoSold_Checked(object sender, RoutedEventArgs e)
 		{
