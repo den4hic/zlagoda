@@ -14,11 +14,15 @@ namespace SupermarketPL.Views
 		private List<string> employeeRoleList = new List<string> { "Manager", "Cashier" };
 		private Employee _employee;
         private ManagerController controller;
+		private List<ReportGoodsModel> reportGoodsModels;
 		private ObservableCollection<Goods> _goodsList = new ObservableCollection<Goods>();
 		private ObservableCollection<Category> _categoriesList = new ObservableCollection<Category>();
 		private ObservableCollection<string> _categoriesNameList = new ObservableCollection<string>();
+		private ObservableCollection<string> _employeesNameList = new ObservableCollection<string>();
 		private ObservableCollection<CustomerModel> _customersList = new ObservableCollection<CustomerModel>();
 		private ObservableCollection<GoodsInStockModel> _goodsInStockList = new ObservableCollection<GoodsInStockModel>();
+		private ObservableCollection<EmployeeModel> _employeeModelList = new ObservableCollection<EmployeeModel>();
+		private ObservableCollection<ReportGoodsModel> _reportGoodsList = new ObservableCollection<ReportGoodsModel>();
 
 		public ManagerView()
 		{
@@ -54,9 +58,38 @@ namespace SupermarketPL.Views
 				}
 			};
 
+			_employeeModelList.CollectionChanged += (sender, e) =>
+			{
+				if (e.Action == NotifyCollectionChangedAction.Add)
+				{
+					foreach (EmployeeModel employee in e.NewItems)
+					{
+						if(employee.Position == "Cashier")
+						{
+							_employeesNameList.Add(employee.EmployeeId);
+						}
+					}
+				}
+				else if (e.Action == NotifyCollectionChangedAction.Remove)
+				{
+					foreach (EmployeeModel employee in e.OldItems)
+					{
+						if(employee.Position == "Cashier")
+						{
+							_employeesNameList.Remove(employee.EmployeeId);
+						}
+					}
+				}
+			};
+
 			List<EmployeeModel> employeesList = controller.GetEmployees();
 
-			employeeDataGrid.ItemsSource = employeesList;
+			foreach (var item in employeesList)
+			{
+				_employeeModelList.Add(item);
+			}
+
+			employeeDataGrid.ItemsSource = _employeeModelList;
 			employeeDataGrid.CellEditEnding += EmployeeDataGrid_CellEditEnding;
 
 
@@ -109,11 +142,53 @@ namespace SupermarketPL.Views
 
 			positionComboBox.ItemsSource = employeeRoleList;
 			positionComboBox.SelectionChanged += PositionComboBox_SelectionChanged;
+
+			_employeesNameList.Insert(0, "All");
+
+			reportGoodsModels = controller.GetChecks();
+
+			foreach (var item in reportGoodsModels)
+			{
+				_reportGoodsList.Add(item);
+			}
+
+			cashierComboBox.ItemsSource = _employeesNameList;
+			cashierComboBox.SelectionChanged += EmployeeComboBox_SelectionChanged;
+
+			receiptDataGrid.ItemsSource = _reportGoodsList;
+		}
+
+		private void EmployeeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			var emplId = (sender as ComboBox).SelectedItem.ToString();
+
+			if(emplId == "All")
+			{
+				_reportGoodsList.Clear();
+
+				foreach (var item in reportGoodsModels)
+				{
+					_reportGoodsList.Add(item);
+				}
+
+				return;
+			}
+
+			var checks = controller.GetChecksByEmplId(emplId);
+
+			_reportGoodsList.Clear();
+
+			foreach (var item in checks)
+			{
+				_reportGoodsList.Add(item);
+			}
 		}
 
 		private void PositionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			throw new NotImplementedException();
+			var position = (positionComboBox as ComboBox).SelectedItem;
+
+			
 		}
 
 		private void PositionEmployeeGridComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -513,5 +588,48 @@ namespace SupermarketPL.Views
 			controller.CreateReceiptsPdf(controller.GetReceipts(), outputPath);
 			MessageBox.Show("Receipts report saved as " + outputPath);*/
 		}
-    }
+
+		private void SearchFromDateToDate_Click(object sender, RoutedEventArgs e)
+		{
+			if (fromDatePicker.SelectedDate == null || toDatePicker.SelectedDate == null)
+			{
+				_reportGoodsList.Clear();
+
+				foreach (var item in reportGoodsModels)
+				{
+					_reportGoodsList.Add(item);
+				}
+				return;
+			}
+
+			DateTime fromDate = fromDatePicker.SelectedDate.Value;
+			DateTime toDate = toDatePicker.SelectedDate.Value;
+
+			List<ReportGoodsModel> filteredGoods = reportGoodsModels
+				.Where(g => g.Date >= fromDate && g.Date <= toDate)
+				.ToList();
+
+			_reportGoodsList.Clear();
+
+			foreach (var item in filteredGoods)
+			{
+				_reportGoodsList.Add(item);
+			}
+		}
+
+		private void DeleteReciptButton_Click(object sender, RoutedEventArgs e)
+		{
+			var selectedReceipt = receiptDataGrid.SelectedItem as ReportGoodsModel;
+
+			if (selectedReceipt != null)
+			{
+				if (_reportGoodsList.Contains(selectedReceipt))
+				{
+					_reportGoodsList.Remove(selectedReceipt);
+				}
+
+				controller.DeleteCheck(selectedReceipt.ReceiptNumber);
+			}
+		}
+	}
 }

@@ -5,6 +5,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 public class ManagerController
 {
@@ -299,22 +300,68 @@ public void CreateGoodsInStockPdf(List<GoodsInStockModel> goodsInStockList, stri
 
 		dbHelper.InsertCostumerCard(customerCard);
 	}
+
+	public List<ReportGoodsModel> GetChecks()
+	{
+		var checks = dbHelper.GetChecksList();
+		List<ReportGoodsModel> result = new List<ReportGoodsModel>();
+
+		foreach (var item in checks)
+		{
+			result.Add(new ReportGoodsModel()
+			{
+				ReceiptNumber = item.CheckNumber,
+				TotalCost = item.SumTotal,
+				Date = item.PrintDate
+			});
+		}
+
+		return result;
+	}
+
+	public List<ReportGoodsModel> GetChecksByEmplId(string employeeId)
+	{
+		var checks = dbHelper.GetChecksList();
+
+		List<ReportGoodsModel> result = new List<ReportGoodsModel>();
+
+		foreach (var item in checks)
+		{
+			if (item.IdEmployee != employeeId)
+			{
+				continue;
+			}
+			result.Add(new ReportGoodsModel()
+			{
+				ReceiptNumber = item.CheckNumber,
+				TotalCost = item.SumTotal,
+				Date = item.PrintDate
+			});
+		}
+
+		return result;
+	}
+
+	public void DeleteCheck(string receiptNumber)
+	{
+		dbHelper.DeleteCheck(receiptNumber);
+	}
 	/*public void CreateReceiptsPdf(List<ReceiptModel> receiptsList, string outputPath)
 {
-   Document document = new Document();
-   PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(outputPath, FileMode.Create));
-   document.Open();
+Document document = new Document();
+PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(outputPath, FileMode.Create));
+document.Open();
 
-   PdfPTable table = new PdfPTable(4); // 4 columns for ReceiptId, CustomerId, Date, Total
+PdfPTable table = new PdfPTable(4); // 4 columns for ReceiptId, CustomerId, Date, Total
 
-   foreach (var receipt in receiptsList)
-   {
-	   table.AddCell(receipt.ReceiptId.ToString());
-	   table.AddCell(receipt.Date.ToString());
-	   table.AddCell(receipt.Total.ToString());
-   }
+foreach (var receipt in receiptsList)
+{
+table.AddCell(receipt.ReceiptId.ToString());
+table.AddCell(receipt.Date.ToString());
+table.AddCell(receipt.Total.ToString());
+}
 
-   document.Add(table);
-   document.Close();
+document.Add(table);
+document.Close();
 }*/
 }

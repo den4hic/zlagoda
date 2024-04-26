@@ -174,7 +174,7 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <DataGrid x:Name="receiptDataGrid" Margin="10,10,10,20" Grid.Column="0">
+        <DataGrid x:Name="receiptDataGrid" Margin="10,10,10,20" Grid.Column="0" AutoGenerateColumns="False" ItemsSource="{Binding ReportGoodsList}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Receipt Number" Binding="{Binding ReceiptNumber}" Width="*"/>
                 <DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="*"/>
@@ -197,9 +197,9 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Content="Search" Grid.Column="0" Width="75" Height="25" Margin="0,0,5,80"/>
+            <Button Content="Search" Grid.Column="0" Width="75" Height="25" Margin="0,0,5,80" Click="SearchFromDateToDate_Click"/>
             <Button Content="Calculate" Grid.Column="1" Width="75" Height="25" Margin="5,0,0,80"/>
-            <Button Content="Delete" Grid.Column="0" Width="75" Height="25" Margin="0,0,5,10"/>
+            <Button Content="Delete" Grid.Column="0" Width="75" Height="25" Margin="0,0,5,10" Click="DeleteReciptButton_Click"/>
             <Button Content="Print" Grid.Column="1" Width="75" Height="25" Margin="5,0,0,10" Click="PrintReceiptsButton_Click"/>
         </Grid>
     </Grid>
