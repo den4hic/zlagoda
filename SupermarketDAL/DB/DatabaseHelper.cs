@@ -10,6 +10,7 @@ using System.IO;
 using System.Reflection.Emit;
 using System.Text.RegularExpressions;
 using Xceed.Wpf.AvalonDock.Themes;
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace SupermarketDAL.DB
 {
@@ -61,7 +62,7 @@ namespace SupermarketDAL.DB
                     {
                         command.Parameters.Add(parameter);
                     }
-
+                    
                     return command.ExecuteNonQuery();
                 }
             }
@@ -232,6 +233,8 @@ namespace SupermarketDAL.DB
         {
             string sql = "DELETE FROM \"Check\" WHERE check_number = @CheckNumber";
             ExecuteNonQuery(sql, new SQLiteParameter("@CheckNumber", checkNumber));
+            List<StoreProduct> sps = GetStoreProductsList();
+            sps.ForEach(x => DeleteSale(x.UPC, checkNumber));
         }
 
         public void DeleteCustomerCard(string cardNumber)
@@ -475,8 +478,6 @@ namespace SupermarketDAL.DB
 
             SQLiteConnection.CreateFile(databasePath);
 
-            ExecuteNonQuery("PRAGMA foreign_keys = off;");
-            ExecuteNonQuery("BEGIN TRANSACTION;");
 
             ExecuteNonQuery("CREATE TABLE Category (category_number INTEGER PRIMARY KEY AUTOINCREMENT, category_name TEXT (50));");
             ExecuteNonQuery("CREATE TABLE \"Check\" (check_number TEXT (10) PRIMARY KEY NOT NULL, id_employee TEXT (10) NOT NULL REFERENCES Employee (id_employee) ON DELETE NO ACTION ON UPDATE CASCADE, card_number TEXT (13) REFERENCES Costumer_Card (card_number) ON DELETE NO ACTION ON UPDATE CASCADE, print_date TEXT NOT NULL, sum_total NUMERIC (13, 4) NOT NULL, vat NUMERIC (13, 4) NOT NULL);");
@@ -492,7 +493,6 @@ namespace SupermarketDAL.DB
             ExecuteNonQuery("CREATE INDEX client_PIB ON Costumer_Card (cust_surname, cust_name, cust_patronymic);");
             ExecuteNonQuery("CREATE INDEX PIB ON Employee (empl_surname, empl_name, empl_patronymic);");
 
-            ExecuteNonQuery("PRAGMA foreign_keys = on;");
 
         }
 
