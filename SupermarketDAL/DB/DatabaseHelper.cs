@@ -671,7 +671,7 @@ namespace SupermarketDAL.DB
                 ZipCode = reader["zip_code"].ToString()
             }).ToList();
         }
-        public List<Product> GetProductWithoutEmployeeSurnameAndProduceNameStatsWithSelectedLetter(string letter)
+        public List<Product> GetProductWithoutEmployeeSurnameStartsWith(string startsWith)
         {
   
             string sql = @"
@@ -681,15 +681,15 @@ namespace SupermarketDAL.DB
                 WHERE sp.UPC NOT IN (
                     SELECT s.UPC
                     From Sale s
-                    WHERE s.check_number IN (
+                    WHERE s.check_number NOT IN (
                         SELECT c.check_number
                         FROM ""Check"" c
                         JOIN Employee e ON e.id_employee = c.id_employee
-                        WHERE e.empl_surname LIKE @letter
+                        WHERE LOWER(e.empl_surname) NOT LIKE @startsWith
                     )
-                ) AND p.producer NOT LIKE @letter
+                )
             ";
-
+            startsWith += "%";
             return ExecuteQuery(sql, reader => new Product
             {
                 IdProduct = reader.GetInt32(0),
@@ -697,7 +697,7 @@ namespace SupermarketDAL.DB
                 ProductName = reader.GetString(2),
                 Producer = reader.GetString(3),
                 Characteristics = reader.GetString(4)
-            }, new SQLiteParameter("@letter", letter)).ToList();
+            }, new SQLiteParameter("@startsWith", startsWith)).ToList();
         }
 
         public List<Employee> GetEmployeesWithoutSalesInCategory(string categoryName)

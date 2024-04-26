@@ -35,10 +35,7 @@ namespace SupermarketDAL
                 Console.WriteLine($"Employee: {category}");
             }
             Console.WriteLine($"---");
-            foreach (var category in dbHelper.GetProductWithoutEmployeeSurnameAndProduceNameStatsWithSelectedLetter("J"))
-            {
-                Console.WriteLine($"Employee: {category}");
-            }
+            Console.WriteLine(dbHelper.GetProductWithoutEmployeeSurnameStartsWith("W").Count());
             Console.WriteLine($"---");
             foreach(var category in dbHelper.GetEmployeesWithoutSalesInCategory("Food"))
             {
