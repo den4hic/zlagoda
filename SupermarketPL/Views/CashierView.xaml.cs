@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Org.BouncyCastle.Crypto.Tls;
 using SupermarketDAL.Entities;
 using SupermarketPL.Model;
 
@@ -13,11 +14,13 @@ namespace SupermarketPL.Views
         private CashierController controller;
 		private List<Goods> _goodsList;
 		private List<CategoryModel> _categories;
-		private ObservableCollection<CustomerModel> _customersList = new ObservableCollection<CustomerModel>();
-		private List<GoodsInStockModel> goodsInBasketList;
+		private List<CustomerModel> _customersList;
+		private List<ReportGoodsModel> _reportGoodsModels;
+		List<GoodsInStockModel> goodsInBasketList;
 		private List<Goods> _updatedGoodsList;
 		private ObservableCollection<GoodsInStockModel> _stocks = new ObservableCollection<GoodsInStockModel>();
 		private ObservableCollection<BasketGoods> _basketGoods = new ObservableCollection<BasketGoods>();
+		private ObservableCollection<ReportGoodsModel> _reportGoodsList = new ObservableCollection<ReportGoodsModel>();
 
 		public CashierView()
 		{
@@ -41,14 +44,8 @@ namespace SupermarketPL.Views
 			goodsDataGrid.ItemsSource = goodsList;
 
 			List<CustomerModel> customersList = controller.GetCustomers();
-
-			foreach (var item in customersList)
-			{
-				_customersList.Add(item);
-			}
-
-
-			customerDataGrid.ItemsSource = _customersList;
+			_customersList = customersList;
+			customerDataGrid.ItemsSource = customersList;
 			customerDataGrid.CellEditEnding += CustomerDataGrid_CellEditEnding;
 
 			List<GoodsInStockModel> goodsInBasketList = controller.GetStocks();
@@ -85,6 +82,48 @@ namespace SupermarketPL.Views
 			nameSearchTextBox.TextChanged += GoodsInStockNameSearchTextBox_TextChanged;
 			customerNameSearchTextBox.TextChanged += CustomerNameSearchTextBox_TextChanged;
 			basketDataGrid.ItemsSource = _basketGoods;
+
+			//List<ReportGoodsModel> reportGoodsModels = controller.();
+
+			_reportGoodsModels = controller.GetChecksByEmplId(_employee.IdEmployee);
+
+			foreach (var item in _reportGoodsModels)
+			{
+				_reportGoodsList.Add(item);
+			}
+
+			receiptDataGrid.ItemsSource = _reportGoodsList;
+
+			receiptIdTextBox.TextChanged += ReceiptIdTextBox_TextChanged;
+		}
+
+		private void ReceiptIdTextBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			TextBox textBox = sender as TextBox;
+			string searchText = textBox.Text;
+
+			if (!string.IsNullOrEmpty(searchText))
+			{
+				List<ReportGoodsModel> filteredGoods = _reportGoodsList
+					.Where(g => g.ReceiptNumber.StartsWith(searchText, System.StringComparison.OrdinalIgnoreCase))
+					.ToList();
+
+				_reportGoodsList.Clear();
+
+				foreach (var item in filteredGoods)
+				{
+					_reportGoodsList.Add(item);
+				}
+			}
+			else
+			{
+				_reportGoodsList.Clear();
+
+				foreach (var item in _reportGoodsModels)
+				{
+					_reportGoodsList.Add(item);
+				}
+			}
 		}
 
 		private void BasketComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -175,7 +214,7 @@ namespace SupermarketPL.Views
 					goodsDataGrid.ItemsSource = _goodsList;
 					return;
 				}
-				List<Goods> goods = controller.GetGoodsByCategory(comboBox.SelectedIndex - 1);
+				List<Goods> goods = controller.GetGoodsByCategory(comboBox.SelectedIndex);
 				_updatedGoodsList = goods;
 				goodsDataGrid.ItemsSource = goods;
 			}
@@ -364,7 +403,7 @@ namespace SupermarketPL.Views
 		}
 		private void AddButton_Click(object sender, RoutedEventArgs e)
 		{
-			CashierAddCustomerView addCustomerView = new CashierAddCustomerView(_customersList);
+			AddCustomerView addCustomerView = new AddCustomerView();
 			addCustomerView.Show();
 		}
 		private void EditButton_Click(object sender, RoutedEventArgs e)
@@ -382,25 +421,130 @@ namespace SupermarketPL.Views
 		
 		private void ReceiptIDSearchButton_Click(object sender, RoutedEventArgs e)
 		{
-			ReceiptIdSearchView receiptIdSearchView = new ReceiptIdSearchView();
+			var receipt = receiptDataGrid.SelectedItem as ReportGoodsModel;
+
+			if (receipt == null)
+			{
+				MessageBox.Show("Please select receipt");
+				return;
+			}
+
+
+			//ReceiptIdSearchView receiptIdSearchView = new ReceiptIdSearchView();
 
 			//Тут треба дістати чек за допомогою ID з receiptIdTextBox і передати його в receiptIdSearchView
-			receiptIdSearchView.Show();
+			//receiptIdSearchView.Show();
 		}
 		private void ProfileButton_Click(object sender, RoutedEventArgs e)
 		{
-			EmployeeProfileView profileWindow = new EmployeeProfileView();
+			EmployeeProfileView profileWindow = new EmployeeProfileView(_employee);
 			profileWindow.Show();
 		}
 
 
 		private void CloseCheck_Click(object sender, RoutedEventArgs e)
 		{
-			//Ми додаймо чек,зберігажмо айді і робимо пошук по його ж айді
-			ReceiptIdSearchView receiptIdSearchView = new ReceiptIdSearchView();
+			DateTime date = DateTime.Now;
+			string checkNumber = Guid.NewGuid().ToString();
+			var cardNumber = clientCardTextBox.Text;
 
+			var customerCard = controller.GetCustomerCardByNumber(cardNumber);
+			decimal sum = 0;
+			foreach (var item in _basketGoods)
+			{
+				string upc = "";
+				foreach (var goods in goodsInBasketList)
+				{
+					if (item.BasketGoodsId == goods.ProductId)
+					{
+						upc = goods.UPC;
+						StoreProduct storeProduct = controller.GetGoodsByUPC(upc);
+						storeProduct.ProductsNumber = goods.Quantity;
+						controller.UpdateStoreProduct(storeProduct);
+						break;
+					}
+				}
+				Sale sale = new Sale()
+				{
+					UPC = upc,
+					ProductNumber = item.Quantity,
+					SellingPrice = Math.Round(customerCard != null ? item.Price - item.Price * customerCard.Percentage / 100 : item.Price, 4, MidpointRounding.ToEven),
+					CheckNumber = checkNumber
+				};
+
+				controller.AddSale(sale);
+
+				sum += item.Price;
+			}
+
+			if (customerCard != null)
+			{
+				sum = sum - sum * customerCard.Percentage / 100;
+
+			}
+			else
+			{
+				cardNumber = null;
+			}
+
+
+
+			Check check = new Check()
+			{
+				PrintDate = date,
+				SumTotal = Math.Round(sum, 4, MidpointRounding.ToEven),
+				Vat = Math.Round(sum * 0.2m, 4, MidpointRounding.ToEven),
+				IdEmployee = _employee.IdEmployee,
+				CardNumber = cardNumber,
+				CheckNumber = checkNumber
+			};
+
+			ReportGoodsModel reportGoodsModel = new()
+			{
+				ReceiptNumber = checkNumber,
+				Date = date,
+				TotalCost = check.SumTotal,
+				VAT = check.Vat,
+			};
+
+			controller.AddCheck(check);
+
+			ReceiptIdSearchView receiptIdSearchView = new ReceiptIdSearchView(check, _basketGoods.ToList());
 			
 			receiptIdSearchView.Show();
+
+			_basketGoods.Clear();
+			_reportGoodsList.Add(reportGoodsModel);
+			_reportGoodsModels.Add(reportGoodsModel);
+		}
+
+		private void SearchFromDateToDate_Click(object sender, RoutedEventArgs e)
+		{
+			if(fromDatePicker.SelectedDate == null || toDatePicker.SelectedDate == null)
+			{
+				_reportGoodsList.Clear();
+
+				foreach (var item in _reportGoodsModels)
+				{
+					_reportGoodsList.Add(item);
+				}
+				return;
+			}
+
+			DateTime fromDate = fromDatePicker.SelectedDate.Value;
+			DateTime toDate = toDatePicker.SelectedDate.Value;
+
+			List<ReportGoodsModel> filteredGoods = _reportGoodsModels
+				.Where(g => g.Date >= fromDate && g.Date <= toDate)
+				.ToList();
+
+			_reportGoodsList.Clear();
+
+			foreach (var item in filteredGoods)
+			{
+				_reportGoodsList.Add(item);
+			}
 		}
     }
+
 }
