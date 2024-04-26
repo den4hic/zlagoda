@@ -9,11 +9,13 @@ namespace SupermarketPL.Views;
 public partial class CashierAddCustomerView : Window
 {
     private ObservableCollection<CustomerModel> customersList { get; set; }
+    private CashierController controller;
 
-    public CashierAddCustomerView(ObservableCollection<CustomerModel> customersList)
+    public CashierAddCustomerView(ObservableCollection<CustomerModel> customersList, CashierController controller)
     {
         InitializeComponent();
         this.customersList = customersList;
+        this.controller = controller;
 
     }
 
@@ -39,8 +41,6 @@ public partial class CashierAddCustomerView : Window
             MessageBox.Show("Please enter a valid integer value for discount.");
             return;
         }
-
-        ManagerController controller = new ManagerController();
         
         CustomerCard newCustomerCard = new CustomerCard
         {

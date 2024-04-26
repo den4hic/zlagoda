@@ -14,10 +14,10 @@ namespace SupermarketPL.Views
         private CashierController controller;
 		private List<Goods> _goodsList;
 		private List<CategoryModel> _categories;
-		private List<CustomerModel> _customersList;
 		private List<ReportGoodsModel> _reportGoodsModels;
 		List<GoodsInStockModel> goodsInBasketList;
 		private List<Goods> _updatedGoodsList;
+		private ObservableCollection<CustomerModel> _customersList = new ObservableCollection<CustomerModel>();
 		private ObservableCollection<GoodsInStockModel> _stocks = new ObservableCollection<GoodsInStockModel>();
 		private ObservableCollection<BasketGoods> _basketGoods = new ObservableCollection<BasketGoods>();
 		private ObservableCollection<ReportGoodsModel> _reportGoodsList = new ObservableCollection<ReportGoodsModel>();
@@ -44,7 +44,14 @@ namespace SupermarketPL.Views
 			goodsDataGrid.ItemsSource = goodsList;
 
 			List<CustomerModel> customersList = controller.GetCustomers();
-			_customersList = customersList;
+
+			foreach (var item in customersList)
+			{
+				_customersList.Add(item);
+			}
+
+
+			customerDataGrid.ItemsSource = _customersList;
 			customerDataGrid.ItemsSource = customersList;
 			customerDataGrid.CellEditEnding += CustomerDataGrid_CellEditEnding;
 
@@ -403,7 +410,7 @@ namespace SupermarketPL.Views
 		}
 		private void AddButton_Click(object sender, RoutedEventArgs e)
 		{
-			AddCustomerView addCustomerView = new AddCustomerView();
+			CashierAddCustomerView addCustomerView = new CashierAddCustomerView(_customersList, controller);
 			addCustomerView.Show();
 		}
 		private void EditButton_Click(object sender, RoutedEventArgs e)

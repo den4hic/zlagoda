@@ -281,39 +281,40 @@ public void CreateGoodsInStockPdf(List<GoodsInStockModel> goodsInStockList, stri
 	document.Add(table);
 	document.Close();
 }
-/*public void CreateReceiptsPdf(List<ReceiptModel> receiptsList, string outputPath)
-{
-	Document document = new Document();
-	PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(outputPath, FileMode.Create));
-	document.Open();
 
-	PdfPTable table = new PdfPTable(4); // 4 columns for ReceiptId, CustomerId, Date, Total
-
-	foreach (var receipt in receiptsList)
+	public void InsertCustomerCard(string cardNumber, string firstName, string lastName, string patronymicName, string phoneNumber, string city, string street, string index, int discount)
 	{
-		table.AddCell(receipt.ReceiptId.ToString());
-		table.AddCell(receipt.Date.ToString());
-		table.AddCell(receipt.Total.ToString());
-	}
-
-	document.Add(table);
-	document.Close();
-}*/
-	public void InsertCustomerCard(string cardNumber, string custSurname, string custName, string custPatronymic, string phoneNumber, string city, string street, string index, int percentage)
-	{
-		CustomerCard customerCard = new CustomerCard
+		CustomerCard customerCard = new CustomerCard()
 		{
 			CardNumber = cardNumber,
-			CustSurname = custSurname,
-			CustName = custName,
-			CustPatronymic = custPatronymic,
+			CustName = firstName,
+			CustSurname = lastName,
+			CustPatronymic = patronymicName,
 			PhoneNumber = phoneNumber,
 			City = city,
 			Street = street,
 			Index = index,
-			Percentage = percentage
+			Percentage = discount
 		};
 
 		dbHelper.InsertCostumerCard(customerCard);
 	}
+	/*public void CreateReceiptsPdf(List<ReceiptModel> receiptsList, string outputPath)
+{
+   Document document = new Document();
+   PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(outputPath, FileMode.Create));
+   document.Open();
+
+   PdfPTable table = new PdfPTable(4); // 4 columns for ReceiptId, CustomerId, Date, Total
+
+   foreach (var receipt in receiptsList)
+   {
+	   table.AddCell(receipt.ReceiptId.ToString());
+	   table.AddCell(receipt.Date.ToString());
+	   table.AddCell(receipt.Total.ToString());
+   }
+
+   document.Add(table);
+   document.Close();
+}*/
 }
