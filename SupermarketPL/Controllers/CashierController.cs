@@ -198,4 +198,19 @@ public class CashierController
 
 		return result;
 	}
+
+	public List<Sale> GetSalesByCheckNumber(string receiptNumber)
+	{
+		return dbHelper.GetSalesListByCheckNumber(receiptNumber);
+	}
+
+	public Product GetProductByUPC(string uPC)
+	{
+		return dbHelper.GetProductByUPC(uPC);
+	}
+
+	public Check GetCheckById(string receiptNumber)
+	{
+		return dbHelper.GetCheckById(receiptNumber);
+	}
 }

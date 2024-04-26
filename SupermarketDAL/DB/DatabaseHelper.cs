@@ -734,7 +734,14 @@ namespace SupermarketDAL.DB
             }, new SQLiteParameter("@CategoryName", categoryName)).ToList();
         }
 
+		public List<Sale> GetSalesListByCheckNumber(string receiptNumber)
+		{
+			throw new NotImplementedException();
+		}
 
-
-    }
+		public Product GetProductByUPC(string uPC)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

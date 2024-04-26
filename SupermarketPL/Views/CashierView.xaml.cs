@@ -429,11 +429,25 @@ namespace SupermarketPL.Views
 				return;
 			}
 
+			List<Sale> sales = controller.GetSalesByCheckNumber(receipt.ReceiptNumber);
 
-			//ReceiptIdSearchView receiptIdSearchView = new ReceiptIdSearchView();
+			List<BasketGoods> basketGoods = new List<BasketGoods>();
+			
+			foreach (var item in sales)
+			{
+				Product product = controller.GetProductByUPC(item.UPC);
+				basketGoods.Add(new BasketGoods()
+				{
+					BasketGoodsId = item.ProductNumber,
+					Name = product.ProductName,
+					Quantity = item.ProductNumber,
+					Price = item.SellingPrice
+				});
+			}
+			Check check = controller.GetCheckById(receipt.ReceiptNumber);	
+			ReceiptIdSearchView receiptIdSearchView = new ReceiptIdSearchView(check, basketGoods);
 
-			//Тут треба дістати чек за допомогою ID з receiptIdTextBox і передати його в receiptIdSearchView
-			//receiptIdSearchView.Show();
+			receiptIdSearchView.Show();
 		}
 		private void ProfileButton_Click(object sender, RoutedEventArgs e)
 		{
