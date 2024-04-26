@@ -794,7 +794,8 @@ namespace SupermarketDAL.DB
 
 		public void DeleteEmployee(string employeeId)
 		{
-			throw new NotImplementedException();
-		}
+            string sql = "DELETE FROM Employee WHERE id_employee = @employeeId";
+            ExecuteNonQuery(sql, new SQLiteParameter("@employeeId", employeeId));
+        }
 	}
 }
