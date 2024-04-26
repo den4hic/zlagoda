@@ -11,6 +11,7 @@ namespace SupermarketPL.Views
 {
     public partial class ManagerView : Window
     {
+		private List<string> employeeRoleList = new List<string> { "Manager", "Cashier" };
 		private Employee _employee;
         private ManagerController controller;
 		private ObservableCollection<Goods> _goodsList = new ObservableCollection<Goods>();
@@ -106,6 +107,8 @@ namespace SupermarketPL.Views
 
 
 			categoriesComboBox.ItemsSource = _categoriesNameList;
+
+			positionComboBox.ItemsSource = employeeRoleList;
 
 			//foreach (var category in _categoriesList)
 			//{
@@ -405,7 +408,28 @@ namespace SupermarketPL.Views
 		}
 		private void ProfileButton_Click(object sender, RoutedEventArgs e)
 		{
-			EmployeeProfileView profileWindow = new EmployeeProfileView();
+			EmployeeModel employee = employeeDataGrid.SelectedItem as EmployeeModel;
+
+			if (employee == null)
+			{
+				MessageBox.Show("Please select an employee to view profile");
+				return;
+			}
+
+			Employee employee1 = new Employee
+			{
+				IdEmployee = employee.EmployeeId,
+				EmplName = employee.FirstName,
+				EmplSurname = employee.LastName,
+				EmplPatronymic = employee.PatronymicName,
+				EmplRole = employee.Position,
+				Salary = employee.Salary,
+				PhoneNumber = employee.PhoneNumber,
+				City = employee.City,
+				Street = employee.Street,
+				ZipCode = employee.Index
+			};
+			EmployeeProfileView profileWindow = new EmployeeProfileView(employee1);
 			profileWindow.Show();
 		}
 

@@ -383,7 +383,7 @@ namespace SupermarketPL.Views
 		}
 		private void ProfileButton_Click(object sender, RoutedEventArgs e)
 		{
-			EmployeeProfileView profileWindow = new EmployeeProfileView();
+			EmployeeProfileView profileWindow = new EmployeeProfileView(_employee);
 			profileWindow.Show();
 		}
 
