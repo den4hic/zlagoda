@@ -405,6 +405,34 @@ public void CreateGoodsInStockPdf(List<GoodsInStockModel> goodsInStockList, stri
 
 		dbHelper.DeleteGoodsInStock(goods);
 	}
+
+	public List<EmployeeModel> GetEmployeesWithoutSalesInCategory(string selectedItem)
+	{
+		var employees = dbHelper.GetEmployeesWithoutSalesInCategory(selectedItem);
+
+		List<EmployeeModel> result = new List<EmployeeModel>();
+
+		foreach (var item in employees)
+		{
+			result.Add(new EmployeeModel()
+			{
+				EmployeeId = item.IdEmployee,
+				LastName = item.EmplSurname,
+				FirstName = item.EmplName,
+				PatronymicName = item.EmplPatronymic,
+				Position = item.EmplRole,
+				Salary = item.Salary,
+				BirthDate = item.DateOfBirth,
+				WorkStartDate = item.DateOfStart,
+				PhoneNumber = item.PhoneNumber,
+				City = item.City,
+				Street = item.Street,
+				Index = item.ZipCode
+			});
+		}
+
+		return result;
+	}
 	/*public void CreateReceiptsPdf(List<ReceiptModel> receiptsList, string outputPath)
 {
 Document document = new Document();

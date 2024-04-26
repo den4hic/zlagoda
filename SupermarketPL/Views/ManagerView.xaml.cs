@@ -163,9 +163,38 @@ namespace SupermarketPL.Views
 			upcSearchTextBox.TextChanged += SearchUpcTextBox_TextChanged;
 
 			goodsInStockDataGrid.CellEditEnding += GoodsInStockDataGrid_CellEditEnding;
+
+			categoryNotSold.ItemsSource = _categoriesNameList;
+			categoryNotSold.SelectionChanged += CategoryNotSold_SelectionChanged;
 		}
 
-		
+		private void CategoryNotSold_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			ComboBox comboBox = sender as ComboBox;
+			string selectedCategory = comboBox.SelectedItem as string;
+
+			if (selectedCategory != null)
+			{
+				if (selectedCategory == "All")
+				{
+					_employeeModelList.Clear();
+
+					foreach (var item in employeeModels)
+					{
+						_employeeModelList.Add(item);
+					}
+					return;
+				}
+				List<EmployeeModel> newEmployeesModels = controller.GetEmployeesWithoutSalesInCategory(selectedCategory);
+				_employeeModelList.Clear();
+
+				foreach (var item in newEmployeesModels)
+				{
+
+					_employeeModelList.Add(item);
+				}
+			}
+		}
 
 		private void CategoriesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
