@@ -295,6 +295,21 @@ namespace SupermarketPL.Views
 			controller.UpdateEmployee(selectedEmployee);
 		}
 
+		private void DeleteGoodsInStockButton_Click(object sender, RoutedEventArgs e)
+		{
+			var selectedGoodsInStock = goodsInStockDataGrid.SelectedItem as GoodsInStockModel;
+
+			if (selectedGoodsInStock != null)
+			{
+				if (_goodsInStockList.Contains(selectedGoodsInStock))
+				{
+					_goodsInStockList.Remove(selectedGoodsInStock);
+				}
+
+				controller.DeleteGoodsInStock(selectedGoodsInStock);
+			}
+		}
+
 		private void GoodsInStockDataGrid_CellEditEnding(object? sender, DataGridCellEditEndingEventArgs e)
 		{
 			if (e.EditAction == DataGridEditAction.Commit)

@@ -768,5 +768,10 @@ namespace SupermarketDAL.DB
 		{
 			throw new NotImplementedException();
 		}
+
+		public void DeleteGoodsInStock(GoodsInStock goods)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
