@@ -298,4 +298,21 @@ public void CreateGoodsInStockPdf(List<GoodsInStockModel> goodsInStockList, stri
 	document.Add(table);
 	document.Close();
 }*/
+	public void InsertCustomerCard(string cardNumber, string custSurname, string custName, string custPatronymic, string phoneNumber, string city, string street, string index, int percentage)
+	{
+		CustomerCard customerCard = new CustomerCard
+		{
+			CardNumber = cardNumber,
+			CustSurname = custSurname,
+			CustName = custName,
+			CustPatronymic = custPatronymic,
+			PhoneNumber = phoneNumber,
+			City = city,
+			Street = street,
+			Index = index,
+			Percentage = percentage
+		};
+
+		dbHelper.InsertCostumerCard(customerCard);
+	}
 }

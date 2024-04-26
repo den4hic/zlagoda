@@ -1,4 +1,4 @@
-<Window x:Class="SupermarketPL.Views.AddCustomerView"
+<Window x:Class="SupermarketPL.Views.ManagerAddCustomerView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -54,8 +54,8 @@
         <TextBox x:Name="indexTextBox" Grid.Row="15" />
 
         <Label Content="Discount" Grid.Row="16" />
-        <TextBox x:Name="discountTextBox" Grid.Row="17" />
+        <TextBox x:Name="discountTextBox" Grid.Row="17" PreviewTextInput="IntegerOnlyTextBox_PreviewTextInput" />
 
-        <Button Content="Add" Grid.Row="18" />
+        <Button Content="Add" Grid.Row="18" Click="AddButton_Click" />
     </Grid>
 </Window>
