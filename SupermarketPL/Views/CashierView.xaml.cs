@@ -14,6 +14,7 @@ namespace SupermarketPL.Views
         private CashierController controller;
 		private List<Goods> _goodsList;
 		private List<CategoryModel> _categories;
+		private List<CustomerModel> _customersList;
 		private List<ReportGoodsModel> _reportGoodsModels;
 		List<GoodsInStockModel> goodsInBasketList;
 		private List<Goods> _updatedGoodsList;
@@ -38,22 +39,20 @@ namespace SupermarketPL.Views
 			this._employee = employee;
 			this.controller = new CashierController();
 			List<Goods> goodsList = controller.GetGoods();
-			_goodsList = goodsList;
-			_updatedGoodsList = goodsList;
 
-			goodsDataGrid.ItemsSource = goodsList;
+			foreach (var item in goodsList)
+			{
+				_goodsList.Add(item);
+			}
+			
+			goodsDataGrid.ItemsSource = _goodsList;
+
 
 			List<CustomerModel> customersList = controller.GetCustomers();
-
-			foreach (var item in customersList)
-			{
-				_customersList.Add(item);
-			}
-
-
-			customerDataGrid.ItemsSource = _customersList;
+			_customersList = customersList;
 			customerDataGrid.ItemsSource = customersList;
 			customerDataGrid.CellEditEnding += CustomerDataGrid_CellEditEnding;
+
 
 			List<GoodsInStockModel> goodsInBasketList = controller.GetStocks();
 
@@ -410,7 +409,7 @@ namespace SupermarketPL.Views
 		}
 		private void AddButton_Click(object sender, RoutedEventArgs e)
 		{
-			CashierAddCustomerView addCustomerView = new CashierAddCustomerView(_customersList, controller);
+			AddCustomerView addCustomerView = new AddCustomerView();
 			addCustomerView.Show();
 		}
 		private void EditButton_Click(object sender, RoutedEventArgs e)
@@ -525,6 +524,11 @@ namespace SupermarketPL.Views
 			_reportGoodsModels.Add(reportGoodsModel);
 		}
 
+		private void UPC_Search_Click(object sender, RoutedEventArgs e)
+		{
+			throw new NotImplementedException();
+		}
+		
 		private void SearchFromDateToDate_Click(object sender, RoutedEventArgs e)
 		{
 			if(fromDatePicker.SelectedDate == null || toDatePicker.SelectedDate == null)
@@ -552,6 +556,8 @@ namespace SupermarketPL.Views
 				_reportGoodsList.Add(item);
 			}
 		}
+
+		
     }
 
 }

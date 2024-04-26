@@ -15,10 +15,9 @@ public partial class CashierAddCustomerView : Window
     {
         InitializeComponent();
         this.customersList = customersList;
-        this.controller = controller;
 
     }
-
+   
     private void AddButton_Click(object sender, RoutedEventArgs e)
     {
         string cardNumber = cardNumberTextBox.Text;
@@ -41,6 +40,8 @@ public partial class CashierAddCustomerView : Window
             MessageBox.Show("Please enter a valid integer value for discount.");
             return;
         }
+
+        ManagerController controller = new ManagerController();
         
         CustomerCard newCustomerCard = new CustomerCard
         {
