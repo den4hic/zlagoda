@@ -8,6 +8,8 @@ using SupermarketDAL.Entities;
 using System.Reflection.PortableExecutable;
 using System.IO;
 using System.Reflection.Emit;
+using System.Text.RegularExpressions;
+using Xceed.Wpf.AvalonDock.Themes;
 
 namespace SupermarketDAL.DB
 {
@@ -459,8 +461,8 @@ namespace SupermarketDAL.DB
             ExecuteNonQuery("INSERT INTO Store_Product (UPC, id_product, selling_price, products_number, promotional_product) VALUES ('888888888888', 10, 29.99, 60, 0);");
             ExecuteNonQuery("INSERT INTO Store_Product (UPC, id_product, selling_price, products_number, promotional_product) VALUES ('999999999999', 11, 39.99, 20, 0);");
             ExecuteNonQuery("INSERT INTO Store_Product (UPC, id_product, selling_price, products_number, promotional_product) VALUES ('000000000000', 12, 29.99, 25, 0);");
-            ExecuteNonQuery("INSERT INTO User_Account (username, hashed_password, id_employee) VALUES ('user123', 'hashed_password123', 'EMP001');");
-            ExecuteNonQuery("INSERT INTO User_Account (username, hashed_password, id_employee) VALUES ('employee456', 'hashed_password456', 'EMP002');");
+            ExecuteNonQuery("INSERT INTO User_Account (username, hashed_password, id_employee) VALUES ('user123', '2b53b02df672eadf4fa638e008aae8af5623bb656c062c3201f56dd9f32ec990', 'EMP001');");
+            ExecuteNonQuery("INSERT INTO User_Account (username, hashed_password, id_employee) VALUES ('employee456', '8687859fd2b7fd63eb634212a78586727ffd3bfa5158fc60b88b3a7a8c25ded5', 'EMP002');");
 
         }
         public void ResetDatabase()
