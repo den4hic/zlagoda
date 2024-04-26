@@ -179,9 +179,8 @@ namespace SupermarketDAL
             var employee = dbHelper.GetEmployeeById(id);
             if (employee != null)
             {
-                employee.EmplSurname = "ASDdas";
-                dbHelper.UpdateEmployee(employee);
                 Console.WriteLine($"Employee found: {employee.EmplName} {employee.EmplSurname}");
+                dbHelper.InsertEmployee(employee);
             }
             else
             {
