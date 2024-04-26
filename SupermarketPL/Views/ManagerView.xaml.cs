@@ -842,5 +842,25 @@ namespace SupermarketPL.Views
 				controller.DeleteCheck(selectedReceipt.ReceiptNumber);
 			}
 		}
+
+		private void DeleteEmployee_Click(object sender, RoutedEventArgs e)
+		{
+			var selectedEmployee = employeeDataGrid.SelectedItem as EmployeeModel;
+
+			if (selectedEmployee != null)
+			{
+				if(_employee.IdEmployee == selectedEmployee.EmployeeId)
+				{
+					MessageBox.Show("You can't delete yourself");
+					return;
+				}
+				if (_employeeModelList.Contains(selectedEmployee))
+				{
+					_employeeModelList.Remove(selectedEmployee);
+				}
+
+				controller.DeleteEmployee(selectedEmployee.EmployeeId);
+			}
+		}
 	}
 }

@@ -792,5 +792,9 @@ namespace SupermarketDAL.DB
             ExecuteNonQuery(sqlProduct, new SQLiteParameter("@IdProduct", goods.IdProduct));
         }
 
-    }
+		public void DeleteEmployee(string employeeId)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

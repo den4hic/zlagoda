@@ -433,6 +433,11 @@ public void CreateGoodsInStockPdf(List<GoodsInStockModel> goodsInStockList, stri
 
 		return result;
 	}
+
+	public void DeleteEmployee(string employeeId)
+	{
+		dbHelper.DeleteEmployee(employeeId);
+	}
 	/*public void CreateReceiptsPdf(List<ReceiptModel> receiptsList, string outputPath)
 {
 Document document = new Document();

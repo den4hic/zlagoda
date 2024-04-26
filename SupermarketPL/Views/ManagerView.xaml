@@ -159,7 +159,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Button Content="Add" Grid.Column="0" Width="75" Height="25" Margin="0,0,5,80" Click="AddEmployee_Click"/>
-                        <Button Content="Edit" Grid.Column="1" Width="75" Height="25" Margin="5,0,0,80" Click="EditEmployee_Click"/>
+                        <Button Content="Delete" Grid.Column="1" Width="75" Height="25" Margin="5,0,0,80" Click="DeleteEmployee_Click"/>
                         <ComboBox x:Name="categoryNotSold" Grid.Column="0"  Margin="0,0,5,10" Width="75" Height="25"/>
                         
                         <Button Content="Print" Grid.Column="1" Width="75" Height="25" Margin="5,0,0,10" Click="PrintEmployeesButton_Click"/>
