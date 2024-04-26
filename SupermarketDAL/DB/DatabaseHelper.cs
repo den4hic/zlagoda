@@ -580,19 +580,20 @@ namespace SupermarketDAL.DB
             )).ToList();
         }
 
-        public int GetTotalSoldProductsForProducer(string producer)
+        public List<(string Producer, int ProductsNumber)> GetTotalSoldProductsForProducer()
         {
             string sql = @"
-                SELECT SUM(S.product_number) AS total_products
+                SELECT P.producer, SUM(S.product_number) AS total_products
                 FROM Product P
                 JOIN Store_Product SP ON P.id_product = SP.id_product
                 JOIN Sale S ON SP.UPC = S.UPC
-                WHERE P.producer = @Producer
+                GROUP BY P.producer;
             ";
 
-            return ExecuteQuery(sql, reader => reader["total_products"] != DBNull.Value ? Convert.ToInt32(reader["total_products"]) : 0,
-        new SQLiteParameter("@Producer", producer)).FirstOrDefault();
-
+            return ExecuteQuery(sql, reader => (
+                Producer: reader["producer"].ToString(),
+                ProductsNumber: reader["total_products"] != DBNull.Value ? Convert.ToInt32(reader["total_products"]) : 0
+            )).ToList();
         }
 
 
