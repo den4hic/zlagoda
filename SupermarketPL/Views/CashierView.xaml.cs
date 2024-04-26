@@ -9,6 +9,7 @@ namespace SupermarketPL.Views
 {
     public partial class CashierView : Window
     {
+		private Employee _employee;
         private CashierController controller;
 		private List<Goods> _goodsList;
 		private List<CategoryModel> _categories;
@@ -18,17 +19,28 @@ namespace SupermarketPL.Views
 		private ObservableCollection<GoodsInStockModel> _stocks = new ObservableCollection<GoodsInStockModel>();
 		private ObservableCollection<BasketGoods> _basketGoods = new ObservableCollection<BasketGoods>();
 
-        public CashierView()
+		public CashierView()
+		{
+			Initialize(null);
+		}
+
+        public CashierView(Employee employee)
         {
-            InitializeComponent();
-            this.controller = new CashierController();
+			Initialize(employee);
+		}
+
+		private void Initialize(Employee employee)
+		{
+			InitializeComponent();
+			this._employee = employee;
+			this.controller = new CashierController();
 			List<Goods> goodsList = controller.GetGoods();
 			_goodsList = goodsList;
 			_updatedGoodsList = goodsList;
 
 			goodsDataGrid.ItemsSource = goodsList;
 
-            List<CustomerModel> customersList = controller.GetCustomers();
+			List<CustomerModel> customersList = controller.GetCustomers();
 			_customersList = customersList;
 			customerDataGrid.ItemsSource = customersList;
 			customerDataGrid.CellEditEnding += CustomerDataGrid_CellEditEnding;
@@ -41,7 +53,7 @@ namespace SupermarketPL.Views
 			{
 				_stocks.Add(item);
 			}
-			
+
 			goodsInBasketDataGrid.ItemsSource = _stocks;
 
 			List<Category> categoriesList = controller.GetCategories();
@@ -55,8 +67,8 @@ namespace SupermarketPL.Views
 
 			categoryComboBox.Items.Add("All");
 
-            foreach (var category in categoriesList)
-            {
+			foreach (var category in categoriesList)
+			{
 				categoryComboBox.Items.Add(category.CategoryName);
 			}
 

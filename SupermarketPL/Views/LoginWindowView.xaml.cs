@@ -27,12 +27,12 @@ namespace SupermarketPL.Views
             {
                 if (employee.EmplRole == "Manager")
                 {
-                    ManagerView managerView = new ManagerView();
+                    ManagerView managerView = new ManagerView(employee);
                     managerView.Show();
                 }
                 else if (employee.EmplRole == "Cashier")
                 {
-                    CashierView cashierView = new CashierView();
+                    CashierView cashierView = new CashierView(employee);
                     cashierView.Show();
                 }
 
