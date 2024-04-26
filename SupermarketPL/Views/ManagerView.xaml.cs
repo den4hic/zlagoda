@@ -105,15 +105,30 @@ namespace SupermarketPL.Views
 			customerDataGrid.ItemsSource = _customersList;
 			customerDataGrid.CellEditEnding += CustomerDataGrid_CellEditEnding;
 
-
 			categoriesComboBox.ItemsSource = _categoriesNameList;
 
 			positionComboBox.ItemsSource = employeeRoleList;
+			positionComboBox.SelectionChanged += PositionComboBox_SelectionChanged;
+		}
 
-			//foreach (var category in _categoriesList)
-			//{
-			//	categoriesComboBox.Items.Add(category.CategoryName);
-			//}
+		private void PositionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			throw new NotImplementedException();
+		}
+
+		private void PositionEmployeeGridComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			var selectedEmployee = employeeDataGrid.SelectedItem as EmployeeModel;
+
+			if(_employee.IdEmployee == selectedEmployee.EmployeeId)
+			{
+				MessageBox.Show("You can't change your properties");
+				return;
+			}
+
+			selectedEmployee.Position = employeeRoleList[(sender as ComboBox).SelectedIndex];
+
+			controller.UpdateEmployee(selectedEmployee);
 		}
 
 		private void CustomerDataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
@@ -265,6 +280,12 @@ namespace SupermarketPL.Views
 					{
 						string updatedValue = editedElement.Text;
 						EmployeeModel employee = e.Row.Item as EmployeeModel;
+
+						if (_employee.IdEmployee == employee.EmployeeId)
+						{
+							MessageBox.Show("You can't change your properties");
+							return;
+						}
 
 						if (employee != null)
 						{
