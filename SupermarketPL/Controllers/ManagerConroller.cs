@@ -485,6 +485,27 @@ public void CreateGoodsInStockPdf(List<GoodsInStockModel> goodsInStockList, stri
 
 		return result;
 	}
+
+	public List<EmployeesAndCustomersWithMaxSharedSalesModel> GetEmployeesAndCustomersWithMaxSharedSales()
+	{
+		var list = dbHelper.GetEmployeesAndCustomersWithMaxSharedSales();
+
+		List<EmployeesAndCustomersWithMaxSharedSalesModel> result = new List<EmployeesAndCustomersWithMaxSharedSalesModel>();
+
+		foreach (var item in list)
+		{
+			result.Add(new EmployeesAndCustomersWithMaxSharedSalesModel()
+			{
+				EmployeeSurname = item.EmployeeSurname,
+				EmployeeName = item.EmployeeName,
+				CustomerSurname = item.CustomerSurname,
+				CustomerName = item.CustomerName,
+				TotalSharedSales = item.TotalSharedSales
+			});
+		}
+
+		return result;
+	}
 	/*public void CreateReceiptsPdf(List<ReceiptModel> receiptsList, string outputPath)
 {
 Document document = new Document();

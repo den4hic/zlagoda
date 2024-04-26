@@ -176,6 +176,9 @@ namespace SupermarketPL.Views
 		{
 			List<ManufacturerAndSalesModel> manufacturerAdvanced = controller.GetTotalSoldProductsForProducer();
 			manufacturerAdvancedDataGrid.ItemsSource = manufacturerAdvanced;
+
+			List<EmployeesAndCustomersWithMaxSharedSalesModel> employeesAndCustomersWithMaxSharedSalesModels = controller.GetEmployeesAndCustomersWithMaxSharedSales();
+			employeeAndCustomerAdvancedDataGrid.ItemsSource = employeesAndCustomersWithMaxSharedSalesModels;
 		}
 
 
