@@ -42,7 +42,7 @@ namespace SupermarketDAL
             {
                 Console.WriteLine($"Employee: {category}");
             }
-
+            
 
         }
 
@@ -212,11 +212,13 @@ namespace SupermarketDAL
             if (check != null)
             {
                 Console.WriteLine($"Check found: {check.CheckNumber}");
+                dbHelper.DeleteCheck(checkNumber);
             }
             else
             {
                 Console.WriteLine("Check not found.");
             }
+            
         }
 
         static void TestGetCustomerCardById(DatabaseHelper dbHelper, string cardNumber)
@@ -254,6 +256,7 @@ namespace SupermarketDAL
             if (sale != null)
             {
                 Console.WriteLine($"Sale found: {sale.UPC}");
+                
             }
             else
             {
