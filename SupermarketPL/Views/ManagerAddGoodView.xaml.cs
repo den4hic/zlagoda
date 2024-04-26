@@ -21,10 +21,6 @@ namespace SupermarketPL.Views
             categoryComboBox.ItemsSource = categoriesNameList;
         }
 
-
-
-
-
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             int categorynumber = categoryComboBox.SelectedIndex;

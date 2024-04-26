@@ -780,7 +780,7 @@ namespace SupermarketPL.Views
 		private void AddEmployee_Click(object sender, RoutedEventArgs e)
 		{
 			ManagerAddEmployeeView addEmployeeWindow =
-				new ManagerAddEmployeeView(controller, employeeRoleList, _employee);
+				new ManagerAddEmployeeView(controller,   _employeeModelList);
 			addEmployeeWindow.Show();
 		}
 
