@@ -18,6 +18,15 @@ namespace SupermarketDAL
             dbHelper.PutTestsData();
             TestGetsList(dbHelper);
             TestGets(dbHelper);
+            Console.WriteLine(dbHelper.GetProductSoldNumberByCategoryID(1));
+            foreach (var category in dbHelper.GetEmployeesAndCustomersWithMaxSharedSales())
+            {
+                Console.WriteLine($"Employee: {category}");
+            }
+            var amount = dbHelper.GetTotalSoldProductsForProducer("Apple");
+            if (amount == 0) Console.WriteLine("0");
+            else Console.WriteLine(amount);
+            Console.WriteLine(dbHelper.GetTotalSoldProductsForProducer("Pizza Hut"));
         }
 
         static void TestGetsList(DatabaseHelper dbHelper)

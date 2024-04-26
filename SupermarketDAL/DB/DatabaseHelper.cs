@@ -256,8 +256,8 @@ namespace SupermarketDAL.DB
             ExecuteNonQuery(sql, new SQLiteParameter("@UPC", upc), new SQLiteParameter("@CheckNumber", checkNumber));
         }
 
-		public Employee GetEmployeeByUsernameAndPassword(string username, string hashedPassword)
-		{
+        public Employee GetEmployeeByUsernameAndPassword(string username, string hashedPassword)
+        {
             string sql = "SELECT e.* FROM Employee e JOIN User_Account ua ON e.id_employee = ua.id_employee WHERE ua.username = @username AND ua.hashed_password = @hashedPassword";
             return ExecuteQuery(sql, reader => new Employee
             {
@@ -381,7 +381,7 @@ namespace SupermarketDAL.DB
             }).ToList();
         }
 
-            
+
         public List<Product> GetProductsListByCategoryID(int selectedCategory)
         {
             string sql = "SELECT * FROM Product WHERE category_number = @SelectedCategory";
@@ -461,7 +461,7 @@ namespace SupermarketDAL.DB
             ExecuteNonQuery("INSERT INTO Store_Product (UPC, id_product, selling_price, products_number, promotional_product) VALUES ('000000000000', 12, 29.99, 25, 0);");
             ExecuteNonQuery("INSERT INTO User_Account (username, hashed_password, id_employee) VALUES ('user123', 'hashed_password123', 'EMP001');");
             ExecuteNonQuery("INSERT INTO User_Account (username, hashed_password, id_employee) VALUES ('employee456', 'hashed_password456', 'EMP002');");
-        
+
         }
         public void ResetDatabase()
         {
@@ -490,7 +490,7 @@ namespace SupermarketDAL.DB
             ExecuteNonQuery("CREATE INDEX PIB ON Employee (empl_surname, empl_name, empl_patronymic);");
 
             ExecuteNonQuery("PRAGMA foreign_keys = on;");
-            
+
         }
 
         public GoodsInStock GetGoodsByUPC(string upc)
@@ -530,9 +530,67 @@ namespace SupermarketDAL.DB
             }).ToList();
         }
 
-		public List<GoodsInStock> GetGoodsInStockByCategory(int categoryId)
-		{
-			throw new NotImplementedException();
-		}
-	}
+        public List<GoodsInStock> GetGoodsInStockByCategory(int categoryId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public (int TotalChecks, int TotalSales) GetProductSoldNumberByCategoryID(int categoryId)
+        {
+            string sql = @"SELECT COUNT(S.check_number) AS total_checks, SUM(S.product_number) AS total_sold
+                FROM Category C
+                JOIN Product P ON C.category_number = P.category_number
+                JOIN Sale S ON P.id_product = S.product_number
+                WHERE C.category_number = @categoryId
+                GROUP BY C.category_name;";
+            return ExecuteQuery(sql, reader => (
+                TotalChecks: Convert.ToInt32(reader["total_checks"]),
+                TotalSales: Convert.ToInt32(reader["total_sold"])
+            ), new SQLiteParameter("@categoryId", categoryId)).FirstOrDefault();
+        }
+
+        public List<(string EmployeeSurname, string EmployeeName, string CustomerSurname, string CustomerName, int TotalSharedSales)> GetEmployeesAndCustomersWithMaxSharedSales()
+        {
+            string sql = @"
+                SELECT E.empl_surname, E.empl_name, CC.cust_surname, CC.cust_name, COUNT(C.check_number) AS total_shared_sales
+                FROM Employee E
+                JOIN ""Check"" C ON E.id_employee = C.id_employee
+                JOIN Costumer_Card CC ON C.card_number = CC.card_number
+                GROUP BY E.empl_surname, E.empl_name, CC.cust_surname, CC.cust_name
+                HAVING COUNT(C.check_number) = (
+                    SELECT MAX(shared_sales) FROM (
+                        SELECT COUNT(C.check_number) AS shared_sales
+                        FROM Employee E
+                        JOIN ""Check"" C ON E.id_employee = C.id_employee
+                        JOIN Costumer_Card CC ON C.card_number = CC.card_number
+                        GROUP BY E.empl_surname, E.empl_name, CC.cust_surname, CC.cust_name
+                    )
+                );
+            ";
+
+            return ExecuteQuery(sql, reader => (
+                EmployeeSurname: reader["empl_surname"].ToString(),
+                EmployeeName: reader["empl_name"].ToString(),
+                CustomerSurname: reader["cust_surname"].ToString(),
+                CustomerName: reader["cust_name"].ToString(),
+                TotalSharedSales: Convert.ToInt32(reader["total_shared_sales"])
+            )).ToList();
+        }
+
+        public int GetTotalSoldProductsForProducer(string producer)
+        {
+            string sql = @"
+                SELECT SUM(S.product_number) AS total_products
+                FROM Product P
+                JOIN Store_Product SP ON P.id_product = SP.id_product
+                JOIN Sale S ON SP.UPC = S.UPC
+                WHERE P.producer = @Producer
+            ";
+
+            return ExecuteQuery(sql, reader => reader["total_products"] != DBNull.Value ? Convert.ToInt32(reader["total_products"]) : 0,
+        new SQLiteParameter("@Producer", producer)).FirstOrDefault();
+
+        }
+
+    }
 }
