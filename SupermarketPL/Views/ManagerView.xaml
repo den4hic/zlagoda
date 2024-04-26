@@ -256,10 +256,10 @@
                     <TabItem Header="Employee and Customer advanced">
                         <DataGrid x:Name="employeeAndCustomerAdvancedDataGrid" Margin="10,10,10,20" Grid.Column="0" AutoGenerateColumns="False" ItemsSource="{Binding EmployeeAndCustomerList}">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Customer Id" Binding="{Binding FirstName}" Width="*" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Customer Card Number" Binding="{Binding CustomerId}" Width="*" IsReadOnly="True"/>
                                 <DataGridTextColumn Header="Customer Surname" Binding="{Binding EmployeeSurname}" Width="*" IsReadOnly="True"/>
                                 <DataGridTextColumn Header="Customer Name" Binding="{Binding EmployeeName}" Width="*" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Employee Id" Binding="{Binding FirstName}" Width="*" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Employee Id" Binding="{Binding EmployeeId}" Width="*" IsReadOnly="True"/>
                                 <DataGridTextColumn Header="Employee Surname" Binding="{Binding CustomerSurname}" Width="*"/>
                                 <DataGridTextColumn Header="Employee Name" Binding="{Binding CustomerName}" Width="*"/>
                                 <DataGridTextColumn Header="Total checks" Binding="{Binding TotalSharedSales}" Width="*"/>
@@ -274,21 +274,36 @@
                             </Grid.ColumnDefinitions>
                             <Label Content="Goods" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,0"/>
                             <TextBox x:Name="searchGoodsAdvancedTextBox" Grid.Column="1" HorizontalAlignment="Left" Margin="10,30,0,340" Width="120" />
-                            <Button Content="Search" Grid.Column="1" HorizontalAlignment="Left" Margin="10,70,0,300" Width="75" />
-                            
-                            <DataGrid x:Name="goodsAdvancedDataGrid" Margin="10,10,10,20" Grid.Column="0" AutoGenerateColumns="False" ItemsSource="{Binding GoodsAdvancedList}">
+                            <Button Content="Search" Grid.Column="1" HorizontalAlignment="Left" Margin="10,70,0,300" Width="75" Click="GoodsAdvanced_Click" />
+
+                            <DataGrid x:Name="goodsAdvancedDataGrid" Margin="10,10,10,20" Grid.Column="0" AutoGenerateColumns="False" ItemsSource="{Binding ProductsAdvancedList}">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Manufacturer" Binding="{Binding Manufacturer}" Width="*" IsReadOnly="True"/>
-                                    <DataGridTextColumn Header="Total products" Binding="{Binding TotalProducts}" Width="*"/>
+                                    <DataGridTextColumn Header="Id Product" Binding="{Binding IdProduct}" Width="*" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Category Number" Binding="{Binding CategoryNumber}" Width="*" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Product Name" Binding="{Binding ProductName}" Width="*" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Producer" Binding="{Binding Producer}" Width="*" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Characteristics" Binding="{Binding Characteristics}" Width="*"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Grid>
-                        <!--<DataGrid x:Name="goodsAdvancedDataGrid" Margin="10,10,10,20" Grid.Column="0" AutoGenerateColumns="False" ItemsSource="{Binding GoodsAdvancedList}">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Manufacturer" Binding="{Binding Manufacturer}" Width="*" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Total products" Binding="{Binding TotalProducts}" Width="*"/>
-                            </DataGrid.Columns>
-                        </DataGrid>-->
+                    </TabItem>
+                    <TabItem Header="Category advanced">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Categories" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,0"/>
+                            <ComboBox x:Name="searchCategoryAdvancedComboBox" Grid.Column="1" HorizontalAlignment="Left" Margin="10,30,0,340" Width="120" />
+
+                            <DataGrid x:Name="producerAndCategoryAdvancedDataGrid" Margin="10,10,10,20" Grid.Column="0" AutoGenerateColumns="False" ItemsSource="{Binding ProductsAdvancedList}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Producer" Binding="{Binding Producer}" Width="*" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Total checks" Binding="{Binding TotalChecks}" Width="*" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Total salse" Binding="{Binding TotalSales}" Width="*" IsReadOnly="True"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
                     </TabItem>
                 </TabControl>
             </TabItem>

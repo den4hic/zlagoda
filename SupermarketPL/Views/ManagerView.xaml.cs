@@ -169,7 +169,40 @@ namespace SupermarketPL.Views
 
 			checkBoxNoAccoundNoSold.Click += CheckBoxNoAccoundNoSold_Checked;
 
-			
+			searchCategoryAdvancedComboBox.ItemsSource = _categoriesNameList;
+			searchCategoryAdvancedComboBox.SelectionChanged += SearchCategoryAdvancedComboBox_SelectionChanged;
+
+
+		}
+
+		private void SearchCategoryAdvancedComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			ComboBox comboBox = sender as ComboBox;
+			string selectedCategory = comboBox.SelectedItem as string;
+
+			if (selectedCategory != null)
+			{
+				if (selectedCategory == "All")
+				{
+					producerAndCategoryAdvancedDataGrid.ItemsSource = null;
+					return;
+				}
+				List<ProducerAndCategoryAdvancedModel> list = controller.GetProductSoldNumberByCategoryIDAndGroupedByProducer(comboBox.SelectedIndex);
+				producerAndCategoryAdvancedDataGrid.ItemsSource = list;
+			}
+		}
+
+		private void GoodsAdvanced_Click(object sender, RoutedEventArgs e)
+		{
+			var text = searchGoodsAdvancedTextBox.Text;
+
+			if (string.IsNullOrEmpty(text))
+			{
+				MessageBox.Show("Please enter a search query");
+				return;
+			}
+
+			goodsAdvancedDataGrid.ItemsSource = controller.GetProductWithoutEmployeeSurnameStartsWith(text);
 		}
 
 		private void TabControl_Loaded(object sender, RoutedEventArgs e)
