@@ -592,5 +592,51 @@ namespace SupermarketDAL.DB
 
         }
 
+
+        public void InsertCategory(Category category)
+        {
+            string sql = "INSERT INTO Category (category_name) VALUES (@CategoryName)";
+            ExecuteNonQuery(sql, new SQLiteParameter("@CategoryName", category.CategoryName));
+        }
+
+        public void InsertCheck(Check check)
+        {
+            string sql = "INSERT INTO \"Check\" (check_number, id_employee, card_number, print_date, sum_total, vat) VALUES (@CheckNumber, @IdEmployee, @CardNumber, @PrintDate, @SumTotal, @Vat)";
+            ExecuteNonQuery(sql, new SQLiteParameter("@CheckNumber", check.CheckNumber), new SQLiteParameter("@IdEmployee", check.IdEmployee), new SQLiteParameter("@CardNumber", check.CardNumber), new SQLiteParameter("@PrintDate", check.PrintDate), new SQLiteParameter("@SumTotal", check.SumTotal), new SQLiteParameter("@Vat", check.Vat));
+        }
+        public void InsertCostumerCard(CustomerCard costumerCard)
+        {
+            string sql = "INSERT INTO Costumer_Card (card_number, cust_surname, cust_name, cust_patronymic, phone_number, city, street, \"index\", percentage) VALUES (@CardNumber, @CustSurname, @CustName, @CustPatronymic, @PhoneNumber, @City, @Street, @Index, @Percentage)";
+            ExecuteNonQuery(sql, new SQLiteParameter("@CardNumber", costumerCard.CardNumber), new SQLiteParameter("@CustSurname", costumerCard.CustSurname), new SQLiteParameter("@CustName", costumerCard.CustName), new SQLiteParameter("@CustPatronymic", costumerCard.CustPatronymic), new SQLiteParameter("@PhoneNumber", costumerCard.PhoneNumber), new SQLiteParameter("@City", costumerCard.City), new SQLiteParameter("@Street", costumerCard.Street), new SQLiteParameter("@Index", costumerCard.Index), new SQLiteParameter("@Percentage", costumerCard.Percentage));
+        }
+        public void InsertEmployee(Employee employee)
+        {
+            string sql = "INSERT INTO Employee (id_employee, empl_surname, empl_name, empl_patronymic, empl_role, salary, date_of_birth, date_of_start, phone_number, city, street, zip_code) VALUES (@IdEmployee, @EmplSurname, @EmplName, @EmplPatronymic, @EmplRole, @Salary, @DateOfBirth, @DateOfStart, @PhoneNumber, @City, @Street, @ZipCode)";
+            ExecuteNonQuery(sql, new SQLiteParameter("@IdEmployee", employee.IdEmployee), new SQLiteParameter("@EmplSurname", employee.EmplSurname), new SQLiteParameter("@EmplName", employee.EmplName), new SQLiteParameter("@EmplPatronymic", employee.EmplPatronymic), new SQLiteParameter("@EmplRole", employee.EmplRole), new SQLiteParameter("@Salary", employee.Salary), new SQLiteParameter("@DateOfBirth", employee.DateOfBirth), new SQLiteParameter("@DateOfStart", employee.DateOfStart), new SQLiteParameter("@PhoneNumber", employee.PhoneNumber), new SQLiteParameter("@City", employee.City), new SQLiteParameter("@Street", employee.Street), new SQLiteParameter("@ZipCode", employee.ZipCode));
+        }
+        public void InsertProduct(Product product)
+        {
+            string sql = "INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (@CategoryNumber, @ProductName, @Producer, @Characteristics)";
+            ExecuteNonQuery(sql, new SQLiteParameter("@CategoryNumber", product.CategoryNumber), new SQLiteParameter("@ProductName", product.ProductName), new SQLiteParameter("@Producer", product.Producer), new SQLiteParameter("@Characteristics", product.Characteristics));
+        }
+        public void InsertSale(Sale sale)
+        {
+            string sql = "INSERT INTO Sale (UPC, check_number, product_number, selling_price) VALUES (@UPC, @CheckNumber, @ProductNumber, @SellingPrice)";
+            ExecuteNonQuery(sql, new SQLiteParameter("@UPC", sale.UPC), new SQLiteParameter("@CheckNumber", sale.CheckNumber), new SQLiteParameter("@ProductNumber", sale.ProductNumber), new SQLiteParameter("@SellingPrice", sale.SellingPrice));
+        }
+        public void InsertStoreProduct(StoreProduct storeProduct)
+        {
+            string sql = "INSERT INTO Store_Product (UPC, UPC_prom, id_product, selling_price, products_number, promotional_product) VALUES (@UPC, @UPCProm, @IdProduct, @SellingPrice, @ProductsNumber, @PromotionalProduct)";
+            ExecuteNonQuery(sql, new SQLiteParameter("@UPC", storeProduct.UPC), new SQLiteParameter("@UPCProm", storeProduct.UPC_prom), new SQLiteParameter("@IdProduct", storeProduct.IdProduct), new SQLiteParameter("@SellingPrice", storeProduct.SellingPrice), new SQLiteParameter("@ProductsNumber", storeProduct.ProductsNumber), new SQLiteParameter("@PromotionalProduct", storeProduct.PromotionalProduct));
+        }
+        public void InsertUserAccount(UserAccount userAccount)
+        {
+            string sql = "INSERT INTO User_Account (username, hashed_password, id_employee) VALUES (@Username, @HashedPassword, @IdEmployee)";
+            ExecuteNonQuery(sql, new SQLiteParameter("@Username", userAccount.Username), new SQLiteParameter("@HashedPassword", userAccount.HashedPassword), new SQLiteParameter("@IdEmployee", userAccount.IdEmployee));
+        }
+
+
+
+
     }
 }
