@@ -605,16 +605,37 @@ namespace SupermarketDAL.DB
 
         public void InsertCheck(Check check)
         {
+            string check_number;
+            do
+            {
+                check_number = GenerateRandomString(10);
+            }
+            while (GetCheckById(check_number) != null);
+            check.CheckNumber = check_number;
             string sql = "INSERT INTO \"Check\" (check_number, id_employee, card_number, print_date, sum_total, vat) VALUES (@CheckNumber, @IdEmployee, @CardNumber, @PrintDate, @SumTotal, @Vat)";
             ExecuteNonQuery(sql, new SQLiteParameter("@CheckNumber", check.CheckNumber), new SQLiteParameter("@IdEmployee", check.IdEmployee), new SQLiteParameter("@CardNumber", check.CardNumber), new SQLiteParameter("@PrintDate", check.PrintDate), new SQLiteParameter("@SumTotal", check.SumTotal), new SQLiteParameter("@Vat", check.Vat));
         }
         public void InsertCostumerCard(CustomerCard costumerCard)
         {
+            string CardNumber;
+            do
+            {
+                CardNumber = GenerateRandomString(13);
+            }
+            while (GetCustomerCardByNumber(CardNumber) != null);
+            costumerCard.CardNumber = CardNumber;
             string sql = "INSERT INTO Costumer_Card (card_number, cust_surname, cust_name, cust_patronymic, phone_number, city, street, \"index\", percentage) VALUES (@CardNumber, @CustSurname, @CustName, @CustPatronymic, @PhoneNumber, @City, @Street, @Index, @Percentage)";
             ExecuteNonQuery(sql, new SQLiteParameter("@CardNumber", costumerCard.CardNumber), new SQLiteParameter("@CustSurname", costumerCard.CustSurname), new SQLiteParameter("@CustName", costumerCard.CustName), new SQLiteParameter("@CustPatronymic", costumerCard.CustPatronymic), new SQLiteParameter("@PhoneNumber", costumerCard.PhoneNumber), new SQLiteParameter("@City", costumerCard.City), new SQLiteParameter("@Street", costumerCard.Street), new SQLiteParameter("@Index", costumerCard.Index), new SQLiteParameter("@Percentage", costumerCard.Percentage));
         }
         public void InsertEmployee(Employee employee)
         {
+            string IdEmployee;
+            do
+            {
+                IdEmployee = GenerateRandomString(10);
+            }
+            while (GetEmployeeById(IdEmployee) != null);
+            employee.IdEmployee = IdEmployee;
             string sql = "INSERT INTO Employee (id_employee, empl_surname, empl_name, empl_patronymic, empl_role, salary, date_of_birth, date_of_start, phone_number, city, street, zip_code) VALUES (@IdEmployee, @EmplSurname, @EmplName, @EmplPatronymic, @EmplRole, @Salary, @DateOfBirth, @DateOfStart, @PhoneNumber, @City, @Street, @ZipCode)";
             ExecuteNonQuery(sql, new SQLiteParameter("@IdEmployee", employee.IdEmployee), new SQLiteParameter("@EmplSurname", employee.EmplSurname), new SQLiteParameter("@EmplName", employee.EmplName), new SQLiteParameter("@EmplPatronymic", employee.EmplPatronymic), new SQLiteParameter("@EmplRole", employee.EmplRole), new SQLiteParameter("@Salary", employee.Salary), new SQLiteParameter("@DateOfBirth", employee.DateOfBirth), new SQLiteParameter("@DateOfStart", employee.DateOfStart), new SQLiteParameter("@PhoneNumber", employee.PhoneNumber), new SQLiteParameter("@City", employee.City), new SQLiteParameter("@Street", employee.Street), new SQLiteParameter("@ZipCode", employee.ZipCode));
         }
@@ -797,5 +818,22 @@ namespace SupermarketDAL.DB
             string sql = "DELETE FROM Employee WHERE id_employee = @employeeId";
             ExecuteNonQuery(sql, new SQLiteParameter("@employeeId", employeeId));
         }
-	}
+
+        static string GenerateRandomString(int length)
+        {
+            Random random = new Random();
+
+            string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+            StringBuilder stringBuilder = new StringBuilder();
+
+            for (int i = 0; i < length; i++)
+            {
+                char randomChar = chars[random.Next(chars.Length)];
+                stringBuilder.Append(randomChar);
+            }
+
+            return stringBuilder.ToString();
+        }
+    }
 }
