@@ -27,6 +27,23 @@ namespace SupermarketDAL
             if (amount == 0) Console.WriteLine("0");
             else Console.WriteLine(amount);
             Console.WriteLine(dbHelper.GetTotalSoldProductsForProducer("Pizza Hut"));
+
+            foreach (var category in dbHelper.GetEmployeesWithoutUserAccountAndSales())
+            {
+                Console.WriteLine($"Employee: {category}");
+            }
+            Console.WriteLine($"---");
+            foreach (var category in dbHelper.GetProductWithoutEmployeeSurnameAndProduceNameStatsWithSelectedLetter("J"))
+            {
+                Console.WriteLine($"Employee: {category}");
+            }
+            Console.WriteLine($"---");
+            foreach(var category in dbHelper.GetEmployeesWithoutSalesInCategory("Food"))
+            {
+                Console.WriteLine($"Employee: {category}");
+            }
+
+
         }
 
         static void TestGetsList(DatabaseHelper dbHelper)
@@ -163,12 +180,15 @@ namespace SupermarketDAL
             var employee = dbHelper.GetEmployeeById(id);
             if (employee != null)
             {
+                employee.EmplSurname = "ASDdas";
+                dbHelper.UpdateEmployee(employee);
                 Console.WriteLine($"Employee found: {employee.EmplName} {employee.EmplSurname}");
             }
             else
             {
                 Console.WriteLine("Employee not found.");
             }
+            
         }
 
         static void TestGetProductById(DatabaseHelper dbHelper, int id)

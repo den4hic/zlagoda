@@ -438,6 +438,7 @@ namespace SupermarketDAL.DB
             ExecuteNonQuery("INSERT INTO Sale (UPC, check_number, product_number, selling_price) VALUES ('987654321098', 'CHECK002', 2, 699.99);");
 
             ExecuteNonQuery("INSERT INTO \"Check\" (check_number, id_employee, card_number, print_date, sum_total, vat) VALUES ('CHECK001', 'EMP001', NULL, '2024-04-04', 50.00, 5.00);");
+            ExecuteNonQuery("INSERT INTO \"Check\" (check_number, id_employee, card_number, print_date, sum_total, vat) VALUES ('CHECK003', 'EMP001', NULL, DATE('now'), 50.00, 5.00);");
             ExecuteNonQuery("INSERT INTO \"Check\" (check_number, id_employee, card_number, print_date, sum_total, vat) VALUES ('CHECK002', 'EMP002', '9876543210987', '2024-04-04', 699.99, 69.99);");
 
             ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (2, 'Burger', 'McDonalds', 'Big Mac with fries');");
@@ -637,6 +638,101 @@ namespace SupermarketDAL.DB
             ExecuteNonQuery(sql, new SQLiteParameter("@Username", userAccount.Username), new SQLiteParameter("@HashedPassword", userAccount.HashedPassword), new SQLiteParameter("@IdEmployee", userAccount.IdEmployee));
         }
 
+
+        public List<Employee> GetEmployeesWithoutUserAccountAndSales()
+        {
+            string sql = @"
+                SELECT *
+                FROM Employee e
+                WHERE NOT EXISTS (
+                    SELECT *
+                    FROM User_Account ua
+                    WHERE ua.id_employee = e.id_employee
+                )
+                OR e.id_employee NOT IN (
+                    SELECT c.id_employee
+                    FROM ""Check"" c
+                );
+            ";
+            return ExecuteQuery(sql, reader => new Employee
+            {
+                IdEmployee = reader["id_employee"].ToString(),
+                EmplSurname = reader["empl_surname"].ToString(),
+                EmplName = reader["empl_name"].ToString(),
+                EmplPatronymic = reader["empl_patronymic"].ToString(),
+                EmplRole = reader["empl_role"].ToString(),
+                Salary = Convert.ToDecimal(reader["salary"]),
+                DateOfBirth = Convert.ToDateTime(reader["date_of_birth"]),
+                DateOfStart = Convert.ToDateTime(reader["date_of_start"]),
+                PhoneNumber = reader["phone_number"].ToString(),
+                City = reader["city"].ToString(),
+                Street = reader["street"].ToString(),
+                ZipCode = reader["zip_code"].ToString()
+            }).ToList();
+        }
+        public List<Product> GetProductWithoutEmployeeSurnameAndProduceNameStatsWithSelectedLetter(string letter)
+        {
+  
+            string sql = @"
+                SELECT *
+                FROM Product p
+                JOIN Store_Product sp ON sp.id_product = p.id_product
+                WHERE sp.UPC NOT IN (
+                    SELECT s.UPC
+                    From Sale s
+                    WHERE s.check_number IN (
+                        SELECT c.check_number
+                        FROM ""Check"" c
+                        JOIN Employee e ON e.id_employee = c.id_employee
+                        WHERE e.empl_surname LIKE @letter
+                    )
+                ) AND p.producer NOT LIKE @letter
+            ";
+
+            return ExecuteQuery(sql, reader => new Product
+            {
+                IdProduct = reader.GetInt32(0),
+                CategoryNumber = reader.GetInt32(1),
+                ProductName = reader.GetString(2),
+                Producer = reader.GetString(3),
+                Characteristics = reader.GetString(4)
+            }, new SQLiteParameter("@letter", letter)).ToList();
+        }
+
+        public List<Employee> GetEmployeesWithoutSalesInCategory(string categoryName)
+        {
+            string sql = @"
+                SELECT DISTINCT *
+                FROM Employee e
+                WHERE e.id_employee NOT IN (
+                    SELECT DISTINCT c.id_employee
+                    FROM Sale s
+                    INNER JOIN Product p ON s.product_number = p.id_product
+                    INNER JOIN ""Check"" c ON s.check_number = c.check_number
+                    WHERE p.category_number NOT IN (
+                        SELECT category_number
+                        FROM Category
+                        WHERE category_name = @CategoryName
+                    )
+                );
+            ";
+
+            return ExecuteQuery(sql, reader => new Employee
+            {
+                IdEmployee = reader["id_employee"].ToString(),
+                EmplSurname = reader["empl_surname"].ToString(),
+                EmplName = reader["empl_name"].ToString(),
+                EmplPatronymic = reader["empl_patronymic"].ToString(),
+                EmplRole = reader["empl_role"].ToString(),
+                Salary = Convert.ToDecimal(reader["salary"]),
+                DateOfBirth = Convert.ToDateTime(reader["date_of_birth"]),
+                DateOfStart = Convert.ToDateTime(reader["date_of_start"]),
+                PhoneNumber = reader["phone_number"].ToString(),
+                City = reader["city"].ToString(),
+                Street = reader["street"].ToString(),
+                ZipCode = reader["zip_code"].ToString()
+            }, new SQLiteParameter("@CategoryName", categoryName)).ToList();
+        }
 
 
 
