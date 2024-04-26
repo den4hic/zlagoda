@@ -122,7 +122,21 @@
                             <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" Width="*"/>
                             <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" Width="*"/>
                             <DataGridTextColumn Header="Patronymic Name" Binding="{Binding PatronymicName}" Width="*"/>
-                            <DataGridTextColumn Header="Position" Binding="{Binding Position}" Width="*"/>
+                            <DataGridTemplateColumn Header="Position">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Position}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                       <ComboBox SelectionChanged="PositionEmployeeGridComboBox_SelectionChanged" IsEditable="True">
+                                            <ComboBoxItem Content="Manager"/>
+                                            <ComboBoxItem Content="Cashier"/>
+                                        </ComboBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
                             <DataGridTextColumn Header="Salary" Binding="{Binding Salary}" Width="*"/>
                             <DataGridTextColumn Header="Date of Work Start" Binding="{Binding WorkStartDate}" Width="*"/>
                             <DataGridTextColumn Header="Date of Birth" Binding="{Binding BirthDate}" Width="*"/>

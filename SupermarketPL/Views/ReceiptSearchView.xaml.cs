@@ -1,5 +1,6 @@
 using SupermarketDAL.DB;
 using SupermarketDAL.Entities;
+using SupermarketPL.Model;
 using System.Windows;
 
 namespace SupermarketPL.Views
@@ -9,21 +10,18 @@ namespace SupermarketPL.Views
     {
         private DatabaseHelper dbHelper;
 
-        public ReceiptIdSearchView()
+        public ReceiptIdSearchView(Check check, List<BasketGoods> goods)
         {
             InitializeComponent();
             dbHelper = new DatabaseHelper("../../../../SupermarketDAL/zlagoda.db");
-            FillReceiptInfo();
+			FillReceiptInfo(check, goods);
         }
 
-        private void FillReceiptInfo()
+        private void FillReceiptInfo(Check check, List<BasketGoods> goods)
         {
-
-            //тут треба прийняти чек і вивести його дані
-            //dateLabel.Content = receipt.Date.ToString();
-            //totalCostLabel.Content = receipt.TotalCost.ToString();
-            //Тут треба вивести всі товари з чека
-            //goodsDataGrid.ItemsSource = receipt.Goods;
+            dateLabel.Content = check.PrintDate.ToString();
+            totalCostLabel.Content = check.SumTotal.ToString();
+            goodsDataGrid.ItemsSource = goods;
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)

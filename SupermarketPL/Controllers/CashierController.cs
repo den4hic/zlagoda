@@ -150,4 +150,52 @@ public class CashierController
 
 		return result;
 	}
+
+	public CustomerCard GetCustomerCardByNumber(string cardNumber)
+	{
+		return dbHelper.GetCustomerCardByNumber(cardNumber);
+	}
+
+	public void AddCheck(Check check)
+	{
+		dbHelper.InsertCheck(check);
+	}
+
+	public void AddSale(Sale sale)
+	{
+		dbHelper.InsertSale(sale);	
+	}
+
+	public StoreProduct GetGoodsByUPC(string upc)
+	{
+		return dbHelper.GetStoreProductByUPC(upc);
+	}
+
+	public void UpdateStoreProduct(StoreProduct storeProduct)
+	{
+		dbHelper.UpdateStoreProduct(storeProduct.UPC, storeProduct.UPC_prom, storeProduct.IdProduct, storeProduct.SellingPrice, storeProduct.ProductsNumber, storeProduct.PromotionalProduct);
+	}
+
+	public List<ReportGoodsModel> GetChecksByEmplId(string emplId)
+	{
+		var checks = dbHelper.GetChecksList();
+
+		List<ReportGoodsModel> result = new List<ReportGoodsModel>();
+
+		foreach (var item in checks)
+		{
+			if(item.IdEmployee != emplId)
+			{
+				continue;
+			}
+			result.Add(new ReportGoodsModel()
+			{
+				ReceiptNumber = item.CheckNumber,
+				TotalCost = item.SumTotal,
+				Date = item.PrintDate
+			});
+		}
+
+		return result;
+	}
 }

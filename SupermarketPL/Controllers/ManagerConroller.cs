@@ -47,6 +47,7 @@ public class ManagerController
 	public void UpdateEmployee(EmployeeModel employee)
 	{
 		dbHelper.UpdateEmployee(new Employee(){
+			IdEmployee = employee.EmployeeId,
 			EmplName = employee.FirstName,
 			EmplSurname = employee.LastName,
 			EmplPatronymic = employee.PatronymicName,
