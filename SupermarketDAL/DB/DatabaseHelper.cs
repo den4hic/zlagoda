@@ -468,6 +468,76 @@ namespace SupermarketDAL.DB
             ExecuteNonQuery("INSERT INTO User_Account (username, hashed_password, id_employee) VALUES ('user123', '2b53b02df672eadf4fa638e008aae8af5623bb656c062c3201f56dd9f32ec990', 'EMP001');");
             ExecuteNonQuery("INSERT INTO User_Account (username, hashed_password, id_employee) VALUES ('employee456', '8687859fd2b7fd63eb634212a78586727ffd3bfa5158fc60b88b3a7a8c25ded5', 'EMP002');");
 
+            ExecuteNonQuery(@"INSERT INTO Employee (id_employee, empl_surname, empl_name, empl_role, salary, date_of_birth, date_of_start, phone_number, city, street, zip_code)
+            VALUES
+                ('EMP003', 'Adams', 'Alice', 'Cashier', 2500.00, '1995-06-20', '2016-02-15', '777888999', 'San Francisco', 'Market St', '12345'),
+                ('EMP004', 'Baker', 'Bob', 'Manager', 6000.00, '1985-08-30', '2011-05-10', '999111222', 'Seattle', 'Pike St', '67890'),
+                ('EMP005', 'Clark', 'Charlie', 'Cashier', 2200.00, '1992-04-15', '2013-07-20', '888999000', 'Portland', 'Powell St', '54321'),
+                ('EMP006', 'Davis', 'Diana', 'Manager', 5500.00, '1988-02-25', '2012-09-05', '111222333', 'Denver', 'Larimer St', '12345'),
+                ('EMP007', 'Evans', 'Eva', 'Cashier', 2300.00, '1991-10-10', '2014-03-20', '444555666', 'Austin', 'Congress Ave', '67890'),
+                ('EMP008', 'Foster', 'Frank', 'Manager', 6200.00, '1987-01-05', '2010-08-15', '777888999', 'Houston', 'Westheimer Rd', '12345'),
+                ('EMP009', 'Garcia', 'Grace', 'Cashier', 2400.00, '1990-07-30', '2015-01-20', '999111222', 'Miami', 'Biscayne Blvd', '67890'),
+                ('EMP010', 'Harris', 'Hannah', 'Manager', 5800.00, '1986-09-25', '2011-12-10', '888999000', 'Orlando', 'South Orange Ave', '54321'),
+                ('EMP011', 'Irwin', 'Isaac', 'Cashier', 2600.00, '1993-05-15', '2014-07-25', '111222333', 'Tampa', 'North Franklin St', '12345'),
+                ('EMP012', 'Jackson', 'Jack', 'Manager', 6300.00, '1989-03-30', '2012-10-15', '444555666', 'Atlanta', 'Peachtree St', '67890');
+            ");
+            ExecuteNonQuery(@"INSERT INTO ""Check"" (check_number, id_employee, card_number, print_date, sum_total, vat)
+VALUES
+    ('CHECK004', 'EMP003', NULL, '2024-04-05', 30.00, 3.00),
+    ('CHECK005', 'EMP004', NULL, '2024-04-06', 60.00, 6.00),
+    ('CHECK006', 'EMP005', NULL, '2024-04-07', 35.00, 3.50),
+    ('CHECK007', 'EMP006', NULL, '2024-04-08', 70.00, 7.00),
+    ('CHECK008', 'EMP007', NULL, '2024-04-09', 40.00, 4.00),
+    ('CHECK009', 'EMP008', NULL, '2024-04-10', 80.00, 8.00),
+    ('CHECK010', 'EMP009', NULL, '2024-04-11', 45.00, 4.50),
+    ('CHECK011', 'EMP010', NULL, '2024-04-12', 90.00, 9.00),
+    ('CHECK012', 'EMP011', NULL, '2024-04-13', 50.00, 5.00),
+    ('CHECK013', 'EMP012', NULL, '2024-04-14', 100.00, 10.00),
+    ('CHECK014', 'EMP003', NULL, '2024-04-15', 55.00, 5.50),
+    ('CHECK015', 'EMP004', NULL, '2024-04-16', 110.00, 11.00),
+    ('CHECK016', 'EMP005', NULL, '2024-04-17', 60.00, 6.00),
+    ('CHECK017', 'EMP006', NULL, '2024-04-18', 120.00, 12.00),
+    ('CHECK018', 'EMP007', NULL, '2024-04-19', 65.00, 6.50),
+    ('CHECK019', 'EMP008', NULL, '2024-04-20', 130.00, 13.00),
+    ('CHECK020', 'EMP009', NULL, '2024-04-21', 70.00, 7.00),
+    ('CHECK021', 'EMP010', NULL, '2024-04-22', 75.00, 7.50),
+    ('CHECK022', 'EMP011', NULL, '2024-04-23', 140.00, 14.00),
+    ('CHECK023', 'EMP012', NULL, '2024-04-24', 80.00, 8.00),
+    ('CHECK024', 'EMP003', NULL, '2024-04-25', 85.00, 8.50),
+    ('CHECK025', 'EMP004', NULL, '2024-04-26', 150.00, 15.00),
+    ('CHECK026', 'EMP005', NULL, '2024-04-27', 90.00, 9.00),
+    ('CHECK027', 'EMP006', NULL, '2024-04-28', 160.00, 16.00),
+    ('CHECK028', 'EMP007', NULL, '2024-04-29', 95.00, 9.50);
+");
+            ExecuteNonQuery(@"INSERT INTO Sale (UPC, check_number, product_number, selling_price)
+VALUES
+    ('111111111111', 'CHECK004', 3, 1299.99),
+    ('222222222222', 'CHECK005', 4, 199.99),
+    ('333333333333', 'CHECK006', 5, 19.99),
+    ('444444444444', 'CHECK007', 6, 7.99),
+    ('555555555555', 'CHECK008', 7, 249.99),
+    ('666666666666', 'CHECK009', 8, 49.99),
+    ('777777777777', 'CHECK010', 9, 899.99),
+    ('888888888888', 'CHECK011', 10, 29.99),
+    ('999999999999', 'CHECK012', 11, 39.99),
+('000000000000', 'CHECK013', 12, 29.99),
+('111111111111', 'CHECK014', 3, 1299.99),
+('222222222222', 'CHECK015', 4, 199.99),
+('333333333333', 'CHECK016', 5, 19.99),
+('444444444444', 'CHECK017', 6, 7.99),
+('555555555555', 'CHECK018', 7, 249.99),
+('666666666666', 'CHECK019', 8, 49.99),
+('777777777777', 'CHECK020', 9, 899.99),
+('888888888888', 'CHECK021', 10, 29.99),
+('999999999999', 'CHECK022', 11, 39.99),
+('000000000000', 'CHECK023', 12, 29.99),
+('111111111111', 'CHECK024', 3, 1299.99),
+('222222222222', 'CHECK025', 4, 199.99),
+('333333333333', 'CHECK027', 5, 19.99),
+('444444444444', 'CHECK027', 6, 7.99),
+('555555555555', 'CHECK028', 7, 249.99),
+('666666666666', 'CHECK028', 8, 49.99),
+('777777777777', 'CHECK028', 9, 899.99);");
         }
         public void ResetDatabase()
         {
