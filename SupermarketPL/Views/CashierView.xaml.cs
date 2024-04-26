@@ -12,12 +12,12 @@ namespace SupermarketPL.Views
     {
 		private Employee _employee;
         private CashierController controller;
-        private ObservableCollection<Goods> _goodsList = new ObservableCollection<Goods>();
-        private ObservableCollection<Category> _categoriesList = new ObservableCollection<Category>();
-        private ObservableCollection<CustomerModel> _customersList = new ObservableCollection<CustomerModel>();
+		private ObservableCollection<Goods> _goodsList = new ObservableCollection<Goods>();
+		private List<CategoryModel> _categories;
 		private List<ReportGoodsModel> _reportGoodsModels;
 		List<GoodsInStockModel> goodsInBasketList;
 		private List<Goods> _updatedGoodsList;
+		private ObservableCollection<CustomerModel> _customersList = new ObservableCollection<CustomerModel>();
 		private ObservableCollection<GoodsInStockModel> _stocks = new ObservableCollection<GoodsInStockModel>();
 		private ObservableCollection<BasketGoods> _basketGoods = new ObservableCollection<BasketGoods>();
 		private ObservableCollection<ReportGoodsModel> _reportGoodsList = new ObservableCollection<ReportGoodsModel>();
@@ -48,15 +48,13 @@ namespace SupermarketPL.Views
 
 
 			List<CustomerModel> customersList = controller.GetCustomers();
-			
 
 			foreach (var item in customersList)
 			{
 				_customersList.Add(item);
 			}
-
-
-			customerDataGrid.ItemsSource = _customersList;
+			
+			customerDataGrid.ItemsSource = customersList;
 			customerDataGrid.CellEditEnding += CustomerDataGrid_CellEditEnding;
 
 
@@ -155,7 +153,7 @@ namespace SupermarketPL.Views
 					}
 					return;
 				}
-				List<GoodsInStockModel> stocks = controller.GetGoodsInStockByCategory(comboBox.SelectedIndex - 1);
+				List<GoodsInStockModel> stocks = controller.GetGoodsInStockByCategory(comboBox.SelectedIndex);
 				_stocks.Clear();
 
 				foreach (var item in stocks)
@@ -415,7 +413,7 @@ namespace SupermarketPL.Views
 		}
 		private void AddButton_Click(object sender, RoutedEventArgs e)
 		{
-			CashierAddCustomerView addCustomerView = new CashierAddCustomerView(_customersList,controller);
+			CashierAddCustomerView addCustomerView = new CashierAddCustomerView(_customersList, controller);
 			addCustomerView.Show();
 		}
 		private void EditButton_Click(object sender, RoutedEventArgs e)

@@ -11,11 +11,11 @@ public partial class CashierAddCustomerView : Window
     private ObservableCollection<CustomerModel> customersList { get; set; }
     private CashierController controller;
 
-    public CashierAddCustomerView(ObservableCollection<CustomerModel> customersList,CashierController controller)
+    public CashierAddCustomerView(ObservableCollection<CustomerModel> customersList, CashierController controller)
     {
         InitializeComponent();
         this.customersList = customersList;
-        this.controller = controller;
+
     }
    
     private void AddButton_Click(object sender, RoutedEventArgs e)
@@ -40,7 +40,21 @@ public partial class CashierAddCustomerView : Window
             MessageBox.Show("Please enter a valid integer value for discount.");
             return;
         }
+
+        ManagerController controller = new ManagerController();
         
+        CustomerCard newCustomerCard = new CustomerCard
+        {
+            CardNumber = cardNumber,
+            CustSurname = firstName,
+            CustName = lastName,
+            CustPatronymic = patronymicName,
+            PhoneNumber = phoneNumber,
+            City = city,
+            Street = street,
+            Index = index,
+            Percentage = discount
+        };
 
         CustomerModel newCustomer = new CustomerModel
         {

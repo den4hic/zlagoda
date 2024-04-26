@@ -172,7 +172,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Content="Search" Grid.Column="0" Width="75" Height="25" Margin="0,0,5,80" Click="UPC_Search_Click"/>
+            <Button Content="Search" Grid.Column="0" Width="75" Height="25" Margin="0,0,5,80" Click="SearchFromDateToDate_Click"/>
             <Button Content="Profile" Grid.Column="0" Width="75" Height="25" Margin="0,0,5,0" Click="ProfileButton_Click"/>
         </Grid>
     </Grid>
