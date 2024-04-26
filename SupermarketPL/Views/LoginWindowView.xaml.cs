@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using System.Windows;
 using SupermarketDAL.DB;
 using SupermarketDAL.Entities;
@@ -18,15 +20,11 @@ namespace SupermarketPL.Views
         {
             string username = usernameTextBox.Text;
             string password = passwordBox.Password;
-
-            // Hash the password
             string hashedPassword = HashPassword(password);
 
-            // Check the credentials
             Employee employee = dbHelper.GetEmployeeByUsernameAndPassword(username, hashedPassword);
             if (employee != null)
             {
-                // Open the ManagerView or CashierView based on the role of the user
                 if (employee.EmplRole == "Manager")
                 {
                     ManagerView managerView = new ManagerView();
@@ -46,9 +44,21 @@ namespace SupermarketPL.Views
             }
         }
 
+        
+
         private string HashPassword(string password)
         {
-            return password;
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
+
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
         }
     }
 }

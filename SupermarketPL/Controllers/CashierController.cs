@@ -129,7 +129,7 @@ public class CashierController
 
 	public List<GoodsInStockModel> GetGoodsInStockByCategory(int categoryId)
 	{
-		var goodsInStock = dbHelper.GetGoodsInStockByCategory(categoryId);
+		var goodsInStock = dbHelper.GetGoodsListByCategoryID(categoryId);
 
 		List<GoodsInStockModel> result = new List<GoodsInStockModel>();
 

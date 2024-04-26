@@ -1,0 +1,33 @@
+<Window x:Class="SupermarketPL.Views.ReceiptIdSearchView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Receipt ID Search" Height="300" Width="400" ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Label Content="Date:" Grid.Row="0" Grid.Column="0"/>
+        <Label x:Name="dateLabel" Grid.Row="0" Grid.Column="1"/>
+
+        <Label Content="Total Cost:" Grid.Row="1" Grid.Column="0"/>
+        <Label x:Name="totalCostLabel" Grid.Row="1" Grid.Column="1"/>
+
+        <DataGrid x:Name="goodsDataGrid" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
+                <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="*"/>
+                <DataGridTextColumn Header="Total Cost" Binding="{Binding TotalCost}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Content="OK" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Click="OkButton_Click"/>
+    </Grid>
+</Window>
