@@ -417,8 +417,8 @@ namespace SupermarketDAL.DB
 
         public void PutTestsData()
         {
-            ExecuteNonQuery("INSERT INTO Category (category_name) VALUES ('Clothing');");
             ExecuteNonQuery("INSERT INTO Category (category_name) VALUES ('Electronics');");
+            ExecuteNonQuery("INSERT INTO Category (category_name) VALUES ('Food');");
 
             ExecuteNonQuery("INSERT INTO Costumer_Card (card_number, cust_surname, cust_name, phone_number, percentage) VALUES ('1234567890123', 'Smith', 'John', '123456789', 5);");
             ExecuteNonQuery("INSERT INTO Costumer_Card (card_number, cust_surname, cust_name, phone_number, city, street, \"index\", percentage) VALUES ('9876543210987', 'Doe', 'Jane', '987654321', 'New York', 'Broadway', '12345', 10);");
@@ -426,7 +426,7 @@ namespace SupermarketDAL.DB
             ExecuteNonQuery("INSERT INTO Employee (id_employee, empl_surname, empl_name, empl_role, salary, date_of_birth, date_of_start, phone_number, city, street, zip_code) VALUES ('EMP001', 'Johnson', 'Michael', 'Manager', 5000.00, '1980-05-15', '2010-01-01', '111222333', 'Los Angeles', 'Main St', '54321');");
             ExecuteNonQuery("INSERT INTO Employee (id_employee, empl_surname, empl_name, empl_role, salary, date_of_birth, date_of_start, phone_number, city, street, zip_code) VALUES ('EMP002', 'Brown', 'Emily', 'Cashier', 3000.00, '1990-10-20', '2015-03-15', '444555666', 'Chicago', 'Oak St', '67890');");
 
-            ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (0, 'Pizza', 'Pizza Hut', 'Large, Pepperoni');");
+            ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (2, 'Pizza', 'Pizza Hut', 'Large, Pepperoni');");
             ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (1, 'Smartphone', 'Samsung', '6.4\" Display, 128GB Storage');");
 
             ExecuteNonQuery("INSERT INTO Store_Product (UPC, id_product, selling_price, products_number, promotional_product) VALUES ('123456789012', 1, 10.99, 50, 0);");
@@ -438,16 +438,16 @@ namespace SupermarketDAL.DB
             ExecuteNonQuery("INSERT INTO \"Check\" (check_number, id_employee, card_number, print_date, sum_total, vat) VALUES ('CHECK001', 'EMP001', NULL, '2024-04-04', 50.00, 5.00);");
             ExecuteNonQuery("INSERT INTO \"Check\" (check_number, id_employee, card_number, print_date, sum_total, vat) VALUES ('CHECK002', 'EMP002', '9876543210987', '2024-04-04', 699.99, 69.99);");
 
-            ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (0, 'Burger', 'McDonalds', 'Big Mac with fries');");
-            ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (0, 'Salad', 'Subway', 'Vegetable salad with dressing');");
+            ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (2, 'Burger', 'McDonalds', 'Big Mac with fries');");
+            ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (2, 'Salad', 'Subway', 'Vegetable salad with dressing');");
             ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (1, 'Laptop', 'Apple', 'MacBook Pro 13 with Touch Bar');");
             ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (1, 'Headphones', 'Sony', 'Noise-cancelling wireless headphones');");
-            ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (0, 'Sushi', 'Sushi Bar', 'Assorted sushi rolls');");
-            ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (0, 'Sandwich', 'Starbucks', 'Chicken and avocado sandwich');");
+            ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (2, 'Sushi', 'Sushi Bar', 'Assorted sushi rolls');");
+            ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (2, 'Sandwich', 'Starbucks', 'Chicken and avocado sandwich');");
             ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (1, 'Smartwatch', 'Fitbit', 'Fitbit Versa 3 smartwatch');");
-            ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (0, 'Pasta', 'Italiano', 'Spaghetti carbonara');");
+            ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (2, 'Pasta', 'Italiano', 'Spaghetti carbonara');");
             ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (1, 'TV', 'Samsung', '55\" QLED 4K Smart TV');");
-            ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (0, 'Cake', 'Bakery', 'Chocolate fudge cake');");
+            ExecuteNonQuery("INSERT INTO Product (category_number, product_name, producer, characteristics) VALUES (2, 'Cake', 'Bakery', 'Chocolate fudge cake');");
 
             ExecuteNonQuery("INSERT INTO Store_Product (UPC, id_product, selling_price, products_number, promotional_product) VALUES ('111111111111', 3, 1299.99, 20, 0);");
             ExecuteNonQuery("INSERT INTO Store_Product (UPC, id_product, selling_price, products_number, promotional_product) VALUES ('222222222222', 4, 199.99, 30, 1);");
