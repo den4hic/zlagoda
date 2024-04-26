@@ -763,5 +763,10 @@ namespace SupermarketDAL.DB
                 Characteristics = reader.GetString(4)
             }, new SQLiteParameter("@UPC", upc)).FirstOrDefault();
         }
-    }
+
+		public void UpdateGoodsInStock(GoodsInStock goods)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

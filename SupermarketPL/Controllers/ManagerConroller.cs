@@ -371,6 +371,23 @@ public void CreateGoodsInStockPdf(List<GoodsInStockModel> goodsInStockList, stri
 
 		return result;
 	}
+
+	public void UpdateGoodsInStock(GoodsInStockModel goodsInStock)
+	{
+		GoodsInStock goods = new GoodsInStock()
+		{
+			IdProduct = goodsInStock.ProductId,
+			ProductName = goodsInStock.Name,
+			Producer = goodsInStock.Manufacturer,
+			Characteristics = goodsInStock.Characteristics,
+			UPC = goodsInStock.UPC,
+			SellingPrice = goodsInStock.Price,
+			ProductsNumber = goodsInStock.Quantity,
+			PromotionalProduct = goodsInStock.Discount
+		};
+
+		dbHelper.UpdateGoodsInStock(goods);
+	}
 	/*public void CreateReceiptsPdf(List<ReceiptModel> receiptsList, string outputPath)
 {
 Document document = new Document();

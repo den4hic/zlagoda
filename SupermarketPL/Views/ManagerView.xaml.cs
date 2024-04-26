@@ -161,7 +161,11 @@ namespace SupermarketPL.Views
 			receiptDataGrid.ItemsSource = _reportGoodsList;
 
 			upcSearchTextBox.TextChanged += SearchUpcTextBox_TextChanged;
+
+			goodsInStockDataGrid.CellEditEnding += GoodsInStockDataGrid_CellEditEnding;
 		}
+
+		
 
 		private void CategoriesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
@@ -289,6 +293,63 @@ namespace SupermarketPL.Views
 			selectedEmployee.Position = employeeRoleList[(sender as ComboBox).SelectedIndex];
 
 			controller.UpdateEmployee(selectedEmployee);
+		}
+
+		private void GoodsInStockDataGrid_CellEditEnding(object? sender, DataGridCellEditEndingEventArgs e)
+		{
+			if (e.EditAction == DataGridEditAction.Commit)
+			{
+				DataGrid grid = sender as DataGrid;
+
+				if (grid != null && e.Row != null && e.Column != null)
+				{
+					var editedElement = e.EditingElement as TextBox;
+
+					if (editedElement != null)
+					{
+						string updatedValue = editedElement.Text;
+						GoodsInStockModel goodsInStock = e.Row.Item as GoodsInStockModel;
+
+						if (goodsInStock != null)
+						{
+							string columnHeader = e.Column.Header.ToString();
+
+							switch (columnHeader)
+							{
+								case "Name":
+									goodsInStock.Name = updatedValue;
+									break;
+								case "Manufacturer":
+									goodsInStock.Manufacturer = updatedValue;
+									break;
+								case "Characteristics":
+									goodsInStock.Characteristics = updatedValue;
+									break;
+								case "UPC":
+									goodsInStock.UPC = updatedValue;
+									break;
+								case "Price":
+									if (decimal.TryParse(updatedValue, out decimal price))
+									{
+										goodsInStock.Price = price;
+									}
+									break;
+								case "Quantity":
+									if (int.TryParse(updatedValue, out int quantity))
+									{
+										goodsInStock.Quantity = quantity;
+									}
+									break;
+								case "Discount":
+									goodsInStock.Discount = (updatedValue == "True");
+									break;
+							}
+
+							controller.UpdateGoodsInStock(goodsInStock);
+						}
+					}
+				}
+			}
 		}
 
 		private void CustomerDataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
