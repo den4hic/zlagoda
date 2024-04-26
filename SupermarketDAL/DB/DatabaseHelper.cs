@@ -736,12 +736,32 @@ namespace SupermarketDAL.DB
 
 		public List<Sale> GetSalesListByCheckNumber(string receiptNumber)
 		{
-			throw new NotImplementedException();
-		}
+            string sql = @"SELECT * FROM Sale WHERE check_number = @CheckNumber";
+            return ExecuteQuery(sql, reader => new Sale
+            {
+                UPC = reader.GetString(0),
+                CheckNumber = reader.GetString(1),
+                ProductNumber = reader.GetInt32(2),
+                SellingPrice = reader.GetDecimal(3)
+            }, new SQLiteParameter("@CheckNumber", receiptNumber)).ToList();
+        }
 
-		public Product GetProductByUPC(string uPC)
+		public Product GetProductByUPC(string upc)
 		{
-			throw new NotImplementedException();
-		}
-	}
+            string sql = @"
+                SELECT p.*
+                FROM Product p
+                JOIN Store_Product sp ON p.id_product = sp.id_product
+                WHERE sp.UPC = @UPC";
+
+            return ExecuteQuery(sql, reader => new Product
+            {
+                IdProduct = reader.GetInt32(0),
+                CategoryNumber = reader.GetInt32(1),
+                ProductName = reader.GetString(2),
+                Producer = reader.GetString(3),
+                Characteristics = reader.GetString(4)
+            }, new SQLiteParameter("@UPC", upc)).FirstOrDefault();
+        }
+    }
 }
