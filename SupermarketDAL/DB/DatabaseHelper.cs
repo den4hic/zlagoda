@@ -194,7 +194,7 @@ namespace SupermarketDAL.DB
 
         public void UpdateCheck(string checkNumber, string idEmployee, string cardNumber, string printDate, decimal sumTotal, decimal vat)
         {
-            string sql = "UPDATE Check SET id_employee = @IdEmployee, card_number = @CardNumber, print_date = @PrintDate, sum_total = @SumTotal, vat = @Vat WHERE check_number = @CheckNumber";
+            string sql = "UPDATE \"Check\" SET id_employee = @IdEmployee, card_number = @CardNumber, print_date = @PrintDate, sum_total = @SumTotal, vat = @Vat WHERE check_number = @CheckNumber";
             ExecuteNonQuery(sql, new SQLiteParameter("@IdEmployee", idEmployee), new SQLiteParameter("@CardNumber", cardNumber), new SQLiteParameter("@PrintDate", printDate), new SQLiteParameter("@SumTotal", sumTotal), new SQLiteParameter("@Vat", vat), new SQLiteParameter("@CheckNumber", checkNumber));
         }
 
@@ -230,7 +230,7 @@ namespace SupermarketDAL.DB
 
         public void DeleteCheck(string checkNumber)
         {
-            string sql = "DELETE FROM Check WHERE check_number = @CheckNumber";
+            string sql = "DELETE FROM \"Check\" WHERE check_number = @CheckNumber";
             ExecuteNonQuery(sql, new SQLiteParameter("@CheckNumber", checkNumber));
         }
 
