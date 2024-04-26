@@ -5,6 +5,8 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections;
 
 public class ManagerController
 {
@@ -341,4 +343,96 @@ public void CreateGoodsInStockPdf(List<GoodsInStockModel> goodsInStockList, stri
 	{
 		dbHelper.InsertEmployee(employee);
 	}
+
+	public List<EmployeeModel> GetEmployeesWithoutSalesInCategory(string selectedItem)
+	{
+		var employees = dbHelper.GetEmployeesWithoutSalesInCategory(selectedItem);
+
+		List<EmployeeModel> result = new List<EmployeeModel>();
+
+		foreach (var item in employees)
+		{
+			result.Add(new EmployeeModel()
+			{
+				EmployeeId = item.IdEmployee,
+				LastName = item.EmplSurname,
+				FirstName = item.EmplName,
+				PatronymicName = item.EmplPatronymic,
+				Position = item.EmplRole,
+				Salary = item.Salary,
+				BirthDate = item.DateOfBirth,
+				WorkStartDate = item.DateOfStart,
+				PhoneNumber = item.PhoneNumber,
+				City = item.City,
+				Street = item.Street,
+				Index = item.ZipCode
+			});
+		}
+
+		return result;
+	}
+
+	public void DeleteEmployee(string employeeId)
+	{
+		dbHelper.DeleteEmployee(employeeId);
+	}
+
+	public List<EmployeeModel> GetEmployeesWithoutSalesAndAccount()
+	{
+		var employees = dbHelper.GetEmployeesWithoutUserAccountAndSales();
+
+		List<EmployeeModel> result = new List<EmployeeModel>();
+
+		foreach (var item in employees)
+		{
+			result.Add(new EmployeeModel()
+			{
+				EmployeeId = item.IdEmployee,
+				LastName = item.EmplSurname,
+				FirstName = item.EmplName,
+				PatronymicName = item.EmplPatronymic,
+				Position = item.EmplRole,
+				Salary = item.Salary,
+				BirthDate = item.DateOfBirth,
+				WorkStartDate = item.DateOfStart,
+				PhoneNumber = item.PhoneNumber,
+				City = item.City,
+				Street = item.Street,
+				Index = item.ZipCode
+			});
+		}
+
+		return result;
+	}
+
+	public List<ManufacturerAndSalesModel> GetTotalSoldProductsForProducer()
+	{
+		var list = dbHelper.GetTotalSoldProductsForProducer();
+
+		List<ManufacturerAndSalesModel> result = new List<ManufacturerAndSalesModel>();
+
+		foreach (var item in list)
+		{
+			result.Add(new ManufacturerAndSalesModel()
+			{
+				Producer = item.Producer,
+				ProductsNumber = item.ProductsNumber
+			});
+		}
+
+		return result;
+	}
+	/*public void CreateReceiptsPdf(List<ReceiptModel> receiptsList, string outputPath)
+{
+Document document = new Document();
+PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(outputPath, FileMode.Create));
+document.Open();
+
+PdfPTable table = new PdfPTable(4); // 4 columns for ReceiptId, CustomerId, Date, Total
+
+foreach (var receipt in receiptsList)
+{
+table.AddCell(receipt.ReceiptId.ToString());
+table.AddCell(receipt.Date.ToString());
+table.AddCell(receipt.Total.ToString());
 }

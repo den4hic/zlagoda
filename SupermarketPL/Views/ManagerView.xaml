@@ -159,9 +159,10 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Button Content="Add" Grid.Column="0" Width="75" Height="25" Margin="0,0,5,80" Click="AddEmployee_Click"/>
-                        <Button Content="Edit" Grid.Column="1" Width="75" Height="25" Margin="5,0,0,80" Click="EditEmployee_Click"/>
-                        <Button Content="Delete" Grid.Column="0" Width="75" Height="25" Margin="0,0,5,10"/>
+                        <Button Content="Delete" Grid.Column="1" Width="75" Height="25" Margin="5,0,0,80" Click="DeleteEmployee_Click"/>
+                        <ComboBox x:Name="categoryNotSold" Grid.Column="0"  Margin="0,0,5,10" Width="75" Height="25"/>
                         <Button Content="Print" Grid.Column="1" Width="75" Height="25" Margin="5,0,0,10" Click="PrintEmployeesButton_Click"/>
+                        <CheckBox x:Name="checkBoxNoAccoundNoSold" Grid.Column="0" Margin="5,70,5,10" Content="No account and sales" IsChecked="False"/>
                     </Grid>
                 </Grid>
             
@@ -243,13 +244,12 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Advanced statistics">
-                <TabControl>
-                    <TabItem Header="Category advanced">
-                        <DataGrid x:Name="categoryAdvancedDataGrid" Margin="10,10,10,20" Grid.Column="0" AutoGenerateColumns="False" ItemsSource="{Binding CategoryAdvancedList}">
+                <TabControl Loaded="TabControl_Loaded">
+                    <TabItem Header="Manufacturer advanced">
+                        <DataGrid x:Name="manufacturerAdvancedDataGrid" Margin="10,10,10,20" Grid.Column="0" AutoGenerateColumns="False" ItemsSource="{Binding ManufacturerAdvanced}">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Category name" Binding="{Binding CategoryName}" Width="*" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Total checks" Binding="{Binding TotalChecks}" Width="*"/>
-                                <DataGridTextColumn Header="Total sales" Binding="{Binding TotalSales}" Width="*"/>
+                                <DataGridTextColumn Header="Manufacturer name" Binding="{Binding Producer}" Width="*" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Total products" Binding="{Binding ProductsNumber}" Width="*" IsReadOnly="True"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </TabItem>

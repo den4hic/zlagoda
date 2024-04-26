@@ -163,9 +163,74 @@ namespace SupermarketPL.Views
 			upcSearchTextBox.TextChanged += SearchUpcTextBox_TextChanged;
 
 			goodsInStockDataGrid.CellEditEnding += GoodsInStockDataGrid_CellEditEnding;
+
+			categoryNotSold.ItemsSource = _categoriesNameList;
+			categoryNotSold.SelectionChanged += CategoryNotSold_SelectionChanged;
+
+			checkBoxNoAccoundNoSold.Click += CheckBoxNoAccoundNoSold_Checked;
+
+			
 		}
 
-		
+		private void TabControl_Loaded(object sender, RoutedEventArgs e)
+		{
+			List<ManufacturerAndSalesModel> manufacturerAdvanced = controller.GetTotalSoldProductsForProducer();
+			manufacturerAdvancedDataGrid.ItemsSource = manufacturerAdvanced;
+		}
+
+
+		private void CheckBoxNoAccoundNoSold_Checked(object sender, RoutedEventArgs e)
+		{
+			var checkBox = sender as CheckBox;
+
+			if (checkBox.IsChecked == true)
+			{
+				List<EmployeeModel> newEmployeesModels = controller.GetEmployeesWithoutSalesAndAccount();
+				_employeeModelList.Clear();
+
+				foreach (var item in newEmployeesModels)
+				{
+					_employeeModelList.Add(item);
+				}
+			}
+			else
+			{
+				_employeeModelList.Clear();
+
+				foreach (var item in employeeModels)
+				{
+					_employeeModelList.Add(item);
+				}
+			}
+		}
+
+		private void CategoryNotSold_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			ComboBox comboBox = sender as ComboBox;
+			string selectedCategory = comboBox.SelectedItem as string;
+
+			if (selectedCategory != null)
+			{
+				if (selectedCategory == "All")
+				{
+					_employeeModelList.Clear();
+
+					foreach (var item in employeeModels)
+					{
+						_employeeModelList.Add(item);
+					}
+					return;
+				}
+				List<EmployeeModel> newEmployeesModels = controller.GetEmployeesWithoutSalesInCategory(selectedCategory);
+				_employeeModelList.Clear();
+
+				foreach (var item in newEmployeesModels)
+				{
+
+					_employeeModelList.Add(item);
+				}
+			}
+		}
 
 		private void CategoriesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
@@ -813,6 +878,26 @@ namespace SupermarketPL.Views
 				}
 
 				controller.DeleteCheck(selectedReceipt.ReceiptNumber);
+			}
+		}
+
+		private void DeleteEmployee_Click(object sender, RoutedEventArgs e)
+		{
+			var selectedEmployee = employeeDataGrid.SelectedItem as EmployeeModel;
+
+			if (selectedEmployee != null)
+			{
+				if(_employee.IdEmployee == selectedEmployee.EmployeeId)
+				{
+					MessageBox.Show("You can't delete yourself");
+					return;
+				}
+				if (_employeeModelList.Contains(selectedEmployee))
+				{
+					_employeeModelList.Remove(selectedEmployee);
+				}
+
+				controller.DeleteEmployee(selectedEmployee.EmployeeId);
 			}
 		}
 	}
