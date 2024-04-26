@@ -23,11 +23,13 @@ namespace SupermarketDAL
             {
                 Console.WriteLine($"Employee: {category}");
             }
-            var amount = dbHelper.GetTotalSoldProductsForProducer("Apple");
-            if (amount == 0) Console.WriteLine("0");
-            else Console.WriteLine(amount);
-            Console.WriteLine(dbHelper.GetTotalSoldProductsForProducer("Pizza Hut"));
-
+            var amount = dbHelper.GetTotalSoldProductsForProducer();
+            Console.WriteLine($"+++");
+            foreach (var i in amount)
+            {
+                Console.WriteLine(i);
+            }
+            Console.WriteLine($"+++");
             foreach (var category in dbHelper.GetEmployeesWithoutUserAccountAndSales())
             {
                 Console.WriteLine($"Employee: {category}");
@@ -212,7 +214,6 @@ namespace SupermarketDAL
             if (check != null)
             {
                 Console.WriteLine($"Check found: {check.CheckNumber}");
-                dbHelper.DeleteCheck(checkNumber);
             }
             else
             {
