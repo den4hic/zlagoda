@@ -62,7 +62,7 @@ namespace SupermarketDAL.DB
                     {
                         command.Parameters.Add(parameter);
                     }
-                    
+
                     return command.ExecuteNonQuery();
                 }
             }
@@ -538,44 +538,49 @@ namespace SupermarketDAL.DB
             throw new NotImplementedException();
         }
 
-        public (int TotalChecks, int TotalSales) GetProductSoldNumberByCategoryID(int categoryId)
+        public List<(string Producer, int TotalChecks, int TotalSales)> GetProductSoldNumberByCategoryIDAndGroupedByProducer(int categoryId)
         {
-            string sql = @"SELECT COUNT(S.check_number) AS total_checks, SUM(S.product_number) AS total_sold
+            string sql = @"
+                SELECT P.producer, COUNT(S.check_number) AS total_checks, SUM(S.product_number) AS total_sold
                 FROM Category C
                 JOIN Product P ON C.category_number = P.category_number
                 JOIN Sale S ON P.id_product = S.product_number
                 WHERE C.category_number = @categoryId
-                GROUP BY C.category_name;";
+                GROUP BY P.producer;
+                ";
             return ExecuteQuery(sql, reader => (
+                Producer: Convert.ToString(reader["producer"]),
                 TotalChecks: Convert.ToInt32(reader["total_checks"]),
                 TotalSales: Convert.ToInt32(reader["total_sold"])
-            ), new SQLiteParameter("@categoryId", categoryId)).FirstOrDefault();
+            ), new SQLiteParameter("@categoryId", categoryId)).ToList();
         }
 
-        public List<(string EmployeeSurname, string EmployeeName, string CustomerSurname, string CustomerName, int TotalSharedSales)> GetEmployeesAndCustomersWithMaxSharedSales()
+        public List<(string EmployeeId, string EmployeeSurname, string EmployeeName, string CustomerSurname, string CustomerName, string CustomerCardNumber, int TotalSharedSales)> GetEmployeesAndCustomersWithMaxSharedSales()
         {
             string sql = @"
-                SELECT E.empl_surname, E.empl_name, CC.cust_surname, CC.cust_name, COUNT(C.check_number) AS total_shared_sales
+                SELECT E.id_employee, E.empl_surname, E.empl_name, CC.cust_surname, CC.cust_name, CC.card_number, COUNT(C.check_number) AS total_shared_sales
                 FROM Employee E
                 JOIN ""Check"" C ON E.id_employee = C.id_employee
                 JOIN Costumer_Card CC ON C.card_number = CC.card_number
-                GROUP BY E.empl_surname, E.empl_name, CC.cust_surname, CC.cust_name
+                GROUP BY E.id_employee, E.empl_surname, E.empl_name, CC.cust_surname, CC.cust_name, CC.card_number
                 HAVING COUNT(C.check_number) = (
                     SELECT MAX(shared_sales) FROM (
                         SELECT COUNT(C.check_number) AS shared_sales
                         FROM Employee E
                         JOIN ""Check"" C ON E.id_employee = C.id_employee
                         JOIN Costumer_Card CC ON C.card_number = CC.card_number
-                        GROUP BY E.empl_surname, E.empl_name, CC.cust_surname, CC.cust_name
+                        GROUP BY E.id_employee, E.empl_surname, E.empl_name, CC.cust_surname, CC.cust_name, CC.card_number
                     )
                 );
             ";
 
             return ExecuteQuery(sql, reader => (
+                EmployeeId: reader["id_employee"].ToString(),
                 EmployeeSurname: reader["empl_surname"].ToString(),
                 EmployeeName: reader["empl_name"].ToString(),
                 CustomerSurname: reader["cust_surname"].ToString(),
                 CustomerName: reader["cust_name"].ToString(),
+                CustomerCardNumber: reader["card_number"].ToString(),
                 TotalSharedSales: Convert.ToInt32(reader["total_shared_sales"])
             )).ToList();
         }
@@ -694,7 +699,7 @@ namespace SupermarketDAL.DB
         }
         public List<Product> GetProductWithoutEmployeeSurnameStartsWith(string startsWith)
         {
-  
+
             string sql = @"
                 SELECT *
                 FROM Product p
@@ -756,8 +761,8 @@ namespace SupermarketDAL.DB
             }, new SQLiteParameter("@CategoryName", categoryName)).ToList();
         }
 
-		public List<Sale> GetSalesListByCheckNumber(string receiptNumber)
-		{
+        public List<Sale> GetSalesListByCheckNumber(string receiptNumber)
+        {
             string sql = @"SELECT * FROM Sale WHERE check_number = @CheckNumber";
             return ExecuteQuery(sql, reader => new Sale
             {
@@ -768,8 +773,8 @@ namespace SupermarketDAL.DB
             }, new SQLiteParameter("@CheckNumber", receiptNumber)).ToList();
         }
 
-		public Product GetProductByUPC(string upc)
-		{
+        public Product GetProductByUPC(string upc)
+        {
             string sql = @"
                 SELECT p.*
                 FROM Product p
@@ -813,8 +818,8 @@ namespace SupermarketDAL.DB
             ExecuteNonQuery(sqlProduct, new SQLiteParameter("@IdProduct", goods.IdProduct));
         }
 
-		public void DeleteEmployee(string employeeId)
-		{
+        public void DeleteEmployee(string employeeId)
+        {
             string sql = "DELETE FROM Employee WHERE id_employee = @employeeId";
             ExecuteNonQuery(sql, new SQLiteParameter("@employeeId", employeeId));
         }
