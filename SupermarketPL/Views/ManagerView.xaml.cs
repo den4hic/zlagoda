@@ -11,6 +11,7 @@ namespace SupermarketPL.Views
 {
     public partial class ManagerView : Window
     {
+		private List<string> employeeRoleList = new List<string> { "Manager", "Cashier" };
 		private Employee _employee;
         private ManagerController controller;
 		private ObservableCollection<Goods> _goodsList = new ObservableCollection<Goods>();
@@ -104,13 +105,30 @@ namespace SupermarketPL.Views
 			customerDataGrid.ItemsSource = _customersList;
 			customerDataGrid.CellEditEnding += CustomerDataGrid_CellEditEnding;
 
-
 			categoriesComboBox.ItemsSource = _categoriesNameList;
 
-			//foreach (var category in _categoriesList)
-			//{
-			//	categoriesComboBox.Items.Add(category.CategoryName);
-			//}
+			positionComboBox.ItemsSource = employeeRoleList;
+			positionComboBox.SelectionChanged += PositionComboBox_SelectionChanged;
+		}
+
+		private void PositionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			throw new NotImplementedException();
+		}
+
+		private void PositionEmployeeGridComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			var selectedEmployee = employeeDataGrid.SelectedItem as EmployeeModel;
+
+			if(_employee.IdEmployee == selectedEmployee.EmployeeId)
+			{
+				MessageBox.Show("You can't change your properties");
+				return;
+			}
+
+			selectedEmployee.Position = employeeRoleList[(sender as ComboBox).SelectedIndex];
+
+			controller.UpdateEmployee(selectedEmployee);
 		}
 
 		private void CustomerDataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
@@ -263,6 +281,12 @@ namespace SupermarketPL.Views
 						string updatedValue = editedElement.Text;
 						EmployeeModel employee = e.Row.Item as EmployeeModel;
 
+						if (_employee.IdEmployee == employee.EmployeeId)
+						{
+							MessageBox.Show("You can't change your properties");
+							return;
+						}
+
 						if (employee != null)
 						{
 							string columnHeader = e.Column.Header.ToString();
@@ -405,7 +429,28 @@ namespace SupermarketPL.Views
 		}
 		private void ProfileButton_Click(object sender, RoutedEventArgs e)
 		{
-			EmployeeProfileView profileWindow = new EmployeeProfileView();
+			EmployeeModel employee = employeeDataGrid.SelectedItem as EmployeeModel;
+
+			if (employee == null)
+			{
+				MessageBox.Show("Please select an employee to view profile");
+				return;
+			}
+
+			Employee employee1 = new Employee
+			{
+				IdEmployee = employee.EmployeeId,
+				EmplName = employee.FirstName,
+				EmplSurname = employee.LastName,
+				EmplPatronymic = employee.PatronymicName,
+				EmplRole = employee.Position,
+				Salary = employee.Salary,
+				PhoneNumber = employee.PhoneNumber,
+				City = employee.City,
+				Street = employee.Street,
+				ZipCode = employee.Index
+			};
+			EmployeeProfileView profileWindow = new EmployeeProfileView(employee1);
 			profileWindow.Show();
 		}
 
