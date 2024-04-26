@@ -5,7 +5,6 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 public class ManagerController
 {
@@ -282,145 +281,64 @@ public void CreateGoodsInStockPdf(List<GoodsInStockModel> goodsInStockList, stri
 	document.Add(table);
 	document.Close();
 }
+/*public void CreateReceiptsPdf(List<ReceiptModel> receiptsList, string outputPath)
+{
+	Document document = new Document();
+	PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(outputPath, FileMode.Create));
+	document.Open();
 
-	public void InsertCustomerCard(string cardNumber, string firstName, string lastName, string patronymicName, string phoneNumber, string city, string street, string index, int discount)
+	PdfPTable table = new PdfPTable(4); // 4 columns for ReceiptId, CustomerId, Date, Total
+
+	foreach (var receipt in receiptsList)
 	{
-		CustomerCard customerCard = new CustomerCard()
+		table.AddCell(receipt.ReceiptId.ToString());
+		table.AddCell(receipt.Date.ToString());
+		table.AddCell(receipt.Total.ToString());
+	}
+
+	document.Add(table);
+	document.Close();
+}*/
+	public void InsertCustomerCard(string cardNumber, string custSurname, string custName, string custPatronymic, string phoneNumber, string city, string street, string index, int percentage)
+	{
+		CustomerCard customerCard = new CustomerCard
 		{
 			CardNumber = cardNumber,
-			CustName = firstName,
-			CustSurname = lastName,
-			CustPatronymic = patronymicName,
+			CustSurname = custSurname,
+			CustName = custName,
+			CustPatronymic = custPatronymic,
 			PhoneNumber = phoneNumber,
 			City = city,
 			Street = street,
 			Index = index,
-			Percentage = discount
+			Percentage = percentage
 		};
 
 		dbHelper.InsertCostumerCard(customerCard);
 	}
-
-	public List<ReportGoodsModel> GetChecks()
+	public void InsertGood(int categorynumber, string name,string producer, string characteristics)
 	{
-		var checks = dbHelper.GetChecksList();
-		List<ReportGoodsModel> result = new List<ReportGoodsModel>();
-
-		foreach (var item in checks)
+		Product newGood = new Product
 		{
-			result.Add(new ReportGoodsModel()
-			{
-				ReceiptNumber = item.CheckNumber,
-				TotalCost = item.SumTotal,
-				Date = item.PrintDate,
-				VAT = item.Vat
-			});
-		}
-
-		return result;
-	}
-
-	public List<ReportGoodsModel> GetChecksByEmplId(string employeeId)
-	{
-		var checks = dbHelper.GetChecksList();
-
-		List<ReportGoodsModel> result = new List<ReportGoodsModel>();
-
-		foreach (var item in checks)
-		{
-			if (item.IdEmployee != employeeId)
-			{
-				continue;
-			}
-			result.Add(new ReportGoodsModel()
-			{
-				ReceiptNumber = item.CheckNumber,
-				TotalCost = item.SumTotal,
-				Date = item.PrintDate
-			});
-		}
-
-		return result;
-	}
-
-	public void DeleteCheck(string receiptNumber)
-	{
-		dbHelper.DeleteCheck(receiptNumber);
-	}
-
-	public List<GoodsInStockModel> GetGoodsInStockByCategory(int selectedIndex)
-	{
-		var goodsInStock = dbHelper.GetGoodsListByCategoryID(selectedIndex);
-
-		List<GoodsInStockModel> result = new List<GoodsInStockModel>();
-
-		foreach (var item in goodsInStock)
-		{
-			result.Add(new GoodsInStockModel()
-			{
-				ProductId = item.IdProduct,
-				Name = item.ProductName,
-				Manufacturer = item.Producer,
-				Characteristics = item.Characteristics,
-				UPC = item.UPC,
-				Price = item.SellingPrice,
-				Quantity = item.ProductsNumber,
-				Discount = item.PromotionalProduct
-			});
-		}
-
-		return result;
-	}
-
-	public void UpdateGoodsInStock(GoodsInStockModel goodsInStock)
-	{
-		GoodsInStock goods = new GoodsInStock()
-		{
-			IdProduct = goodsInStock.ProductId,
-			ProductName = goodsInStock.Name,
-			Producer = goodsInStock.Manufacturer,
-			Characteristics = goodsInStock.Characteristics,
-			UPC = goodsInStock.UPC,
-			SellingPrice = goodsInStock.Price,
-			ProductsNumber = goodsInStock.Quantity,
-			PromotionalProduct = goodsInStock.Discount
+			CategoryNumber = categorynumber,
+			ProductName = name,
+			Producer = producer,
+			Characteristics = characteristics
 		};
 
-		dbHelper.UpdateGoodsInStock(goods);
+		dbHelper.InsertProduct(newGood);
 	}
-
-	public void DeleteGoodsInStock(GoodsInStockModel selectedGoodsInStock)
+	public void InsertCategory(string categoryName)
 	{
-		GoodsInStock goods = new GoodsInStock()
+		Category newCategory = new Category
 		{
-			IdProduct = selectedGoodsInStock.ProductId,
-			ProductName = selectedGoodsInStock.Name,
-			Producer = selectedGoodsInStock.Manufacturer,
-			Characteristics = selectedGoodsInStock.Characteristics,
-			UPC = selectedGoodsInStock.UPC,
-			SellingPrice = selectedGoodsInStock.Price,
-			ProductsNumber = selectedGoodsInStock.Quantity,
-			PromotionalProduct = selectedGoodsInStock.Discount
+			CategoryName = categoryName
 		};
 
-		dbHelper.DeleteGoodsInStock(goods);
+		dbHelper.InsertCategory(newCategory);
 	}
-	/*public void CreateReceiptsPdf(List<ReceiptModel> receiptsList, string outputPath)
-{
-Document document = new Document();
-PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(outputPath, FileMode.Create));
-document.Open();
-
-PdfPTable table = new PdfPTable(4); // 4 columns for ReceiptId, CustomerId, Date, Total
-
-foreach (var receipt in receiptsList)
-{
-table.AddCell(receipt.ReceiptId.ToString());
-table.AddCell(receipt.Date.ToString());
-table.AddCell(receipt.Total.ToString());
-}
-
-document.Add(table);
-document.Close();
-}*/
+	public void InsertEmployee(Employee employee)
+	{
+		dbHelper.InsertEmployee(employee);
+	}
 }
