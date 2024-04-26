@@ -35,11 +35,14 @@ namespace SupermarketPL.Views
 			this._employee = employee;
 			this.controller = new CashierController();
 			List<Goods> goodsList = controller.GetGoods();
-			_goodsList = goodsList;
-			_updatedGoodsList = goodsList;
 
-			goodsDataGrid.ItemsSource = goodsList;
+			foreach (var item in goodsList)
+			{
+				_goodsList.Add(item);
+			}
 
+
+			goodsDataGrid.ItemsSource = _goodsList;
 			List<CustomerModel> customersList = controller.GetCustomers();
 
 			foreach (var item in customersList)
@@ -382,25 +385,30 @@ namespace SupermarketPL.Views
 		
 		private void ReceiptIDSearchButton_Click(object sender, RoutedEventArgs e)
 		{
-			ReceiptIdSearchView receiptIdSearchView = new ReceiptIdSearchView();
+			//ReceiptIdSearchView receiptIdSearchView = new ReceiptIdSearchView();
 
 			//Тут треба дістати чек за допомогою ID з receiptIdTextBox і передати його в receiptIdSearchView
-			receiptIdSearchView.Show();
+			//receiptIdSearchView.Show();
 		}
 		private void ProfileButton_Click(object sender, RoutedEventArgs e)
 		{
-			EmployeeProfileView profileWindow = new EmployeeProfileView();
-			profileWindow.Show();
+			//EmployeeProfileView profileWindow = new EmployeeProfileView(_employee);
+			//profileWindow.Show();
 		}
 
 
 		private void CloseCheck_Click(object sender, RoutedEventArgs e)
 		{
 			//Ми додаймо чек,зберігажмо айді і робимо пошук по його ж айді
-			ReceiptIdSearchView receiptIdSearchView = new ReceiptIdSearchView();
+			//ReceiptIdSearchView receiptIdSearchView = new ReceiptIdSearchView();
 
 			
-			receiptIdSearchView.Show();
+			//receiptIdSearchView.Show();
+		}
+
+		private void SearchFromDateToDate_Click(object sender, RoutedEventArgs e)
+		{
+			throw new NotImplementedException();
 		}
     }
 }
