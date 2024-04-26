@@ -764,14 +764,32 @@ namespace SupermarketDAL.DB
             }, new SQLiteParameter("@UPC", upc)).FirstOrDefault();
         }
 
-		public void UpdateGoodsInStock(GoodsInStock goods)
-		{
-			throw new NotImplementedException();
-		}
+        public void UpdateGoodsInStock(GoodsInStock goods)
+        {
+            string sqlProduct = "UPDATE Product SET product_name = @ProductName, producer = @Producer, characteristics = @Characteristics WHERE id_product = @IdProduct";
+            ExecuteNonQuery(sqlProduct,
+                new SQLiteParameter("@ProductName", goods.ProductName),
+                new SQLiteParameter("@Producer", goods.Producer),
+                new SQLiteParameter("@Characteristics", goods.Characteristics),
+                new SQLiteParameter("@IdProduct", goods.IdProduct));
 
-		public void DeleteGoodsInStock(GoodsInStock goods)
-		{
-			throw new NotImplementedException();
-		}
-	}
+            string sqlStoreProduct = "UPDATE Store_Product SET products_number = @ProductsNumber, selling_price = @SellingPrice, promotional_product = @PromotionalProduct WHERE id_product = @IdProduct";
+            ExecuteNonQuery(sqlStoreProduct,
+                new SQLiteParameter("@ProductsNumber", goods.ProductsNumber),
+                new SQLiteParameter("@IdProduct", goods.IdProduct),
+                new SQLiteParameter("@SellingPrice", goods.SellingPrice),
+                new SQLiteParameter("@PromotionalProduct", goods.PromotionalProduct));
+        }
+
+
+        public void DeleteGoodsInStock(GoodsInStock goods)
+        {
+            string sqlStoreProduct = "DELETE FROM Store_Product WHERE id_product = @IdProduct";
+            ExecuteNonQuery(sqlStoreProduct, new SQLiteParameter("@IdProduct", goods.IdProduct));
+
+            string sqlProduct = "DELETE FROM Product WHERE id_product = @IdProduct";
+            ExecuteNonQuery(sqlProduct, new SQLiteParameter("@IdProduct", goods.IdProduct));
+        }
+
+    }
 }
