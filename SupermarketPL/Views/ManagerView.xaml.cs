@@ -15,6 +15,7 @@ namespace SupermarketPL.Views
 		private ObservableCollection<Category> _categoriesList = new ObservableCollection<Category>();
 		private ObservableCollection<string> _categoriesNameList = new ObservableCollection<string>();
 		private ObservableCollection<CustomerModel> _customersList = new ObservableCollection<CustomerModel>();
+		private ObservableCollection<GoodsInStockModel> _goodsInStockList = new ObservableCollection<GoodsInStockModel>();
 
 		public ManagerView()
         {
@@ -65,6 +66,17 @@ namespace SupermarketPL.Views
 
 			categoriesDataGrid.ItemsSource = _categoriesList;
 			categoriesDataGrid.CellEditEnding += CategoriesDataGrid_CellEditEnding;
+			List<GoodsInStockModel> goodsInStockList = controller.GetStocks();
+
+			foreach (var item in goodsInStockList)
+			{
+				_goodsInStockList.Add(item);
+			}
+
+			goodsInStockDataGrid.ItemsSource = _goodsInStockList;
+				
+			
+
 
 			List<CustomerModel> customersList = controller.GetCustomers();
 
@@ -339,5 +351,110 @@ namespace SupermarketPL.Views
 				controller.DeleteCustomer(selectedCustomer);
 			}
 		}
-	}
+		private void AddCategoryButton_Click(object sender, RoutedEventArgs e)
+		{
+			ManagerAddCategoryView addCategoryWindow = new ManagerAddCategoryView();
+			addCategoryWindow.Show();
+		}
+		private void EditCategoryButton_Click(object sender, RoutedEventArgs e)
+		{
+			ManagerEditCategoryView editCategoryWindow = new ManagerEditCategoryView();
+			editCategoryWindow.Show();
+		}
+		private void AddGoodButton_Click(object sender, RoutedEventArgs e)
+		{
+			SupermarketPL.Views.ManagerAddGoodView addGoodWindow = new SupermarketPL.Views.ManagerAddGoodView();
+			addGoodWindow.Show();
+		}
+
+		private void EditGoodButton_Click(object sender, RoutedEventArgs e)
+		{
+			SupermarketPL.Views.ManagerEditGoodView editGoodWindow = new SupermarketPL.Views.ManagerEditGoodView();
+			editGoodWindow.Show();
+		}
+
+		private void AddGoodInStock_Click(object sender, RoutedEventArgs e)
+		{
+			SupermarketPL.Views.ManagerAddGoodInStockView addGoodInStockWindow = new SupermarketPL.Views.ManagerAddGoodInStockView();
+			addGoodInStockWindow.Show();
+		}
+
+		private void EditGoodInStock_Click(object sender, RoutedEventArgs e)
+		{
+			SupermarketPL.Views.ManagerEditGoodInStockView editGoodInStockWindow = new SupermarketPL.Views.ManagerEditGoodInStockView();
+			editGoodInStockWindow.Show();
+		}
+		private void UPCSearchButton_Click(object sender, RoutedEventArgs e)
+		{
+			UPCSearchView upcSearchView = new UPCSearchView();
+			//Тут треба дістати товар за допомогою UPC з upcSearchTextBox і передати його в upcSearchView
+
+			upcSearchView.Show();
+		}
+		private void ProfileButton_Click(object sender, RoutedEventArgs e)
+		{
+			EmployeeProfileView profileWindow = new EmployeeProfileView();
+			profileWindow.Show();
+		}
+
+		private void AddEmployee_Click(object sender, RoutedEventArgs e)
+		{
+			ManagerAddEmployeeView addEmployeeWindow = new ManagerAddEmployeeView();
+			addEmployeeWindow.Show();
+		}
+
+		private void EditEmployee_Click(object sender, RoutedEventArgs e)
+		{
+			ManagerEditEmployeeView editEmployeeWindow = new ManagerEditEmployeeView();
+			editEmployeeWindow.Show();
+		}
+		private void AddButton_Click(object sender, RoutedEventArgs e)
+		{
+			AddCustomerView addCustomerView = new AddCustomerView();
+			addCustomerView.Show();
+		}
+		private void EditButton_Click(object sender, RoutedEventArgs e)
+		{
+			EditCustomerView editCustomerView = new EditCustomerView();
+			editCustomerView.Show();
+		}
+		private void PrintGoodsButton_Click(object sender, RoutedEventArgs e)
+		{
+			string outputPath = "GoodsList.pdf";
+			controller.CreateGoodsPdf(controller.GetGoods(), outputPath);
+			MessageBox.Show("Goods report saved as " + outputPath);
+		}
+		private void PrintCategoriesButton_Click(object sender, RoutedEventArgs e)
+		{
+			string outputPath = "CategoriesList.pdf";
+			controller.CreateCategoriesPdf(controller.GetCategories(), outputPath);
+			MessageBox.Show("Categories report saved as " + outputPath);
+		}
+
+		private void PrintCustomersButton_Click(object sender, RoutedEventArgs e)
+		{
+			string outputPath = "CustomersList.pdf";
+			controller.CreateCustomersPdf(controller.GetCustomers(), outputPath);
+			MessageBox.Show("Customers report saved as " + outputPath);
+		}
+
+		private void PrintEmployeesButton_Click(object sender, RoutedEventArgs e)
+		{
+			string outputPath = "EmployeesList.pdf";
+			controller.CreateEmployeesPdf(controller.GetEmployees(), outputPath);
+			MessageBox.Show("Employees report saved as " + outputPath);
+		}
+		private void PrintGoodsInStockButton_Click(object sender, RoutedEventArgs e)
+		{
+			string outputPath = "GoodsInStockList.pdf";
+			controller.CreateGoodsInStockPdf(controller.GetStocks(), outputPath);
+			MessageBox.Show("Goods in Stock report saved as " + outputPath);
+		}
+		private void PrintReceiptsButton_Click(object sender, RoutedEventArgs e)
+		{
+			/*string outputPath = "ReceiptsList.pdf";
+			controller.CreateReceiptsPdf(controller.GetReceipts(), outputPath);
+			MessageBox.Show("Receipts report saved as " + outputPath);*/
+		}
+    }
 }

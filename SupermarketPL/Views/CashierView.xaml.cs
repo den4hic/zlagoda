@@ -298,6 +298,7 @@ namespace SupermarketPL.Views
 
 		private void GoodsInBasketDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
+			
 			var dataGrid = sender as DataGrid;
 			if (dataGrid != null && dataGrid.SelectedItem != null)
 			{
@@ -345,15 +346,43 @@ namespace SupermarketPL.Views
 		}
 		private void AddButton_Click(object sender, RoutedEventArgs e)
 		{
-			CashierAddCustomerView addCustomerView = new CashierAddCustomerView();
+			AddCustomerView addCustomerView = new AddCustomerView();
 			addCustomerView.Show();
 		}
 		private void EditButton_Click(object sender, RoutedEventArgs e)
 		{
-			CashierEditCustomerView editCustomerView = new CashierEditCustomerView();
+			EditCustomerView editCustomerView = new EditCustomerView();
 			editCustomerView.Show();
+		}
+		private void UPCSearchButton_Click(object sender, RoutedEventArgs e)
+		{
+			UPCSearchView upcSearchView = new UPCSearchView();
+			//Тут треба дістати товар за допомогою UPC з upcSearchTextBox і передати його в upcSearchView
+
+			upcSearchView.Show();
+		}
+		
+		private void ReceiptIDSearchButton_Click(object sender, RoutedEventArgs e)
+		{
+			ReceiptIdSearchView receiptIdSearchView = new ReceiptIdSearchView();
+
+			//Тут треба дістати чек за допомогою ID з receiptIdTextBox і передати його в receiptIdSearchView
+			receiptIdSearchView.Show();
+		}
+		private void ProfileButton_Click(object sender, RoutedEventArgs e)
+		{
+			EmployeeProfileView profileWindow = new EmployeeProfileView();
+			profileWindow.Show();
 		}
 
 
-	}
+		private void CloseCheck_Click(object sender, RoutedEventArgs e)
+		{
+			//Ми додаймо чек,зберігажмо айді і робимо пошук по його ж айді
+			ReceiptIdSearchView receiptIdSearchView = new ReceiptIdSearchView();
+
+			
+			receiptIdSearchView.Show();
+		}
+    }
 }

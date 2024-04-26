@@ -28,9 +28,8 @@ namespace SupermarketPL.Views
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Implement the logic for the Add button here
-            throw new NotImplementedException();
+        {//Додавання товару в корзину
+            MessageBox.Show("Goods added to the basket!");
         }
     }
 }

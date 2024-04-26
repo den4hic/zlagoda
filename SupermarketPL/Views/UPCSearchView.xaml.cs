@@ -17,12 +17,12 @@ namespace SupermarketPL.Views
 
         private void FillTextBlocks()
         {
-           //тут треба дістати товар за допомогою UPC
+           //тут треба прийняти товар і вивести його дані
 
-            nameLabel.Content = good.Name;
-            priceLabel.Content = good.Price.ToString();
-            quantityLabel.Content = good.Quantity.ToString();
-            characteristicsLabel.Text = good.Characteristics;
+           // nameLabel.Content = good.Name;
+            //priceLabel.Content = good.Price.ToString();
+            //quantityLabel.Content = good.Quantity.ToString();
+            //characteristicsLabel.Text = good.Characteristics;
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
