@@ -166,6 +166,33 @@ namespace SupermarketPL.Views
 
 			categoryNotSold.ItemsSource = _categoriesNameList;
 			categoryNotSold.SelectionChanged += CategoryNotSold_SelectionChanged;
+
+			checkBoxNoAccoundNoSold.Click += CheckBoxNoAccoundNoSold_Checked;
+		}
+
+		private void CheckBoxNoAccoundNoSold_Checked(object sender, RoutedEventArgs e)
+		{
+			var checkBox = sender as CheckBox;
+
+			if (checkBox.IsChecked == true)
+			{
+				List<EmployeeModel> newEmployeesModels = controller.GetEmployeesWithoutSalesAndAccount();
+				_employeeModelList.Clear();
+
+				foreach (var item in newEmployeesModels)
+				{
+					_employeeModelList.Add(item);
+				}
+			}
+			else
+			{
+				_employeeModelList.Clear();
+
+				foreach (var item in employeeModels)
+				{
+					_employeeModelList.Add(item);
+				}
+			}
 		}
 
 		private void CategoryNotSold_SelectionChanged(object sender, SelectionChangedEventArgs e)
