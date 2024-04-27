@@ -11,6 +11,9 @@ namespace SupermarketPL.Model
         public int ProductId { get; set; }
         public string Name { get; set; }
         public string Manufacturer { get; set; }
+        
+        public int CategoryId { get; set; }
+
         public string Characteristics { get; set; }
         public string UPC { get; set; }
         public decimal Price { get; set; }

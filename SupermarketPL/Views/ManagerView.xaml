@@ -159,9 +159,10 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Button Content="Add" Grid.Column="0" Width="75" Height="25" Margin="0,0,5,80" Click="AddEmployee_Click"/>
-                        <Button Content="Edit" Grid.Column="1" Width="75" Height="25" Margin="5,0,0,80" Click="EditEmployee_Click"/>
-                        <Button Content="Delete" Grid.Column="0" Width="75" Height="25" Margin="0,0,5,10"/>
+                        <Button Content="Delete" Grid.Column="1" Width="75" Height="25" Margin="5,0,0,80" Click="DeleteEmployee_Click"/>
+                        <ComboBox x:Name="categoryNotSold" Grid.Column="0"  Margin="0,0,5,10" Width="75" Height="25"/>
                         <Button Content="Print" Grid.Column="1" Width="75" Height="25" Margin="5,0,0,10" Click="PrintEmployeesButton_Click"/>
+                        <CheckBox x:Name="checkBoxNoAccoundNoSold" Grid.Column="0" Margin="5,70,5,10" Content="No account and sales" IsChecked="False"/>
                     </Grid>
                 </Grid>
             
@@ -243,32 +244,66 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Advanced statistics">
-                <TabControl>
-                    <TabItem Header="Category advanced">
-                        <DataGrid x:Name="categoryAdvancedDataGrid" Margin="10,10,10,20" Grid.Column="0" AutoGenerateColumns="False" ItemsSource="{Binding CategoryAdvancedList}">
+                <TabControl Loaded="TabControl_Loaded">
+                    <TabItem Header="Manufacturer sold advanced">
+                        <DataGrid x:Name="manufacturerAdvancedDataGrid" Margin="10,10,10,20" Grid.Column="0" AutoGenerateColumns="False" ItemsSource="{Binding ManufacturerAdvanced}">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Category name" Binding="{Binding CategoryName}" Width="*" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Total checks" Binding="{Binding TotalChecks}" Width="*"/>
-                                <DataGridTextColumn Header="Total sales" Binding="{Binding TotalSales}" Width="*"/>
+                                <DataGridTextColumn Header="Manufacturer name" Binding="{Binding Producer}" Width="*" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Total products" Binding="{Binding ProductsNumber}" Width="*" IsReadOnly="True"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </TabItem>
-                    <TabItem Header="Checks advanced">
-                        <DataGrid x:Name="checksAdvancedDataGrid" Margin="10,10,10,20" Grid.Column="0" AutoGenerateColumns="False" ItemsSource="{Binding ChecksAdvancedList}">
+                    <TabItem Header="Employee and Customer advanced">
+                        <DataGrid x:Name="employeeAndCustomerAdvancedDataGrid" Margin="10,10,10,20" Grid.Column="0" AutoGenerateColumns="False" ItemsSource="{Binding EmployeeAndCustomerList}">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" Width="*" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" Width="*"/>
-                                <DataGridTextColumn Header="Total checks" Binding="{Binding TotalChecks}" Width="*"/>
+                                <DataGridTextColumn Header="Customer Card Number" Binding="{Binding CustomerId}" Width="*" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Customer Surname" Binding="{Binding EmployeeSurname}" Width="*" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Customer Name" Binding="{Binding EmployeeName}" Width="*" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Employee Id" Binding="{Binding EmployeeId}" Width="*" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Employee Surname" Binding="{Binding CustomerSurname}" Width="*"/>
+                                <DataGridTextColumn Header="Employee Name" Binding="{Binding CustomerName}" Width="*"/>
+                                <DataGridTextColumn Header="Total checks" Binding="{Binding TotalSharedSales}" Width="*"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </TabItem>
                     <TabItem Header="Goods advanced">
-                        <DataGrid x:Name="goodsAdvancedDataGrid" Margin="10,10,10,20" Grid.Column="0" AutoGenerateColumns="False" ItemsSource="{Binding GoodsAdvancedList}">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Manufacturer" Binding="{Binding Manufacturer}" Width="*" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Total products" Binding="{Binding TotalProducts}" Width="*"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Goods" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,0"/>
+                            <TextBox x:Name="searchGoodsAdvancedTextBox" Grid.Column="1" HorizontalAlignment="Left" Margin="10,30,0,340" Width="120" />
+                            <Button Content="Search" Grid.Column="1" HorizontalAlignment="Left" Margin="10,70,0,300" Width="75" Click="GoodsAdvanced_Click" />
+
+                            <DataGrid x:Name="goodsAdvancedDataGrid" Margin="10,10,10,20" Grid.Column="0" AutoGenerateColumns="False" ItemsSource="{Binding ProductsAdvancedList}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Id Product" Binding="{Binding IdProduct}" Width="*" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Category Number" Binding="{Binding CategoryNumber}" Width="*" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Product Name" Binding="{Binding ProductName}" Width="*" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Producer" Binding="{Binding Producer}" Width="*" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Characteristics" Binding="{Binding Characteristics}" Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Category advanced">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Categories" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,0"/>
+                            <ComboBox x:Name="searchCategoryAdvancedComboBox" Grid.Column="1" HorizontalAlignment="Left" Margin="10,30,0,340" Width="120" />
+
+                            <DataGrid x:Name="producerAndCategoryAdvancedDataGrid" Margin="10,10,10,20" Grid.Column="0" AutoGenerateColumns="False" ItemsSource="{Binding ProductsAdvancedList}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Producer" Binding="{Binding Producer}" Width="*" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Total checks" Binding="{Binding TotalChecks}" Width="*" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Total salse" Binding="{Binding TotalSales}" Width="*" IsReadOnly="True"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
                     </TabItem>
                 </TabControl>
             </TabItem>

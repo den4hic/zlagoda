@@ -19,7 +19,6 @@ namespace SupermarketPL.Views
         {
             string categoryName = categoryNameTextBox.Text;
 
-            // Check if the category name field is not empty.
             if (string.IsNullOrEmpty(categoryName))
             {
                 MessageBox.Show("Please enter a category name.");
@@ -30,9 +29,13 @@ namespace SupermarketPL.Views
             {
                 CategoryName = categoryName
             };
-
-            categoriesList.Add(newCategory);
             controller.InsertCategory(categoryName);
+            categoriesList.Clear();
+            var categories = controller.GetCategories();
+            foreach (var category in categories)
+            {
+                categoriesList.Add(category);
+            }
             MessageBox.Show("Category added successfully!");
             this.Close();
         }
