@@ -14,8 +14,17 @@ namespace SupermarketDAL
         {
             // Ініціалізація DatabaseHelper з шляхом до бази даних
             DatabaseHelper dbHelper = new DatabaseHelper("../../../zlagoda.db");
+            
+            
             dbHelper.ResetDatabase();
             dbHelper.PutTestsData();
+            Category category = new Category();
+            category.CategoryName = "Test";
+            dbHelper.InsertCategory(category);
+            dbHelper.InsertCategory(category);
+
+            TestGetCategoriesList(dbHelper);
+            /*
             TestGetsList(dbHelper);
             TestGets(dbHelper);
             Console.WriteLine($"GetProductSoldNumberByCategoryIDAndGroupedByProducer");
@@ -46,7 +55,7 @@ namespace SupermarketDAL
             {
                 Console.WriteLine($"Employee: {category}");
             }
-
+            */
 
         }
 
@@ -95,7 +104,8 @@ namespace SupermarketDAL
             var categories = dbHelper.GetCategoriesList();
             foreach (var category in categories)
             {
-                Console.WriteLine($"Employee: {category.CategoryName}");
+                Console.WriteLine($"category Id: {category.CategoryNumber}");
+                Console.WriteLine($"category: {category.CategoryName}");
             }
         }
         static void TestGetEmployeesList(DatabaseHelper dbHelper)
