@@ -34,7 +34,7 @@
         <Label Content="Position:" Grid.Row="3" Grid.Column="0"/>
         <ComboBox x:Name="positionComboBox" Grid.Row="3" Grid.Column="1" Margin="5"/>
 
-        <Label Content="Salary:" Grid.Row="4" Grid.Column="0"/>
+        <Label Content="Salary:" Grid.Row="4" Grid.Column="0"  PreviewTextInput="IntegerOnlyTextBox_PreviewTextInput"/>
         <TextBox x:Name="salaryTextBox" Grid.Row="4" Grid.Column="1" Margin="5"/>
 
         <Label Content="Date of Work Start:" Grid.Row="5" Grid.Column="0"/>

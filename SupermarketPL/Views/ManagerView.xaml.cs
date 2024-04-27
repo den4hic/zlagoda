@@ -877,7 +877,7 @@ namespace SupermarketPL.Views
 		}
 		private void AddCategoryButton_Click(object sender, RoutedEventArgs e)
 		{
-			ManagerAddCategoryView addCategoryWindow = new ManagerAddCategoryView();
+			ManagerAddCategoryView addCategoryWindow = new ManagerAddCategoryView(controller, _categoriesList);
 			addCategoryWindow.Show();
 		}
 		private void EditCategoryButton_Click(object sender, RoutedEventArgs e)
@@ -887,7 +887,8 @@ namespace SupermarketPL.Views
 		}
 		private void AddGoodButton_Click(object sender, RoutedEventArgs e)
 		{
-			SupermarketPL.Views.ManagerAddGoodView addGoodWindow = new SupermarketPL.Views.ManagerAddGoodView();
+			SupermarketPL.Views.ManagerAddGoodView addGoodWindow =
+				new SupermarketPL.Views.ManagerAddGoodView(_goodsList, _categoriesList, controller, _categoriesNameList);
 			addGoodWindow.Show();
 		}
 
@@ -899,7 +900,9 @@ namespace SupermarketPL.Views
 
 		private void AddGoodInStock_Click(object sender, RoutedEventArgs e)
 		{
-			SupermarketPL.Views.ManagerAddGoodInStockView addGoodInStockWindow = new SupermarketPL.Views.ManagerAddGoodInStockView();
+			SupermarketPL.Views.ManagerAddGoodInStockView addGoodInStockWindow =
+				new SupermarketPL.Views.ManagerAddGoodInStockView(controller, _goodsInStockList, _categoriesList,
+					_goodsList);
 			addGoodInStockWindow.Show();
 		}
 
@@ -944,7 +947,8 @@ namespace SupermarketPL.Views
 
 		private void AddEmployee_Click(object sender, RoutedEventArgs e)
 		{
-			ManagerAddEmployeeView addEmployeeWindow = new ManagerAddEmployeeView();
+			ManagerAddEmployeeView addEmployeeWindow =
+				new ManagerAddEmployeeView(controller,   _employeeModelList);
 			addEmployeeWindow.Show();
 		}
 

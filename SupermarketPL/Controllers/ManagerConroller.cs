@@ -550,4 +550,36 @@ table.AddCell(receipt.Total.ToString());
 document.Add(table);
 document.Close();
 }*/
+	public void InsertCategory(string categoryName)
+	{
+		Category newCategory = new Category()
+		{
+			CategoryName = categoryName
+		};
+
+		dbHelper.InsertCategory(newCategory);
+	}
+
+	public void InsertGood(int categoryNumber, string name, string producer, string characteristics)
+	{
+		Product newProduct = new Product()
+		{
+			CategoryNumber = categoryNumber,
+			ProductName = name,
+			Producer = producer,
+			Characteristics = characteristics
+		};
+
+		dbHelper.InsertProduct(newProduct);
+	}
+
+	public void InsertEmployee(Employee newEmployee)
+	{
+		dbHelper.InsertEmployee(newEmployee);
+	}
+
+	public void InsertGoodInStock(GoodsInStock newGoodInStock)
+	{
+		dbHelper.InsertGoodInStock(newGoodInStock);
+	}
 }
