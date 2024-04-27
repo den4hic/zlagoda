@@ -16,7 +16,7 @@ namespace SupermarketPL.Views
 		private List<CategoryModel> _categories;
 		private List<ReportGoodsModel> _reportGoodsModels;
 		List<GoodsInStockModel> goodsInBasketList;
-		private List<Goods> _updatedGoodsList;
+		private List<Goods> _allGoodsList;
 		private ObservableCollection<CustomerModel> _customersList = new ObservableCollection<CustomerModel>();
 		private ObservableCollection<GoodsInStockModel> _stocks = new ObservableCollection<GoodsInStockModel>();
 		private ObservableCollection<BasketGoods> _basketGoods = new ObservableCollection<BasketGoods>();
@@ -37,9 +37,9 @@ namespace SupermarketPL.Views
 			InitializeComponent();
 			this._employee = employee;
 			this.controller = new CashierController();
-			List<Goods> goodsList = controller.GetGoods();
+			_allGoodsList = controller.GetGoods();
 
-			foreach (var item in goodsList)
+			foreach (var item in _allGoodsList)
 			{
 				_goodsList.Add(item);
 			}
@@ -151,6 +151,20 @@ namespace SupermarketPL.Views
 					{
 						_stocks.Add(item);
 					}
+
+					if (nameSearchTextBox.Text != "")
+					{
+						List<GoodsInStockModel> filteredGoods = _stocks
+						.Where(g => g.Name.StartsWith(nameSearchTextBox.Text, System.StringComparison.OrdinalIgnoreCase))
+						.ToList();
+
+						_stocks.Clear();
+
+						foreach (var item in filteredGoods)
+						{
+							_stocks.Add(item);
+						}
+					}
 					return;
 				}
 				List<GoodsInStockModel> stocks = controller.GetGoodsInStockByCategory(comboBox.SelectedIndex);
@@ -160,6 +174,20 @@ namespace SupermarketPL.Views
 				{
 
 					_stocks.Add(goodsInBasketList.FirstOrDefault(x => x.ProductId == item.ProductId));
+				}
+
+				if (nameSearchTextBox.Text != "")
+				{
+					List<GoodsInStockModel> filteredGoods = _stocks
+					.Where(g => g.Name.StartsWith(nameSearchTextBox.Text, System.StringComparison.OrdinalIgnoreCase))
+					.ToList();
+
+					_stocks.Clear();
+
+					foreach (var item in filteredGoods)
+					{
+						_stocks.Add(item);
+					}
 				}
 			}
 		}
@@ -181,6 +209,7 @@ namespace SupermarketPL.Views
 				{
 					_stocks.Add(item);
 				}
+
 			}
 			else
 			{
@@ -189,6 +218,19 @@ namespace SupermarketPL.Views
 				foreach (var item in goodsInBasketList)
 				{
 					_stocks.Add(item);
+				}
+
+				var selectedCategory = categoryBasketComboBox.SelectedItem as string;
+
+				if (selectedCategory != null && selectedCategory != "All")
+				{
+					List<GoodsInStockModel> stocks = controller.GetGoodsInStockByCategory(categoryBasketComboBox.SelectedIndex);
+					_stocks.Clear();
+
+					foreach (var item in stocks)
+					{
+						_stocks.Add(goodsInBasketList.FirstOrDefault(x => x.ProductId == item.ProductId));
+					}
 				}
 			}
 		}
@@ -221,12 +263,49 @@ namespace SupermarketPL.Views
 			{
 				if (selectedCategory == "All")
 				{
-					goodsDataGrid.ItemsSource = _goodsList;
+					_goodsList.Clear();
+
+					foreach (var item in _allGoodsList)
+					{
+						_goodsList.Add(item);
+					}
+
+					if (productNameSearchTextBox.Text != "")
+					{
+						List<Goods> filteredGoods = _goodsList
+						.Where(g => g.Name.StartsWith(productNameSearchTextBox.Text, System.StringComparison.OrdinalIgnoreCase))
+						.ToList();
+
+						_goodsList.Clear();
+
+						foreach (var item in filteredGoods)
+						{
+							_goodsList.Add(item);
+						}
+					}
 					return;
 				}
 				List<Goods> goods = controller.GetGoodsByCategory(comboBox.SelectedIndex);
-				_updatedGoodsList = goods;
-				goodsDataGrid.ItemsSource = goods;
+				_goodsList.Clear();
+
+				foreach (var item in goods)
+				{
+					_goodsList.Add(item);
+				}
+
+				if(productNameSearchTextBox.Text != "")
+				{
+					List<Goods> filteredGoods = _goodsList
+					.Where(g => g.Name.StartsWith(productNameSearchTextBox.Text, System.StringComparison.OrdinalIgnoreCase))
+					.ToList();
+
+					_goodsList.Clear();
+
+					foreach (var item in filteredGoods)
+					{
+						_goodsList.Add(item);
+					}
+				}
 			}
 		}
 
@@ -237,16 +316,53 @@ namespace SupermarketPL.Views
 
 			if (!string.IsNullOrEmpty(searchText))
 			{
-				List<Goods> filteredGoods = _goodsList
+				List<Goods> filteredGoods = _allGoodsList
 					.Where(g => g.Name.StartsWith(searchText, System.StringComparison.OrdinalIgnoreCase))
 					.ToList();
 
-				goodsDataGrid.ItemsSource = filteredGoods;
-				_updatedGoodsList = filteredGoods;
+				_goodsList.Clear();
+
+				foreach (var item in filteredGoods)
+				{
+					_goodsList.Add(item);
+				}
+
+				var selectedCategory = categoryComboBox.SelectedItem as string;
+
+				if (selectedCategory != null && selectedCategory != "All")
+				{
+					List<Goods> goods = controller.GetGoodsByCategory(categoryComboBox.SelectedIndex);
+					_goodsList.Clear();
+
+					foreach (var item in goods)
+					{
+						_goodsList.Add(item);
+					}
+				}
+
+
 			}
 			else
 			{
-				goodsDataGrid.ItemsSource = _goodsList;
+				_goodsList.Clear();
+
+				foreach (var item in _allGoodsList)
+				{
+					_goodsList.Add(item);
+				}
+
+				var selectedCategory = categoryComboBox.SelectedItem as string;
+
+				if (selectedCategory != null && selectedCategory != "All")
+				{
+					List<Goods> goods = controller.GetGoodsByCategory(categoryComboBox.SelectedIndex);
+					_goodsList.Clear();
+
+					foreach (var item in goods)
+					{
+						_goodsList.Add(item);
+					}
+				}
 			}
 		}
 
@@ -439,11 +555,25 @@ namespace SupermarketPL.Views
 				return;
 			}
 
+			List<Sale> sales = controller.GetSalesByCheckNumber(receipt.ReceiptNumber);
 
-			//ReceiptIdSearchView receiptIdSearchView = new ReceiptIdSearchView();
+			List<BasketGoods> basketGoods = new List<BasketGoods>();
 
-			//Тут треба дістати чек за допомогою ID з receiptIdTextBox і передати його в receiptIdSearchView
-			//receiptIdSearchView.Show();
+			foreach (var item in sales)
+			{
+				Product product = controller.GetProductByUPC(item.UPC);
+				basketGoods.Add(new BasketGoods()
+				{
+					BasketGoodsId = item.ProductNumber,
+					Name = product.ProductName,
+					Quantity = item.ProductNumber,
+					Price = item.SellingPrice
+				});
+			}
+			Check check = controller.GetCheckById(receipt.ReceiptNumber);
+			ReceiptIdSearchView receiptIdSearchView = new ReceiptIdSearchView(check, basketGoods);
+
+			receiptIdSearchView.Show();
 		}
 		private void ProfileButton_Click(object sender, RoutedEventArgs e)
 		{

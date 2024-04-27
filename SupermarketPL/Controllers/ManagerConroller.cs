@@ -485,6 +485,53 @@ public void CreateGoodsInStockPdf(List<GoodsInStockModel> goodsInStockList, stri
 
 		return result;
 	}
+
+	public List<EmployeesAndCustomersWithMaxSharedSalesModel> GetEmployeesAndCustomersWithMaxSharedSales()
+	{
+		var list = dbHelper.GetEmployeesAndCustomersWithMaxSharedSales();
+
+		List<EmployeesAndCustomersWithMaxSharedSalesModel> result = new List<EmployeesAndCustomersWithMaxSharedSalesModel>();
+
+		foreach (var item in list)
+		{
+			result.Add(new EmployeesAndCustomersWithMaxSharedSalesModel()
+			{
+				EmployeeId = item.EmployeeId,
+				EmployeeSurname = item.EmployeeSurname,
+				EmployeeName = item.EmployeeName,
+				CustomerId = item.CustomerCardNumber,
+				CustomerSurname = item.CustomerSurname,
+				CustomerName = item.CustomerName,
+				TotalSharedSales = item.TotalSharedSales
+			});
+		}
+
+		return result;
+	}
+
+	public List<Product> GetProductWithoutEmployeeSurnameStartsWith(string text)
+	{
+		return dbHelper.GetProductWithoutEmployeeSurnameStartsWith(text);
+	}
+
+	public List<ProducerAndCategoryAdvancedModel> GetProductSoldNumberByCategoryIDAndGroupedByProducer(int selectedIndex)
+	{
+		var list = dbHelper.GetProductSoldNumberByCategoryIDAndGroupedByProducer(selectedIndex);
+
+		List<ProducerAndCategoryAdvancedModel> result = new List<ProducerAndCategoryAdvancedModel>();
+
+		foreach (var item in list)
+		{
+			result.Add(new ProducerAndCategoryAdvancedModel()
+			{
+				Producer = item.Producer,
+				TotalChecks = item.TotalChecks,
+				TotalSales = item.TotalSales
+			});
+		}
+
+		return result;
+	}
 	/*public void CreateReceiptsPdf(List<ReceiptModel> receiptsList, string outputPath)
 {
 Document document = new Document();

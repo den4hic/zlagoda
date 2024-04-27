@@ -169,13 +169,49 @@ namespace SupermarketPL.Views
 
 			checkBoxNoAccoundNoSold.Click += CheckBoxNoAccoundNoSold_Checked;
 
-			
+			searchCategoryAdvancedComboBox.ItemsSource = _categoriesNameList;
+			searchCategoryAdvancedComboBox.SelectionChanged += SearchCategoryAdvancedComboBox_SelectionChanged;
+
+
+		}
+
+		private void SearchCategoryAdvancedComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			ComboBox comboBox = sender as ComboBox;
+			string selectedCategory = comboBox.SelectedItem as string;
+
+			if (selectedCategory != null)
+			{
+				if (selectedCategory == "All")
+				{
+					producerAndCategoryAdvancedDataGrid.ItemsSource = null;
+					return;
+				}
+				List<ProducerAndCategoryAdvancedModel> list = controller.GetProductSoldNumberByCategoryIDAndGroupedByProducer(comboBox.SelectedIndex);
+				producerAndCategoryAdvancedDataGrid.ItemsSource = list;
+			}
+		}
+
+		private void GoodsAdvanced_Click(object sender, RoutedEventArgs e)
+		{
+			var text = searchGoodsAdvancedTextBox.Text;
+
+			if (string.IsNullOrEmpty(text))
+			{
+				MessageBox.Show("Please enter a search query");
+				return;
+			}
+
+			goodsAdvancedDataGrid.ItemsSource = controller.GetProductWithoutEmployeeSurnameStartsWith(text);
 		}
 
 		private void TabControl_Loaded(object sender, RoutedEventArgs e)
 		{
 			List<ManufacturerAndSalesModel> manufacturerAdvanced = controller.GetTotalSoldProductsForProducer();
 			manufacturerAdvancedDataGrid.ItemsSource = manufacturerAdvanced;
+
+			List<EmployeesAndCustomersWithMaxSharedSalesModel> employeesAndCustomersWithMaxSharedSalesModels = controller.GetEmployeesAndCustomersWithMaxSharedSales();
+			employeeAndCustomerAdvancedDataGrid.ItemsSource = employeesAndCustomersWithMaxSharedSalesModels;
 		}
 
 
@@ -183,18 +219,24 @@ namespace SupermarketPL.Views
 		{
 			var checkBox = sender as CheckBox;
 
+			positionComboBox.SelectedIndex = 0;
+			searchTextBox.Text = "";
+			categoryNotSold.SelectedIndex = 0;
+
 			if (checkBox.IsChecked == true)
 			{
 				List<EmployeeModel> newEmployeesModels = controller.GetEmployeesWithoutSalesAndAccount();
+				
 				_employeeModelList.Clear();
 
 				foreach (var item in newEmployeesModels)
 				{
-					_employeeModelList.Add(item);
+					_employeeModelList.Add(item);	
 				}
 			}
 			else
 			{
+
 				_employeeModelList.Clear();
 
 				foreach (var item in employeeModels)
@@ -208,6 +250,10 @@ namespace SupermarketPL.Views
 		{
 			ComboBox comboBox = sender as ComboBox;
 			string selectedCategory = comboBox.SelectedItem as string;
+
+			positionComboBox.SelectedIndex = 0;
+			checkBoxNoAccoundNoSold.IsChecked = false;
+			searchTextBox.Text = "";
 
 			if (selectedCategory != null)
 			{
@@ -247,6 +293,20 @@ namespace SupermarketPL.Views
 					{
 						_goodsInStockList.Add(item);
 					}
+
+					if (upcSearchTextBox.Text != "")
+					{
+						List<GoodsInStockModel> filteredGoods = goodsInStockList
+						.Where(g => g.UPC.StartsWith(upcSearchTextBox.Text, System.StringComparison.OrdinalIgnoreCase))
+						.ToList();
+
+						_goodsInStockList.Clear();
+
+						foreach (var item in filteredGoods)
+						{
+							_goodsInStockList.Add(item);
+						}
+					}
 					return;
 				}
 				List<GoodsInStockModel> stocks = controller.GetGoodsInStockByCategory(comboBox.SelectedIndex);
@@ -254,8 +314,27 @@ namespace SupermarketPL.Views
 
 				foreach (var item in stocks)
 				{
-
 					_goodsInStockList.Add(goodsInStockList.FirstOrDefault(x => x.ProductId == item.ProductId));
+				}
+
+				if (upcSearchTextBox.Text != "")
+				{
+					List<GoodsInStockModel> filteredGoods = goodsInStockList
+					.Where(g => g.UPC.StartsWith(upcSearchTextBox.Text, System.StringComparison.OrdinalIgnoreCase))
+					.ToList();
+
+					_goodsInStockList.Clear();
+
+					foreach (var item in stocks)
+					{
+						foreach (var item1 in filteredGoods)
+						{
+							if (item.ProductId == item1.ProductId)
+							{
+								_goodsInStockList.Add(item1);
+							}
+						}
+					}
 				}
 			}
 		}
@@ -277,6 +356,27 @@ namespace SupermarketPL.Views
 				{
 					_goodsInStockList.Add(item);
 				}
+
+				var selectedCategory = categoriesComboBox.SelectedItem as string;
+
+				if (selectedCategory != null && selectedCategory != "All")
+				{
+					List<GoodsInStockModel> stocks = controller.GetGoodsInStockByCategory(categoriesComboBox.SelectedIndex);
+					_goodsInStockList.Clear();
+
+					
+
+					foreach (var item in stocks)
+					{
+						foreach (var item1 in filteredGoods)
+						{
+							if (item.ProductId == item1.ProductId)
+							{
+								_goodsInStockList.Add(item1);
+							}
+						}
+					}
+				}
 			}
 			else
 			{
@@ -286,11 +386,27 @@ namespace SupermarketPL.Views
 				{
 					_goodsInStockList.Add(item);
 				}
+
+				var selectedCategory = categoriesComboBox.SelectedItem as string;
+
+				if (selectedCategory != null && selectedCategory != "All")
+				{
+					List<GoodsInStockModel> stocks = controller.GetGoodsInStockByCategory(categoriesComboBox.SelectedIndex);
+					_goodsInStockList.Clear();
+
+					foreach (var item in stocks)
+					{
+						_goodsInStockList.Add(goodsInStockList.FirstOrDefault(x => x.ProductId == item.ProductId));
+					}
+				}
+
 			}
 		}
 
 		private void EmployeeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
+			fromDatePicker.Text = "";
+			toDatePicker.Text = "";
 			var emplId = (sender as ComboBox).SelectedItem.ToString();
 
 			if(emplId == "All")
@@ -330,17 +446,47 @@ namespace SupermarketPL.Views
 					{
 						_employeeModelList.Add(item);
 					}
+
+					if (searchTextBox.Text != "")
+					{
+						List<EmployeeModel> filteredGoods = _employeeModelList
+						.Where(g => g.LastName.StartsWith(searchTextBox.Text, System.StringComparison.OrdinalIgnoreCase))
+						.ToList();
+
+						_employeeModelList.Clear();
+
+						foreach (var item in filteredGoods)
+						{
+							_employeeModelList.Add(item);
+						}
+					}
 					return;
 				}
+
+				List<EmployeeModel> currentEmployee = _employeeModelList.ToList();
 				
 				_employeeModelList.Clear();
 
 				foreach (var item in employeeModels)
 				{
-					if(item.Position == selectedCategory)
+					
+						
+					if (item.Position == selectedCategory)
 					{
-						_employeeModelList.Add(item);
+						if (searchTextBox.Text != "")
+						{
+							if(item.LastName.StartsWith(searchTextBox.Text, System.StringComparison.OrdinalIgnoreCase))
+							{
+								_employeeModelList.Add(item);
+							}
+							
+						} else
+						{
+							_employeeModelList.Add(item);
+						}
 					}
+					
+					
 				}
 			}
 		}
@@ -646,21 +792,41 @@ namespace SupermarketPL.Views
 					.Where(g => g.LastName.StartsWith(searchText, System.StringComparison.OrdinalIgnoreCase))
 					.ToList();
 
+				List<EmployeeModel> currentEmployee = _employeeModelList.ToList();
+
 				_employeeModelList.Clear();
 
 				foreach (var item in filteredGoods)
 				{
-					_employeeModelList.Add(item);
+					foreach (var item1 in currentEmployee)
+					{
+						if (item.EmployeeId == item1.EmployeeId)
+						{
+							_employeeModelList.Add(item1);
+						}
+					}
 				}
 			}
 			else
 			{
 				_employeeModelList.Clear();
 
+				var selectedCategory = positionComboBox.SelectedItem as string;
+
 				foreach (var item in employeeModels)
 				{
-					_employeeModelList.Add(item);
+					if (selectedCategory != null && selectedCategory != "All")
+					{
+						if (item.Position == selectedCategory)
+						{
+							_employeeModelList.Add(item);
+						}
+					} else
+					{
+						_employeeModelList.Add(item);
+					}
 				}
+
 			}
 		}
 
@@ -842,6 +1008,8 @@ namespace SupermarketPL.Views
 
 		private void SearchFromDateToDate_Click(object sender, RoutedEventArgs e)
 		{
+			cashierComboBox.SelectedIndex = 0;
+
 			if (fromDatePicker.SelectedDate == null || toDatePicker.SelectedDate == null)
 			{
 				_reportGoodsList.Clear();
@@ -852,6 +1020,8 @@ namespace SupermarketPL.Views
 				}
 				return;
 			}
+
+			
 
 			DateTime fromDate = fromDatePicker.SelectedDate.Value;
 			DateTime toDate = toDatePicker.SelectedDate.Value;

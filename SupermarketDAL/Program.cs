@@ -8,17 +8,27 @@ using System.Threading.Tasks;
 
 namespace SupermarketDAL
 {
-	internal class Program
-	{
+    internal class Program
+    {
         static void Main(string[] args)
         {
             // Ініціалізація DatabaseHelper з шляхом до бази даних
             DatabaseHelper dbHelper = new DatabaseHelper("../../../zlagoda.db");
+            
+            
             dbHelper.ResetDatabase();
             dbHelper.PutTestsData();
+            Category category2 = new Category();
+
+            TestGetCategoriesList(dbHelper);
             TestGetsList(dbHelper);
             TestGets(dbHelper);
-            Console.WriteLine(dbHelper.GetProductSoldNumberByCategoryID(1));
+            Console.WriteLine($"GetProductSoldNumberByCategoryIDAndGroupedByProducer");
+            Console.WriteLine(dbHelper.GetProductSoldNumberByCategoryIDAndGroupedByProducer(1));
+            foreach (var category in dbHelper.GetProductSoldNumberByCategoryIDAndGroupedByProducer(1))
+            {
+                Console.WriteLine($"Employee: {category}");
+            }
             foreach (var category in dbHelper.GetEmployeesAndCustomersWithMaxSharedSales())
             {
                 Console.WriteLine($"Employee: {category}");
@@ -37,11 +47,10 @@ namespace SupermarketDAL
             Console.WriteLine($"---");
             Console.WriteLine(dbHelper.GetProductWithoutEmployeeSurnameStartsWith("W").Count());
             Console.WriteLine($"---");
-            foreach(var category in dbHelper.GetEmployeesWithoutSalesInCategory("Food"))
+            foreach (var category in dbHelper.GetEmployeesWithoutSalesInCategory("Food"))
             {
                 Console.WriteLine($"Employee: {category}");
             }
-            
 
         }
 
@@ -90,7 +99,8 @@ namespace SupermarketDAL
             var categories = dbHelper.GetCategoriesList();
             foreach (var category in categories)
             {
-                Console.WriteLine($"Employee: {category.CategoryName}");
+                Console.WriteLine($"category Id: {category.CategoryNumber}");
+                Console.WriteLine($"category: {category.CategoryName}");
             }
         }
         static void TestGetEmployeesList(DatabaseHelper dbHelper)
@@ -186,7 +196,7 @@ namespace SupermarketDAL
             {
                 Console.WriteLine("Employee not found.");
             }
-            
+
         }
 
         static void TestGetProductById(DatabaseHelper dbHelper, int id)
@@ -215,7 +225,7 @@ namespace SupermarketDAL
             {
                 Console.WriteLine("Check not found.");
             }
-            
+
         }
 
         static void TestGetCustomerCardById(DatabaseHelper dbHelper, string cardNumber)
@@ -253,7 +263,7 @@ namespace SupermarketDAL
             if (sale != null)
             {
                 Console.WriteLine($"Sale found: {sale.UPC}");
-                
+
             }
             else
             {
