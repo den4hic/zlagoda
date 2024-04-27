@@ -18,13 +18,9 @@ namespace SupermarketDAL
             
             dbHelper.ResetDatabase();
             dbHelper.PutTestsData();
-            Category category = new Category();
-            category.CategoryName = "Test";
-            dbHelper.InsertCategory(category);
-            dbHelper.InsertCategory(category);
+            Category category2 = new Category();
 
             TestGetCategoriesList(dbHelper);
-            /*
             TestGetsList(dbHelper);
             TestGets(dbHelper);
             Console.WriteLine($"GetProductSoldNumberByCategoryIDAndGroupedByProducer");
@@ -55,7 +51,6 @@ namespace SupermarketDAL
             {
                 Console.WriteLine($"Employee: {category}");
             }
-            */
 
         }
 
