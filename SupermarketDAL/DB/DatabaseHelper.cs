@@ -836,6 +836,7 @@ namespace SupermarketDAL.DB
             return stringBuilder.ToString();
         }
 
+
         public void InsertGoodInStock(GoodsInStock newgoodinstock)
         {
             string sqlProduct = "INSERT INTO Product (product_name, category_number, producer, characteristics) VALUES (@ProductName, @CategoryId, @Producer, @Characteristics)";
