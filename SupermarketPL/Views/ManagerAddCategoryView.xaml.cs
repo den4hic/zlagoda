@@ -29,9 +29,13 @@ namespace SupermarketPL.Views
             {
                 CategoryName = categoryName
             };
-
-            categoriesList.Add(newCategory);
             controller.InsertCategory(categoryName);
+            categoriesList.Clear();
+            var categories = controller.GetCategories();
+            foreach (var category in categories)
+            {
+                categoriesList.Add(category);
+            }
             MessageBox.Show("Category added successfully!");
             this.Close();
         }

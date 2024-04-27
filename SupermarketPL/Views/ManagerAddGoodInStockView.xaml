@@ -17,23 +17,21 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Label Content="Category:" Grid.Row="0" Grid.Column="0"/>
-        <ComboBox x:Name="categoryComboBox" Grid.Row="0" Grid.Column="1" Margin="5"/>
+        <Label Content="Good:" Grid.Row="0" Grid.Column="0"/>
+        <ComboBox x:Name="productComboBox" Grid.Row="0" Grid.Column="1" Margin="5"/>
 
-        <Label Content="Name:" Grid.Row="1" Grid.Column="0"/>
-        <TextBox x:Name="nameTextBox" Grid.Row="1" Grid.Column="1" Margin="5"/>
+        <Label Content="UPC:" Grid.Row="1" Grid.Column="0"/>
+        <TextBox x:Name="upcTextBox" Grid.Row="1" Grid.Column="1"  Margin="5"/>
 
-        <Label Content="Characteristics:" Grid.Row="2" Grid.Column="0"/>
-        <TextBox x:Name="characteristicsTextBox" Grid.Row="2" Grid.Column="1" Margin="5"/>
+        <Label Content="Price:" Grid.Row="2" Grid.Column="0"/>
+        <TextBox x:Name="priceTextBox" Grid.Row="2" Grid.Column="1" Margin="5"/>
 
-        <Label Content="UPC:" Grid.Row="3" Grid.Column="0"/>
-        <TextBox x:Name="upcTextBox" Grid.Row="3" Grid.Column="1"  Margin="5"/>
-
-        <Label Content="Price:" Grid.Row="4" Grid.Column="0"/>
-        <TextBox x:Name="priceTextBox" Grid.Row="4" Grid.Column="1" Margin="5"/>
-
-        <Label Content="Available:" Grid.Row="5" Grid.Column="0"/>
-        <TextBox x:Name="availableTextBox" Grid.Row="5" Grid.Column="1" Margin="5"/>
+        <Label Content="Available:" Grid.Row="3" Grid.Column="0"/>
+        <TextBox x:Name="availableTextBox" Grid.Row="3" Grid.Column="1" Margin="5"/>
+        
+        <Label Content="Discount:" Grid.Row="4" Grid.Column="0"/>
+        <ComboBox x:Name="discountComboBox" Grid.Row="4" Grid.Column="1" Margin="5"/>
+        
 
         <Button Content="Add" Grid.Row="6" Click="AddButton_Click"/>
     </Grid>

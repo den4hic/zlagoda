@@ -734,7 +734,9 @@ namespace SupermarketPL.Views
 
 		private void AddGoodInStock_Click(object sender, RoutedEventArgs e)
 		{
-			SupermarketPL.Views.ManagerAddGoodInStockView addGoodInStockWindow = new SupermarketPL.Views.ManagerAddGoodInStockView();
+			SupermarketPL.Views.ManagerAddGoodInStockView addGoodInStockWindow =
+				new SupermarketPL.Views.ManagerAddGoodInStockView(controller, _goodsInStockList, _categoriesList,
+					_goodsList);
 			addGoodInStockWindow.Show();
 		}
 
