@@ -58,6 +58,11 @@ namespace SupermarketPL.Views
 						_categoriesNameList.Remove(category.CategoryName);
 					}
 				}
+				else if (e.Action == NotifyCollectionChangedAction.Reset)
+				{
+					_categoriesNameList.Clear();
+					_categoriesNameList.Add("All");
+				}
 			};
 
 			_employeeModelList.CollectionChanged += (sender, e) =>
@@ -857,7 +862,7 @@ namespace SupermarketPL.Views
 					_categoriesList.Remove(selectedCategory);
 				}
 
-				//controller.DeleteCategory(selectedGoods);
+				controller.DeleteCategory(selectedCategory);
 			}
 		}
 
