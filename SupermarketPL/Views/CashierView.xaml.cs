@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Org.BouncyCastle.Crypto.Tls;
+using SupermarketDAL.DB;
 using SupermarketDAL.Entities;
 using SupermarketPL.Model;
 
@@ -585,7 +586,8 @@ namespace SupermarketPL.Views
 		private void CloseCheck_Click(object sender, RoutedEventArgs e)
 		{
 			DateTime date = DateTime.Now;
-			string checkNumber = Guid.NewGuid().ToString();
+
+			string checkNumber = DatabaseHelper.GenerateRandomString(13);
 			var cardNumber = clientCardTextBox.Text;
 
 			var customerCard = controller.GetCustomerCardByNumber(cardNumber);

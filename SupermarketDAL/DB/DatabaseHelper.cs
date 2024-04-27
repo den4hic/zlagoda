@@ -890,7 +890,7 @@ VALUES
             ExecuteNonQuery(sql, new SQLiteParameter("@employeeId", employeeId));
         }
 
-        static string GenerateRandomString(int length)
+        public static string GenerateRandomString(int length)
         {
             Random random = new Random();
 
