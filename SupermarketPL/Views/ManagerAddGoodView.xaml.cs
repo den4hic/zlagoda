@@ -24,6 +24,12 @@ namespace SupermarketPL.Views
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             int categorynumber = categoryComboBox.SelectedIndex;
+            if (categorynumber == 0)
+            {
+                MessageBox.Show("You should select a real category.");
+                this.Close();
+                return;
+            }
             string name = nameTextBox.Text;
             string producer = manufacturerTextBox.Text;
             string characteristics = characteristicsTextBox.Text;
@@ -40,7 +46,14 @@ namespace SupermarketPL.Views
                 Characteristics = characteristics
                 
             };
-            goodsList.Add(newGood);
+            goodsList.Clear();
+            
+            var goods = controller.GetGoods();
+            foreach (var good in goods)
+            {
+                goodsList.Add(good);
+            }
+
             controller.InsertGood(categorynumber,name, producer, characteristics);
             MessageBox.Show("Good added successfully!");
             this.Close();
