@@ -838,7 +838,24 @@ namespace SupermarketDAL.DB
 
         public void InsertGoodInStock(GoodsInStock newgoodinstock)
         {
-            
+            string sqlProduct = "INSERT INTO Product (product_name, products_number, producer, characteristics) VALUES (@ProductName, @CategoryId, @Producer, @Characteristics)";
+            ExecuteNonQuery(sqlProduct,
+                new SQLiteParameter("@ProductName", newgoodinstock.ProductName),
+                new SQLiteParameter("CategoryId", newgoodinstock.CategoryId),
+                new SQLiteParameter("@Producer", newgoodinstock.Producer),
+                new SQLiteParameter("@Characteristics", newgoodinstock.Characteristics));
+
+            Product product = GetProductsList().Last();
+
+            string sqlStoreProduct = "INSERT INTO Store_Product (UPC, id_product, selling_price, products_number, promotional_product) VALUES (@UPC, @IdProduct, @SellingPrice, @ProductsNumber, @PromotionalProduct)";
+            ExecuteNonQuery(sqlStoreProduct,
+                new SQLiteParameter("@UPC", newgoodinstock.UPC),
+                new SQLiteParameter("@IdProduct", product.IdProduct),
+                new SQLiteParameter("@SellingPrice", newgoodinstock.SellingPrice),
+                new SQLiteParameter("@ProductsNumber", newgoodinstock.ProductsNumber),
+                new SQLiteParameter("@PromotionalProduct", newgoodinstock.PromotionalProduct));
         }
+
+
     }
 }
