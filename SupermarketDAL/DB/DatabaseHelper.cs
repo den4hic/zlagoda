@@ -835,5 +835,10 @@ namespace SupermarketDAL.DB
 
             return stringBuilder.ToString();
         }
+
+        public void InsertGoodInStock(GoodsInStock newgoodinstock)
+        {
+            
+        }
     }
 }

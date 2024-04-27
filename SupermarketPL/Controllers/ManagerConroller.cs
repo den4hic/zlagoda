@@ -530,4 +530,9 @@ document.Close();
 	{
 		dbHelper.InsertEmployee(newEmployee);
 	}
+
+	public void InsertGoodInStock(GoodsInStock newGoodInStock)
+	{
+		dbHelper.InsertGoodInStock(newGoodInStock);
+	}
 }
