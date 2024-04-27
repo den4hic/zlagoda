@@ -283,6 +283,20 @@ namespace SupermarketPL.Views
 					{
 						_goodsInStockList.Add(item);
 					}
+
+					if (upcSearchTextBox.Text != "")
+					{
+						List<GoodsInStockModel> filteredGoods = goodsInStockList
+						.Where(g => g.UPC.StartsWith(upcSearchTextBox.Text, System.StringComparison.OrdinalIgnoreCase))
+						.ToList();
+
+						_goodsInStockList.Clear();
+
+						foreach (var item in filteredGoods)
+						{
+							_goodsInStockList.Add(item);
+						}
+					}
 					return;
 				}
 				List<GoodsInStockModel> stocks = controller.GetGoodsInStockByCategory(comboBox.SelectedIndex);
@@ -313,6 +327,21 @@ namespace SupermarketPL.Views
 				{
 					_goodsInStockList.Add(item);
 				}
+
+				var selectedCategory = categoriesComboBox.SelectedItem as string;
+
+				if (selectedCategory != null && selectedCategory != "All")
+				{
+					List<GoodsInStockModel> stocks = controller.GetGoodsInStockByCategory(categoriesComboBox.SelectedIndex);
+					_goodsInStockList.Clear();
+
+					List<GoodsInStockModel> unionList = stocks.Intersect();
+
+					foreach (var item in unionList)
+					{
+						_goodsInStockList.Add(item);
+					}
+				}
 			}
 			else
 			{
@@ -322,6 +351,20 @@ namespace SupermarketPL.Views
 				{
 					_goodsInStockList.Add(item);
 				}
+
+				var selectedCategory = categoriesComboBox.SelectedItem as string;
+
+				if (selectedCategory != null && selectedCategory != "All")
+				{
+					List<GoodsInStockModel> stocks = controller.GetGoodsInStockByCategory(categoriesComboBox.SelectedIndex);
+					_goodsInStockList.Clear();
+
+					foreach (var item in stocks)
+					{
+						_goodsInStockList.Add(goodsInStockList.FirstOrDefault(x => x.ProductId == item.ProductId));
+					}
+				}
+
 			}
 		}
 
