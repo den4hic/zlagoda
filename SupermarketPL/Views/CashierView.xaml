@@ -70,8 +70,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                            <Button Content="Add" Grid.Column="0" Width="75" Height="25" Margin="0,0,0,80" Click="AddButton_Click"/>   
-                            <Button Content="Edit" Grid.Column="0" Width="75" Height="25" Margin="0,90,0,100" Click="EditButton_Click"/>      
+                            <Button Content="Add" Grid.Column="0" Width="75" Height="25" Margin="0,0,0,130" Click="AddButton_Click"/>   
                     </Grid>
                 </Grid>
             </TabItem>
@@ -114,9 +113,7 @@
         <Label Content="Name Search" Grid.Column="1" Grid.Row="3"/>
         <TextBox x:Name="nameSearchTextBox" Grid.Column="1" Grid.Row="4" Width="120" Margin="0,0,0,5"/>
 
-        <Label Content="UPC Search" Grid.Column="1" Grid.Row="5"/>
-        <TextBox x:Name="upcSearchTextBox" Grid.Column="1" Grid.Row="6" Width="80" Margin="0,0,40,5"/>
-        <Button Content="Search" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Right" Width="50" Margin="0,0,0,5" Click="UPCSearchButton_Click"/>
+      
         <Label Content="Basket" Grid.Column="0" Grid.Row="10"/>
             <DataGrid x:Name="basketDataGrid" Margin="10,30,10,10" Grid.Column="0" Grid.Row="11" Grid.RowSpan="9" MouseDoubleClick="BasketDataGrid_MouseDoubleClick" AutoGenerateColumns="False" ItemsSource="{Binding BasketGoodsList}">
             <DataGrid.Columns>
@@ -132,12 +129,12 @@
         <ComboBox x:Name="discountComboBox" Grid.Column="1" Grid.Row="8" Width="120" Margin="0,0,0,5"/>
 
         
-        <Label Content="Client Card" Grid.Column="1" Grid.Row="9" Width="120" Margin="0,0,0,150"/>
-        <TextBox x:Name="clientCardTextBox" Grid.Column="1" Grid.Row="10" Width="120" Margin="0,30,0,140"/>
+        <Label Content="Client Card" Grid.Column="1" Grid.Row="9" Width="120" Margin="0,0,0,210"/>
+        <TextBox x:Name="clientCardTextBox" Grid.Column="1" Grid.Row="10" Width="120" Margin="0,25,0,200"/>
             
         
 
-        <Button Content="Close Receipt" Grid.Column="1" Grid.Row="10" Width="120" Margin="0,70,0,90" Click="CloseCheck_Click"/>
+        <Button Content="Close Receipt" Grid.Column="1" Grid.Row="10" Width="120" Margin="0,50,0,165" Click="CloseCheck_Click"/>
 
     </Grid>
 </TabItem>
