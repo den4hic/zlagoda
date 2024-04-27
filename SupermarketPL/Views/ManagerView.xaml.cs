@@ -832,7 +832,7 @@ namespace SupermarketPL.Views
 
 		private void DeleteButton_Click(object sender, RoutedEventArgs e)
 		{
-			// Отримати виділений рядок (selected item) з goodsDataGrid
+			
 			var selectedGoods = goodsDataGrid.SelectedItem as Goods;
 
 			if (selectedGoods != null)
@@ -857,7 +857,7 @@ namespace SupermarketPL.Views
 					_categoriesList.Remove(selectedCategory);
 				}
 
-				//controller.DeleteCategory(selectedGoods);
+				controller.DeleteCategory(selectedCategory);
 			}
 		}
 
@@ -1001,9 +1001,9 @@ namespace SupermarketPL.Views
 		}
 		private void PrintReceiptsButton_Click(object sender, RoutedEventArgs e)
 		{
-			/*string outputPath = "ReceiptsList.pdf";
-			controller.CreateReceiptsPdf(controller.GetReceipts(), outputPath);
-			MessageBox.Show("Receipts report saved as " + outputPath);*/
+			//string outputPath = "ReceiptsList.pdf";
+			//controller.CreateReceiptsPdf(controller.GetReceipts(), outputPath);
+			//MessageBox.Show("Receipts report saved as " + outputPath);
 		}
 
 		private void SearchFromDateToDate_Click(object sender, RoutedEventArgs e)
