@@ -10,6 +10,7 @@ namespace SupermarketDAL.Entities
     {
         public int IdProduct { get; set; }
         public string ProductName { get; set; }
+        public int CategoryId { get; set; }
         public string Producer { get; set; }
         public string Characteristics { get; set; }
         public string UPC { get; set; }

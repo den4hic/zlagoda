@@ -42,6 +42,7 @@ namespace SupermarketPL.Views
                 {
                     int productId = selectedGood.ProductId;
                     string productName = selectedGood.Name;
+                    int categoryId = selectedGood.CategoryId;
                     string producer = selectedGood.Manufacturer;
                     string characteristics = selectedGood.Characteristics;
                     string upc = upcTextBox.Text;
@@ -53,6 +54,7 @@ namespace SupermarketPL.Views
                     GoodsInStock newGoodInStock = new GoodsInStock
                     {
                         IdProduct = productId,
+                        CategoryId = categoryId,
                         ProductName = productName,
                         Producer = producer,
                         Characteristics = characteristics,
@@ -64,6 +66,7 @@ namespace SupermarketPL.Views
                     GoodsInStockModel newGoodInStockModel = new GoodsInStockModel
                     {
                         ProductId = productId,
+                        CategoryId = categoryId,
                         Name = productName,
                         Manufacturer = producer,
                         Characteristics = characteristics,
