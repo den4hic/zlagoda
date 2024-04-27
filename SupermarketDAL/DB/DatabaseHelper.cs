@@ -838,7 +838,7 @@ namespace SupermarketDAL.DB
 
         public void InsertGoodInStock(GoodsInStock newgoodinstock)
         {
-            string sqlProduct = "INSERT INTO Product (product_name, products_number, producer, characteristics) VALUES (@ProductName, @CategoryId, @Producer, @Characteristics)";
+            string sqlProduct = "INSERT INTO Product (product_name, category_number, producer, characteristics) VALUES (@ProductName, @CategoryId, @Producer, @Characteristics)";
             ExecuteNonQuery(sqlProduct,
                 new SQLiteParameter("@ProductName", newgoodinstock.ProductName),
                 new SQLiteParameter("CategoryId", newgoodinstock.CategoryId),
