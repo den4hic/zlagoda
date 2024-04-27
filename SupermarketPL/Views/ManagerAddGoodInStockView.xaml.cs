@@ -46,11 +46,26 @@ namespace SupermarketPL.Views
                     string producer = selectedGood.Manufacturer;
                     string characteristics = selectedGood.Characteristics;
                     string upc = upcTextBox.Text;
-                    decimal sellingPrice = decimal.Parse(priceTextBox.Text);
-                    int productsNumber = int.Parse(availableTextBox.Text);
+                    if (!decimal.TryParse(priceTextBox.Text, out decimal sellingPrice))
+                    {
+                        MessageBox.Show("Please enter a valid decimal number for Selling Price.");
+                        return;
+                    }
+
+                    if (!int.TryParse(availableTextBox.Text, out int productsNumber))
+                    {
+                        MessageBox.Show("Please enter a valid integer for Products Number.");
+                        return;
+                    }
                     bool promotionalProduct;
                     bool.TryParse(discountComboBox.SelectedItem.ToString(), out promotionalProduct);
 
+                    if (string.IsNullOrWhiteSpace(productName) || string.IsNullOrWhiteSpace(producer) || string.IsNullOrWhiteSpace(characteristics) || string.IsNullOrWhiteSpace(upc) || discountComboBox.SelectedItem == null)
+                    {
+                        MessageBox.Show("Please fill all fields.");
+                        return;
+                    }
+                    
                     GoodsInStock newGoodInStock = new GoodsInStock
                     {
                         IdProduct = productId,
